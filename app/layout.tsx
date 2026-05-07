@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "openheros - Video Hero Gallery",
+  title: "openhero - Video Hero Gallery",
   description:
     "Browse cinematic video backgrounds paired with polished hero layouts. Download the video and grab the source code in HTML, React, or Next.js - zero dependencies.",
 };

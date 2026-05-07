@@ -23,14 +23,19 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "Invalid parameters" }, { status: 400 });
   }
 
-  const name      = slugToName(slug);
-  const videoPath = path.join(process.cwd(), "public", "videos", category, `${slug}.mp4`);
-  const isLocal   = fs.existsSync(videoPath);
-  const videoSrc  = isLocal ? `/videos/${category}/${slug}.mp4` : "";
-
+  const name = slugToName(slug);
   const { filename, staticFile } = FORMAT_CONFIG[format];
 
-  const staticFilePath = path.join(process.cwd(), "public", "downloads", category, slug, staticFile);
+  // 1. Buscar archivos estáticos (código + video) en downloads/
+  const downloadsDir = path.join(process.cwd(), "public", "downloads", category, slug);
+  const staticFilePath = path.join(downloadsDir, staticFile);
+  const downloadVideoPath = path.join(downloadsDir, "video.mp4");
+  
+  // 2. Fallback: video de preview en videos/
+  const previewVideoPath = path.join(process.cwd(), "public", "videos", category, `${slug}.mp4`);
+  const videoSrc = fs.existsSync(previewVideoPath) ? `/videos/${category}/${slug}.mp4` : "";
+
+  // 3. Leer código (estático o generado)
   let code: string;
   if (fs.existsSync(staticFilePath)) {
     code = fs.readFileSync(staticFilePath, "utf-8");
@@ -41,13 +46,18 @@ export async function GET(request: NextRequest) {
          : getNextjsCode(opts);
   }
 
+  // 4. Crear ZIP
   const zip = new JSZip();
   const folder = zip.folder(`${slug}-${format}`) as JSZip;
   folder.file(filename, code);
 
-  if (isLocal) {
-    const videoBuffer = fs.readFileSync(videoPath);
-    folder.file(`${slug}.mp4`, videoBuffer);
+  // 5. Incluir video (primero buscar en downloads/, luego en videos/)
+  const videoToInclude = fs.existsSync(downloadVideoPath) ? downloadVideoPath : 
+                         fs.existsSync(previewVideoPath) ? previewVideoPath : null;
+
+  if (videoToInclude) {
+    const videoBuffer = fs.readFileSync(videoToInclude);
+    folder.file("video.mp4", videoBuffer);
   } else {
     folder.file(
       "README.txt",
@@ -57,9 +67,9 @@ export async function GET(request: NextRequest) {
         ``,
         `To use:`,
         `  1. Obtain a video file (e.g., from a stock site)`,
-        `  2. Rename it to: ${slug}.mp4`,
-        `  3. Place it at: public/videos/${category}/${slug}.mp4`,
-        `  4. The VIDEO_SRC constant in the code already points there.`,
+        `  2. Rename it to: video.mp4`,
+        `  3. Place it in the same folder as ${filename}`,
+        `  4. The code already references "./video.mp4" (relative path).`,
       ].join("\n"),
     );
   }
