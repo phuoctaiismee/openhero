@@ -1,0 +1,7 @@
+.paint-container {
+  display: inline-block;
+  vertical-align: middle;
+  object-fit: contain;
+  margin: 0;
+  padding: 0;
+}

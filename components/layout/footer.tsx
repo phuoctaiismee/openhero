@@ -23,7 +23,7 @@ export function Footer() {
             <p className="max-w-xs text-sm leading-relaxed text-muted">
               A free, open-source gallery of cinematic video hero sections.
               Preview, download the video, and grab source code in HTML, React,
-              or Next.js — ready to use in any project.
+              or Next.js - ready to use in any project.
             </p>
           </div>
 
@@ -35,11 +35,6 @@ export function Footer() {
               <li>
                 <a href="#gallery" className="transition-colors hover:text-foreground">
                   Browse Gallery
-                </a>
-              </li>
-              <li>
-                <a href="#" className="transition-colors hover:text-foreground">
-                  How to Use
                 </a>
               </li>
               <li>
@@ -63,11 +58,6 @@ export function Footer() {
                   className="transition-colors hover:text-foreground"
                 >
                   GitHub
-                </a>
-              </li>
-              <li>
-                <a href="#" className="transition-colors hover:text-foreground">
-                  Twitter / X
                 </a>
               </li>
             </ul>
@@ -111,15 +101,6 @@ export function Footer() {
               aria-label="GitHub"
             >
               <Icon icon="mdi:github" width="20" />
-            </a>
-            <a
-              href="https://twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-foreground"
-              aria-label="Twitter / X"
-            >
-              <Icon icon="simple-icons:x" width="16" />
             </a>
           </div>
         </div>

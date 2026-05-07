@@ -124,7 +124,6 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Base styles */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -159,7 +158,7 @@
 
   .squircle {
     border-radius: 40px;
-    border-radius: 40px !important;
+    corner-shape: squircle;
   }
 
   .custom-scroll {

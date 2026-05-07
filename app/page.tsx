@@ -11,10 +11,10 @@ export default function Home() {
       <div 
         className="absolute inset-0 -z-10"
         style={{ 
-          backgroundImage: "url('/svg/hero-background2.svg')",
+          backgroundImage: "url('/svg/hero-background.svg')",
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% auto",
-          backgroundPosition: "-500px -100px" 
+          backgroundPosition: "0px -100px" 
         }}
       />
       <Header />
@@ -23,6 +23,7 @@ export default function Home() {
         <HeroGallery videos={videos} categories={categories} />
       </main>
       <Footer />
+      <div className="pointer-events-none fixed bottom-0 left-0 z-50 h-32 w-full bg-linear-to-t from-black via-black/15 to-transparent" />
     </div>
   );
 }
