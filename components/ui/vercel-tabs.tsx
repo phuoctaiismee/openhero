@@ -1,0 +1,123 @@
+"use client";
+
+import type React from "react";
+import { useEffect, useRef, useState } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Icon } from "@iconify/react"; // <-- IMPORTACIÓN NECESARIA
+
+interface TabData {
+  label: string;
+  value: string;
+  icon?: string; // <-- AHORA ACEPTA ICONO
+  content: React.ReactNode;
+}
+
+interface VercelTabsProps {
+  tabs: TabData[];
+  defaultTab?: string;
+  className?: string;
+  /** Override the content wrapper classes (default: "mt-8 w-full px-4") */
+  contentClassName?: string;
+}
+
+export function VercelTabs({ tabs, defaultTab, className, contentClassName }: VercelTabsProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState(defaultTab || tabs[0]?.value);
+  const [hoverStyle, setHoverStyle] = useState({});
+  const [activeStyle, setActiveStyle] = useState({ left: "0px", width: "0px" });
+
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const activeIndex = tabs.findIndex((tab) => tab.value === activeTab);
+
+  useEffect(() => {
+    if (hoveredIndex !== null) {
+      const hoveredElement = tabRefs.current[hoveredIndex];
+      if (hoveredElement) {
+        const { offsetLeft, offsetWidth } = hoveredElement;
+        setHoverStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`,
+        });
+      }
+    }
+  }, [hoveredIndex]);
+
+  useEffect(() => {
+    const activeElement = tabRefs.current[activeIndex];
+    if (activeElement) {
+      const { offsetLeft, offsetWidth } = activeElement;
+      setActiveStyle({
+        left: `${offsetLeft}px`,
+        width: `${offsetWidth}px`,
+      });
+    }
+  }, [activeIndex]);
+
+  useEffect(() => {
+    requestAnimationFrame(() => {
+      const activeElement = tabRefs.current[activeIndex];
+      if (activeElement) {
+        const { offsetLeft, offsetWidth } = activeElement;
+        setActiveStyle({
+          left: `${offsetLeft}px`,
+          width: `${offsetWidth}px`,
+        });
+      }
+    });
+  }, [activeIndex]);
+
+  return (
+    <Tabs
+      defaultValue={activeTab}
+      onValueChange={setActiveTab}
+      className={`flex w-full flex-col ${className || ""}`}
+    >
+      <TabsList className="relative h-auto self-center select-none gap-[6px] bg-transparent p-0">
+        <div
+          className="absolute top-0 left-0 flex h-[30px] items-center rounded-[6px] bg-white/10 transition-all duration-300 ease-out"
+          style={{
+            ...hoverStyle,
+            opacity: hoveredIndex !== null ? 1 : 0,
+          }}
+        />
+        <div
+          className="absolute bottom-[-6px] h-[2px] bg-white transition-all duration-300 ease-out"
+          style={activeStyle}
+        />
+        {tabs.map((tab, index) => (
+          <TabsTrigger
+            key={tab.value}
+            value={tab.value}
+            ref={(el: HTMLButtonElement | null) => {
+              tabRefs.current[index] = el;
+            }}
+            className={`z-10 h-[30px] cursor-pointer rounded-md border-0 bg-transparent px-3 py-2 outline-none transition-colors duration-300 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 data-[state=active]:bg-transparent data-[state=active]:shadow-none ${
+              activeTab === tab.value ? "text-white" : "text-white/50"
+            }`}
+            onMouseEnter={() => setHoveredIndex(index)}
+            onMouseLeave={() => setHoveredIndex(null)}
+          >
+            {/* APLICAMOS FLEX PARA ALINEAR EL ICONO Y EL TEXTO */}
+            <span className="flex items-center gap-1.5 whitespace-nowrap font-medium text-sm leading-5">
+              {tab.icon && <Icon icon={tab.icon} width="14" />}
+              {tab.label}
+            </span>
+          </TabsTrigger>
+        ))}
+      </TabsList>
+
+      <div className={`flex flex-col w-full ${contentClassName ?? "mt-8 px-4"}`}>
+        {tabs.map((tab) => (
+          <TabsContent
+            key={tab.value}
+            value={tab.value}
+            className="fade-in-50 w-full animate-in duration-500 outline-none data-[state=active]:flex data-[state=active]:flex-col data-[state=active]:flex-1 data-[state=active]:min-h-0"
+          >
+            {tab.content}
+          </TabsContent>
+        ))}
+      </div>
+    </Tabs>
+  );
+}
