@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notion AI — The connected workspace for modern teams</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            base: "oklch(11% .015 250)",
+            panel: "oklch(17% .02 250)",
+            line: "oklch(100% 0 0 / .08)",
+            text: "oklch(96% .01 250)",
+            muted: "oklch(72% .02 250)",
+            primary: "oklch(78% .18 250)",
+            cyan: "oklch(82% .13 200)",
+            pink: "oklch(74% .18 340)"
+          },
+          boxShadow: {
+            liquid: `
+              0 1px 0 rgba(255,255,255,.06) inset,
+              0 -1px 0 rgba(255,255,255,.03) inset,
+              0 30px 120px rgba(0,0,0,.65)
+            `
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: dark;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top right, oklch(26% .08 250 / .25), transparent 24%),
+        radial-gradient(circle at bottom left, oklch(28% .08 200 / .18), transparent 28%),
+        oklch(9% .012 250);
+      color: white;
+      font-family: Inter, ui-sans-serif, system-ui;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: radial-gradient(circle at center, black 20%, transparent 80%);
+      pointer-events: none;
+      opacity: .4;
+    }
+
+    .glass {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,.08),
+          rgba(255,255,255,.02));
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(26px) saturate(180%);
+      -webkit-backdrop-filter: blur(26px) saturate(180%);
+      box-shadow:
+        0 1px 0 rgba(255,255,255,.05) inset,
+        0 -1px 0 rgba(255,255,255,.02) inset,
+        0 30px 90px rgba(0,0,0,.45);
+    }
+
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          130deg,
+          transparent 20%,
+          rgba(255,255,255,.14),
+          transparent 80%
+        );
+      transform: translateX(-120%);
+      animation: shine 10s linear infinite;
+    }
+
+    @keyframes shine {
+      to {
+        transform: translateX(120%);
+      }
+    }
+
+    .noise::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .05;
+      background-image:
+        radial-gradient(circle, white 1px, transparent 1px);
+      background-size: 14px 14px;
+      pointer-events: none;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(90px);
+      pointer-events: none;
+      mix-blend-mode: plus-lighter;
+    }
+
+    .portal {
+      transform-style: preserve-3d;
+      animation: portalFloat 12s ease-in-out infinite;
+    }
+
+    @keyframes portalFloat {
+      0%,100% {
+        transform: translateY(0px) rotate(-6deg);
+      }
+
+      50% {
+        transform: translateY(-22px) rotate(-3deg);
+      }
+    }
+
+    .kinetic {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(255,255,255,.5),
+          white,
+          rgba(255,255,255,.5)
+        );
+      background-size: 200% auto;
+      color: transparent;
+      -webkit-background-clip: text;
+      animation: shimmer 5s linear infinite;
+    }
+
+    @keyframes shimmer {
+      to {
+        background-position: 200% center;
+      }
+    }
+
+    .liquid-btn {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .liquid-btn::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left,
+          rgba(255,255,255,.35),
+          transparent 35%),
+        linear-gradient(
+          135deg,
+          rgba(255,255,255,.18),
+          rgba(255,255,255,.02)
+        );
+      mix-blend-mode: overlay;
+    }
+
+    .tilt {
+      transition:
+        transform .5s cubic-bezier(.16,1,.3,1),
+        box-shadow .5s cubic-bezier(.16,1,.3,1);
+    }
+
+    .tilt:hover {
+      transform:
+        perspective(1200px)
+        rotateX(5deg)
+        rotateY(-5deg)
+        translateY(-10px);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px) scale(.98);
+      filter: blur(12px);
+      transition:
+        opacity 1s cubic-bezier(.16,1,.3,1),
+        transform 1s cubic-bezier(.16,1,.3,1),
+        filter 1s cubic-bezier(.16,1,.3,1);
+      transition-timeline: view();
+      transition-range: entry 10% cover 32%;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+
+    .mask-video {
+      mask-image:
+        radial-gradient(circle at 70% 50%, black 40%, transparent 88%);
+      -webkit-mask-image:
+        radial-gradient(circle at 70% 50%, black 40%, transparent 88%);
+    }
+
+    .floating-card {
+      animation: drift 8s ease-in-out infinite;
+    }
+
+    @keyframes drift {
+      0%,100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-14px);
+      }
+    }
+
+    .border-flow {
+      position: relative;
+    }
+
+    .border-flow::after {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background:
+        linear-gradient(
+          130deg,
+          rgba(255,255,255,.14),
+          transparent,
+          rgba(255,255,255,.05)
+        );
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    ::selection {
+      background: rgba(110,140,255,.35);
+      color: white;
+    }
+  </style>
+</head>
+
+<body class="antialiased text-text">
+
+  <div class="orb bg-primary/30 w-[500px] h-[500px] top-[-200px] right-[-100px]"></div>
+  <div class="orb bg-cyan/20 w-[400px] h-[400px] bottom-[-160px] left-[-80px]"></div>
+
+  <header class="fixed top-0 inset-x-0 z-50 px-4 md:px-8 py-5">
+    <div class="max-w-7xl mx-auto">
+      <div class="glass border-flow rounded-[2rem] px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <div class="w-11 h-11 rounded-2xl glass flex items-center justify-center">
+            <iconify-icon icon="solar:notes-bold-duotone" class="text-2xl text-primary"></iconify-icon>
+          </div>
+
+          <div>
+            <p class="font-semibold tracking-tight">
+              Notion AI
+            </p>
+
+            <p class="text-xs text-muted">
+              Unified intelligence for modern workspaces
+            </p>
+          </div>
+        </div>
+
+        <nav class="hidden lg:flex items-center gap-2">
+          <a href="#workspace" class="px-4 py-2 rounded-full text-sm text-muted hover:text-white transition">
+            Workspace
+          </a>
+
+          <a href="#intelligence" class="px-4 py-2 rounded-full text-sm text-muted hover:text-white transition">
+            Intelligence
+          </a>
+
+          <a href="#system" class="px-4 py-2 rounded-full text-sm text-muted hover:text-white transition">
+            System
+          </a>
+        </nav>
+
+        <button class="liquid-btn glass rounded-full px-6 py-3 text-sm font-medium hover:scale-105 transition">
+          Get Started
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="min-h-screen relative flex items-center px-5 md:px-8 overflow-hidden">
+
+      <div class="max-w-7xl mx-auto w-full grid xl:grid-cols-[.8fr_1.2fr] gap-20 items-center">
+
+        <div class="relative z-10 pt-32">
+
+          <div class="glass inline-flex items-center gap-3 px-4 py-2 rounded-full mb-8 border-flow">
+            <div class="w-2 h-2 rounded-full bg-cyan"></div>
+
+            <span class="text-sm text-muted">
+              AI-powered collaborative systems
+            </span>
+          </div>
+
+          <h1 class="text-[3.5rem] sm:text-[5rem] lg:text-[7rem] leading-[.9] tracking-[-.08em] font-semibold max-w-4xl">
+            Ideas move
+            <span class="kinetic">faster</span>
+            when knowledge flows.
+          </h1>
+
+          <p class="mt-8 max-w-xl text-lg text-muted leading-relaxed">
+            An immersive workspace built around adaptive thinking,
+            realtime collaboration and sensory interface systems
+            engineered for modern product teams.
+          </p>
+
+          <div class="mt-12 flex flex-wrap gap-4">
+
+            <button class="liquid-btn glass border-flow rounded-full px-7 py-4 font-medium hover:scale-105 transition">
+              Explore Workspace
+            </button>
+
+            <button class="rounded-full px-7 py-4 border border-white/10 bg-white/[.03] hover:bg-white/[.06] transition">
+              Watch Demo
+            </button>
+
+          </div>
+
+          <div class="mt-20 grid sm:grid-cols-3 gap-5">
+
+            <div class="glass border-flow rounded-[2rem] p-5">
+              <p class="text-4xl font-semibold tracking-tight">
+                120+
+              </p>
+
+              <p class="text-sm text-muted mt-2">
+                integrated knowledge systems
+              </p>
+            </div>
+
+            <div class="glass border-flow rounded-[2rem] p-5">
+              <p class="text-4xl font-semibold tracking-tight">
+                14ms
+              </p>
+
+              <p class="text-sm text-muted mt-2">
+                realtime sync response
+              </p>
+            </div>
+
+            <div class="glass border-flow rounded-[2rem] p-5">
+              <p class="text-4xl font-semibold tracking-tight">
+                AI
+              </p>
+
+              <p class="text-sm text-muted mt-2">
+                contextual semantic memory
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="relative hidden xl:block min-h-[860px]">
+
+          <div class="portal absolute right-[-80px] top-20 w-[760px] h-[760px]">
+
+            <div class="absolute top-[-40px] left-[-60px] glass border-flow rounded-[2rem] p-5 z-30 floating-card">
+
+              <div class="flex items-center gap-5">
+
+                <div class="w-14 h-14 rounded-2xl bg-white/[.05] flex items-center justify-center">
+                  <iconify-icon icon="solar:widget-bold-duotone" class="text-3xl text-cyan"></iconify-icon>
+                </div>
+
+                <div>
+                  <p class="text-sm text-muted">
+                    Neural Workspace
+                  </p>
+
+                  <p class="text-2xl font-semibold">
+                    +38% focus efficiency
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="absolute bottom-10 left-[-100px] w-[260px] glass border-flow rounded-[2rem] p-6 z-30">
+
+              <div class="flex items-center justify-between mb-6">
+                <p class="text-sm text-muted">
+                  Knowledge Mapping
+                </p>
+
+                <div class="w-3 h-3 rounded-full bg-cyan animate-pulse"></div>
+              </div>
+
+              <div class="space-y-4">
+
+                <div class="h-3 rounded-full bg-white/[.06] overflow-hidden">
+                  <div class="h-full w-[92%] rounded-full bg-gradient-to-r from-primary to-cyan"></div>
+                </div>
+
+                <div class="h-3 rounded-full bg-white/[.06] overflow-hidden">
+                  <div class="h-full w-[74%] rounded-full bg-gradient-to-r from-pink to-primary"></div>
+                </div>
+
+                <div class="h-3 rounded-full bg-white/[.06] overflow-hidden">
+                  <div class="h-full w-[88%] rounded-full bg-gradient-to-r from-cyan to-white"></div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="glass border-flow noise rounded-[4rem] overflow-hidden absolute inset-0 shadow-liquid">
+
+              <div class="absolute inset-0 bg-gradient-to-br from-white/[.08] via-transparent to-transparent z-10"></div>
+
+              <video autoplay muted loop playsinline class="w-full h-full object-cover opacity-90 mask-video">
+                <source src="../../../videos/nature/dark-forest-misty-morning.mp4" type="video/mp4">
+              </video>
+
+              <div class="absolute inset-0 bg-gradient-to-l from-black via-black/10 to-transparent"></div>
+
+              <div class="absolute top-10 right-10 z-20">
+                <div class="glass rounded-full px-5 py-3 flex items-center gap-3">
+                  <div class="w-2 h-2 rounded-full bg-primary"></div>
+
+                  <span class="text-xs tracking-wide text-muted">
+                    Adaptive intelligence layer
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="workspace" class="relative py-40 px-5 md:px-8">
+
+      <div class="max-w-7xl mx-auto">
+
+        <div class="mb-20 reveal">
+
+          <p class="uppercase tracking-[.25em] text-xs text-muted mb-5">
+            Spatial Collaboration
+          </p>
+
+          <h2 class="text-5xl md:text-7xl tracking-[-.07em] leading-none font-semibold max-w-5xl">
+            Information shaped
+            as a living system.
+          </h2>
+
+        </div>
+
+        <div class="grid lg:grid-cols-[1.1fr_.9fr] gap-7">
+
+          <div class="glass border-flow rounded-[3rem] p-8 md:p-10 tilt reveal">
+
+            <div class="flex items-center justify-between mb-10">
+
+              <div>
+                <p class="text-sm text-muted">
+                  Workspace Fabric
+                </p>
+
+                <h3 class="text-3xl font-semibold mt-2">
+                  Contextual operational memory
+                </h3>
+              </div>
+
+              <div class="w-14 h-14 rounded-2xl bg-white/[.04] flex items-center justify-center">
+                <iconify-icon icon="solar:layers-bold-duotone" class="text-3xl text-primary"></iconify-icon>
+              </div>
+
+            </div>
+
+            <div class="grid sm:grid-cols-2 gap-6">
+
+              <div class="rounded-[2rem] bg-white/[.03] border border-white/[.06] p-6">
+
+                <p class="text-muted text-sm">
+                  Semantic indexing
+                </p>
+
+                <p class="mt-4 text-4xl tracking-tight font-semibold">
+                  8.4x
+                </p>
+
+                <p class="mt-3 text-sm text-muted leading-relaxed">
+                  Faster retrieval across distributed collaborative systems.
+                </p>
+
+              </div>
+
+              <div class="rounded-[2rem] bg-white/[.03] border border-white/[.06] p-6">
+
+                <p class="text-muted text-sm">
+                  Neural organization
+                </p>
+
+                <p class="mt-4 text-4xl tracking-tight font-semibold">
+                  92%
+                </p>
+
+                <p class="mt-3 text-sm text-muted leading-relaxed">
+                  Automated workspace structure prediction accuracy.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="grid gap-7">
+
+            <div class="glass border-flow rounded-[2.5rem] p-8 reveal">
+
+              <div class="flex items-start justify-between">
+
+                <div>
+                  <p class="text-muted text-sm">
+                    Live Collaboration
+                  </p>
+
+                  <h4 class="mt-3 text-2xl font-semibold">
+                    Multi-user sensory editing
+                  </h4>
+                </div>
+
+                <div class="w-12 h-12 rounded-2xl bg-white/[.04] flex items-center justify-center">
+                  <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="text-2xl text-cyan"></iconify-icon>
+                </div>
+
+              </div>
+
+              <p class="mt-6 text-muted leading-relaxed">
+                Dynamic editing environments powered by adaptive synchronization and AI contextual awareness.
+              </p>
+
+            </div>
+
+            <div class="glass border-flow rounded-[2.5rem] p-8 reveal">
+
+              <div class="flex items-center justify-between mb-8">
+
+                <p class="text-muted text-sm">
+                  Team Productivity
+                </p>
+
+                <p class="text-sm text-cyan">
+                  +24% monthly
+                </p>
+
+              </div>
+
+              <div class="h-44 flex items-end gap-3">
+
+                <div class="w-full rounded-t-[1.5rem] bg-white/[.06] h-[30%]"></div>
+                <div class="w-full rounded-t-[1.5rem] bg-white/[.08] h-[55%]"></div>
+                <div class="w-full rounded-t-[1.5rem] bg-white/[.1] h-[76%]"></div>
+                <div class="w-full rounded-t-[1.5rem] bg-gradient-to-t from-primary/70 to-cyan/70 h-full"></div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="intelligence" class="relative py-36 px-5 md:px-8">
+
+      <div class="max-w-7xl mx-auto">
+
+        <div class="grid lg:grid-cols-2 gap-8 items-center">
+
+          <div class="reveal">
+
+            <p class="uppercase tracking-[.25em] text-xs text-muted mb-5">
+              Native Intelligence
+            </p>
+
+            <h2 class="text-5xl md:text-6xl tracking-[-.07em] leading-[.95] font-semibold">
+              Systems designed
+              around cognition.
+            </h2>
+
+            <p class="mt-8 max-w-xl text-muted leading-relaxed text-lg">
+              Every interaction responds with fluidity, contextual adaptation
+              and material depth engineered for premium human-computer workflows.
+            </p>
+
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-6 reveal">
+
+            <div class="glass border-flow rounded-[2rem] p-7">
+
+              <div class="w-14 h-14 rounded-2xl bg-white/[.05] flex items-center justify-center mb-8">
+                <iconify-icon icon="logos:javascript" class="text-3xl"></iconify-icon>
+              </div>
+
+              <h4 class="text-2xl font-semibold">
+                Native Motion
+              </h4>
+
+              <p class="mt-4 text-muted text-sm leading-relaxed">
+                Scroll-linked interaction systems built without animation libraries.
+              </p>
+
+            </div>
+
+            <div class="glass border-flow rounded-[2rem] p-7">
+
+              <div class="w-14 h-14 rounded-2xl bg-white/[.05] flex items-center justify-center mb-8">
+                <iconify-icon icon="logos:tailwindcss-icon" class="text-3xl"></iconify-icon>
+              </div>
+
+              <h4 class="text-2xl font-semibold">
+                Container Logic
+              </h4>
+
+              <p class="mt-4 text-muted text-sm leading-relaxed">
+                Responsive architecture driven through intrinsic container systems.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <section id="system" class="relative py-40 px-5 md:px-8">
+
+      <div class="max-w-7xl mx-auto">
+
+        <div class="glass border-flow rounded-[3rem] p-8 md:p-14 overflow-hidden relative">
+
+          <div class="absolute top-[-100px] left-[-60px] w-[320px] h-[320px] rounded-full bg-primary/10 blur-[120px]"></div>
+
+          <div class="grid lg:grid-cols-[1fr_.8fr] gap-12 items-center relative z-10">
+
+            <div>
+
+              <p class="uppercase tracking-[.25em] text-xs text-muted mb-5">
+                Intelligent Workspace
+              </p>
+
+              <h2 class="text-5xl md:text-7xl tracking-[-.07em] leading-none font-semibold max-w-3xl">
+                Design interfaces
+                people can feel.
+              </h2>
+
+              <p class="mt-8 text-lg text-muted max-w-xl leading-relaxed">
+                Light diffusion, sensory depth and adaptive movement combine
+                into a liquid interface architecture optimized for focus.
+              </p>
+
+            </div>
+
+            <div class="space-y-5">
+
+              <div class="glass rounded-[2rem] p-6">
+
+                <div class="flex items-center justify-between">
+
+                  <div>
+                    <p class="text-sm text-muted">
+                      AI Writing Layer
+                    </p>
+
+                    <h4 class="text-2xl font-semibold mt-2">
+                      Generative workflow orchestration
+                    </h4>
+                  </div>
+
+                  <iconify-icon icon="solar:pen-new-square-bold-duotone" class="text-4xl text-cyan"></iconify-icon>
+
+                </div>
+
+              </div>
+
+              <div class="glass rounded-[2rem] p-6">
+
+                <div class="flex items-center justify-between">
+
+                  <div>
+                    <p class="text-sm text-muted">
+                      Workspace Graph
+                    </p>
+
+                    <h4 class="text-2xl font-semibold mt-2">
+                      Connected operational memory
+                    </h4>
+                  </div>
+
+                  <iconify-icon icon="solar:share-circle-bold-duotone" class="text-4xl text-pink"></iconify-icon>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="px-5 md:px-8 pb-10">
+
+    <div class="max-w-7xl mx-auto">
+
+      <div class="glass border-flow rounded-[2rem] px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-5">
+
+        <div class="flex items-center gap-3">
+
+          <div class="w-10 h-10 rounded-2xl bg-white/[.05] flex items-center justify-center">
+            <iconify-icon icon="solar:notes-bold-duotone" class="text-2xl text-primary"></iconify-icon>
+          </div>
+
+          <div>
+            <p class="font-medium">
+              Notion AI
+            </p>
+
+            <p class="text-xs text-muted">
+              Connected systems for intelligent teams
+            </p>
+          </div>
+
+        </div>
+
+        <p class="text-sm text-muted">
+          © 2026 Notion AI — Adaptive collaboration architecture.
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+    if ("startViewTransition" in document) {
+      document.documentElement.classList.add("supports-view-transitions")
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("active")
+        }
+      })
+    }, {
+      threshold: 0.1
+    })
+
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el))
+
+    document.querySelectorAll(".liquid-btn").forEach((button) => {
+
+      button.addEventListener("mousemove", (e) => {
+
+        const rect = button.getBoundingClientRect()
+
+        const x = e.clientX - rect.left - rect.width / 2
+        const y = e.clientY - rect.top - rect.height / 2
+
+        button.style.transform = `
+          translate(${x * .08}px, ${y * .08}px)
+          scale(1.04)
+        `
+      })
+
+      button.addEventListener("mouseleave", () => {
+        button.style.transform = ""
+      })
+
+    })
+
+    document.documentElement.animate(
+      {
+        opacity: [0, 1],
+        transform: ["translateY(10px)", "translateY(0px)"]
+      },
+      {
+        duration: 1200,
+        easing: "cubic-bezier(.16,1,.3,1)"
+      }
+    )
+  </script>
+
+</body>
+
+</html>

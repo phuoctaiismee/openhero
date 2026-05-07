@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en" class="selection:bg-accent/30 selection:text-accent">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lumina | Adaptive High-Fidelity Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: "oklch(85% 0.16 95)", // High-fidelity perceptual yellow
+                        bg: "oklch(10% 0.01 250)",
+                        surface: "oklch(15% 0.02 250)",
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+            --scroll-pos: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: white;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .kinetic-title {
+            letter-spacing: -0.06em;
+            line-height: 0.82;
+            background: linear-gradient(
+                to right,
+                oklch(100% 0 0) 20%,
+                oklch(85% 0.16 95) 40%,
+                oklch(85% 0.16 95) 60%,
+                oklch(100% 0 0) 80%
+            );
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            text-fill-color: transparent;
+            animation: textShimmer 8s linear infinite;
+        }
+
+        @keyframes textShimmer {
+            to { background-position: 200% center; }
+        }
+
+        .video-portal {
+            mask-image: radial-gradient(
+                circle at var(--mouse-x) var(--mouse-y),
+                black 30%,
+                transparent 75%
+            );
+            -webkit-mask-image: radial-gradient(
+                circle at var(--mouse-x) var(--mouse-y),
+                black 30%,
+                transparent 75%
+            );
+            transition: mask-image 0.2s ease-out;
+            filter: saturate(1.2) contrast(1.1);
+        }
+
+        .glass-layer-1 { backdrop-filter: blur(10px); background: oklch(100% 0 0 / 0.03); }
+        .glass-layer-2 { backdrop-filter: blur(40px) saturate(180%); background: oklch(100% 0 0 / 0.05); }
+
+        .btn-mercury {
+            position: relative;
+            background: oklch(20% 0.01 250);
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-mercury::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                circle at var(--mouse-x) var(--mouse-y),
+                oklch(85% 0.16 95 / 0.4),
+                transparent 70%
+            );
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .btn-mercury:hover::before { opacity: 1; }
+        .btn-mercury:hover { transform: translateY(-2px); border-color: oklch(85% 0.16 95 / 0.5); }
+
+        .bento-card {
+            background: linear-gradient(135deg, oklch(20% 0.02 250), oklch(15% 0.01 250));
+            border: 1px solid oklch(100% 0 0 / 0.08);
+            position: relative;
+        }
+
+        .bento-card::after {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            background: radial-gradient(
+                600px circle at var(--mouse-x) var(--mouse-y),
+                oklch(85% 0.16 95 / 0.25),
+                transparent 40%
+            );
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .bento-card:hover::after { opacity: 1; }
+
+        .scroll-reveal {
+            view-timeline-name: --reveal;
+            view-timeline-axis: block;
+            animation-timeline: --reveal;
+            animation-name: revealAnim;
+            animation-range: entry 10% cover 30%;
+            animation-fill-mode: both;
+        }
+
+        @keyframes revealAnim {
+            from { opacity: 0; transform: translateY(100px) scale(0.95); filter: blur(20px); }
+            to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+
+        .mask-edge-soften {
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+        }
+    </style>
+</head>
+<body class="bg-bg text-white antialiased">
+
+    <nav class="fixed top-0 w-full z-[100] px-6 py-8 flex justify-between items-center mix-blend-difference">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full border border-accent/30 flex items-center justify-center glass-layer-1">
+                <div class="w-2 h-2 bg-accent rounded-full animate-pulse"></div>
+            </div>
+            <span class="text-sm font-bold tracking-[0.2em] uppercase">Lumina</span>
+        </div>
+        <div class="glass-layer-2 px-6 py-2 rounded-full border border-white/10 hidden md:flex items-center gap-8 text-[11px] font-bold tracking-widest uppercase">
+            <a href="#" class="hover:text-accent transition-colors">Manifesto</a>
+            <a href="#" class="hover:text-accent transition-colors">Architecture</a>
+            <a href="#" class="hover:text-accent transition-colors">Contact</a>
+        </div>
+        <button class="btn-mercury px-6 py-2 rounded-full border border-white/10 text-[11px] font-bold tracking-widest uppercase">
+            Inquire
+        </button>
+    </nav>
+
+    <main>
+        <section id="hero" class="relative h-screen w-full flex items-center justify-center overflow-hidden px-6">
+            <div class="absolute inset-0 z-0 video-portal opacity-50 scale-110">
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
+                    <source src="../../../videos/nature/dark-forest-misty-morning.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="relative z-10 text-center container max-w-5xl">
+                <span class="block text-accent text-sm font-mono tracking-[0.5em] uppercase mb-8 opacity-0 animate-[revealAnim_1s_ease_forwards]">High Fidelity 2026</span>
+                <h1 class="kinetic-title text-[clamp(4rem,15vw,12rem)] font-black">
+                    FLUID<br/>MOTION
+                </h1>
+                
+                <div class="mt-12 flex flex-col md:flex-row items-center justify-center gap-12 glass-layer-2 p-12 rounded-[3rem] border border-white/5 scroll-reveal">
+                    <p class="text-white/40 text-left max-w-xs leading-relaxed text-sm">
+                        Defining the next generation of visual interaction through <span class="text-white">perceptual color spaces</span> and liquid depth geometry.
+                    </p>
+                    <div class="h-px w-24 bg-white/10 hidden md:block"></div>
+                    <button class="group flex items-center gap-4 text-accent">
+                        <span class="text-xs font-bold tracking-widest uppercase">Explore System</span>
+                        <iconify-icon icon="solar:alt-arrow-right-linear" class="group-hover:translate-x-2 transition-transform"></iconify-icon>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 inset-x-0 h-64 bg-gradient-to-t from-bg to-transparent pointer-events-none"></div>
+        </section>
+
+        <section class="py-32 px-6 container mx-auto max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[800px]">
+                
+                <div class="md:col-span-8 bento-card rounded-[2.5rem] p-12 flex flex-col justify-end overflow-hidden group scroll-reveal">
+                    <div class="absolute top-0 right-0 p-8">
+                        <iconify-icon icon="si:ai-duotone" class="text-6xl text-accent/20"></iconify-icon>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-4 tracking-tighter">Perceptual OKLCH</h3>
+                    <p class="text-white/50 max-w-md">Our hybrid system ensures consistent lightness across all gamuts, maintaining high-fidelity contrast in both light and dark modes.</p>
+                </div>
+
+                <div class="md:col-span-4 bento-card rounded-[2.5rem] p-12 flex flex-col items-center justify-center text-center scroll-reveal" style="animation-delay: 0.1s;">
+                    <div class="w-24 h-24 rounded-full border-2 border-accent mb-6 flex items-center justify-center pulse-glow">
+                        <iconify-icon icon="solar:cpu-bolt-bold-duotone" class="text-4xl text-accent"></iconify-icon>
+                    </div>
+                    <h3 class="text-2xl font-bold tracking-tighter">120FPS Motion</h3>
+                    <p class="text-white/50 text-sm mt-2">Native Scroll-Timeline APIs.</p>
+                </div>
+
+                <div class="md:col-span-4 bento-card rounded-[2.5rem] p-12 scroll-reveal" style="animation-delay: 0.2s;">
+                    <iconify-icon icon="solar:layers-minimalistic-bold-duotone" class="text-3xl mb-6 text-accent"></iconify-icon>
+                    <h3 class="text-xl font-bold mb-2 tracking-tighter">Z-Axis Layering</h3>
+                    <p class="text-white/50 text-sm">Complex depth hierarchies without performance overhead.</p>
+                </div>
+
+                <div class="md:col-span-8 bento-card rounded-[2.5rem] p-12 overflow-hidden flex flex-col md:flex-row items-end gap-8 scroll-reveal" style="animation-delay: 0.3s;">
+                    <div class="flex-1">
+                        <h3 class="text-4xl font-bold tracking-tighter mb-4">Liquid Metal UI</h3>
+                        <p class="text-white/50">Simulating physical tension on every interaction.</p>
+                    </div>
+                    <div class="w-full md:w-64 h-32 glass-layer-2 border border-white/10 rounded-2xl flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-full bg-accent blur-xl animate-pulse"></div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-64 relative overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[40vh] bg-accent/5 -rotate-6 blur-[120px] pointer-events-none"></div>
+            
+            <div class="container mx-auto max-w-5xl px-6 text-center">
+                <div class="scroll-reveal">
+                    <h2 class="text-5xl md:text-7xl font-bold tracking-tighter mb-16">Designed for<br/><span class="text-accent/50">Sensations.</span></h2>
+                </div>
+                
+                <div class="relative h-[500px] w-full mt-24">
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-80 glass-layer-1 border border-white/5 rounded-[3rem] z-10 translate-y-0 scroll-reveal"></div>
+                    <div class="absolute top-20 left-1/2 -translate-x-1/2 w-[90%] max-w-xl h-80 glass-layer-2 border border-white/10 rounded-[3rem] z-20 shadow-2xl scroll-reveal" style="animation-delay: 0.2s">
+                        <div class="flex items-center justify-center h-full">
+                            <p class="text-accent text-sm font-mono tracking-widest">LAYERED DEPTH</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/5 bg-surface/30 pt-32 pb-16 px-6">
+        <div class="container mx-auto max-w-7xl">
+            <div class="grid md:grid-cols-4 gap-16 mb-32">
+                <div class="col-span-2">
+                    <h4 class="text-3xl font-bold tracking-tighter mb-8">Ready to evolve?</h4>
+                    <p class="text-white/40 max-w-xs mb-12">Building the future of high-fidelity digital experiences since 2026.</p>
+                    <div class="flex gap-4">
+                        <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-accent transition-colors cursor-pointer">
+                            <iconify-icon icon="mdi:github" class="text-xl"></iconify-icon>
+                        </div>
+                        <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:border-accent transition-colors cursor-pointer">
+                            <iconify-icon icon="mdi:twitter" class="text-xl"></iconify-icon>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold tracking-[0.3em] uppercase mb-8 text-accent">Studio</h5>
+                    <ul class="space-y-4 text-sm text-white/50">
+                        <li><a href="#" class="hover:text-white transition-colors">Approach</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Technology</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Manifesto</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-xs font-bold tracking-[0.3em] uppercase mb-8 text-accent">Contact</h5>
+                    <p class="text-sm text-white/50 mb-4">hello@lumina.studio</p>
+                    <p class="text-sm text-white/50">+1 (555) 000-0000</p>
+                </div>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-[10px] text-white/20 font-bold tracking-[0.2em] uppercase">
+                <p>&copy; 2026 Lumina Adaptive. All Rights Reserved.</p>
+                <div class="flex gap-8 mt-4 md:mt-0">
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                    <a href="#">Cookies</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            
+            document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+            document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+
+            const cards = document.querySelectorAll('.bento-card, .btn-mercury');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const cardX = ((e.clientX - rect.left) / rect.width) * 100;
+                const cardY = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', `${cardX}%`);
+                card.style.setProperty('--mouse-y', `${cardY}%`);
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            document.documentElement.style.setProperty('--scroll-pos', window.scrollY);
+        });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
