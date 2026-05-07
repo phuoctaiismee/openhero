@@ -142,7 +142,7 @@ export function LiquidMetalButton({
     if (!IconProp && viewMode === "text") return null;
 
     const iconStyle: React.CSSProperties = {
-      color: "#ccc",
+      color: "#f9f9f9",
       filter: "drop-shadow(0px 1px 2px rgba(0,0,0,0.5))",
       flexShrink: 0,
       width: dimensions.iconSize,
@@ -185,7 +185,7 @@ export function LiquidMetalButton({
 
             {activeMode !== "icon" && (
               <span style={{
-                fontSize: `${dimensions.fontSize}px`, color: "#ccc",
+                fontSize: `${dimensions.fontSize}px`, color: "#f9f9f9",
                 fontWeight: 500, textShadow: "0px 1px 2px rgba(0,0,0,0.5)",
                 whiteSpace: "nowrap"
               }}>

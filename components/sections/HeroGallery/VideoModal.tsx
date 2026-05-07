@@ -162,6 +162,9 @@ function TabCodeContent({ code, lang, loading, video, format }: { code: string; 
       <div className="mt-3 flex shrink-0 items-center gap-2 border-t border-white/5 pt-3">
         <CopyButton code={code} />
         <DownloadZipButton video={video} format={format} />
+        <a href={video.videoSrc} download={`${video.slug}.mp4`} className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white transition-colors hover:bg-white/10 w-fit">
+          <Icon icon="solar:download-minimalistic-linear" width="13" /> Download Video
+        </a>
       </div>
     </div>
   );
@@ -261,7 +264,7 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
             "bg-black/80 ring-1 ring-white/10 backdrop-blur-xl text-white/90",
             "absolute bottom-2 left-2 right-2 z-65 max-h-[55vh] overflow-y-auto custom-scroll rounded-2xl p-4",
             "lg:relative lg:bottom-auto lg:left-auto lg:right-auto",
-            "lg:m-2 lg:flex lg:h-[calc(100%-1rem)] lg:w-140 lg:shrink-0 lg:flex-col", 
+            "lg:m-2 lg:flex lg:h-[calc(100%-1rem)] lg:w-140 lg:shrink-0 lg:flex-col",
             "lg:max-h-none lg:overflow-hidden lg:rounded-2xl lg:p-5",
           ].join(" ")}
         >
@@ -277,11 +280,7 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
             </div>
           </div>
 
-          <div className="mb-4 flex-none">
-            <a href={video.videoSrc} download={`${video.slug}.mp4`} className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white transition-colors hover:bg-white/10 w-fit">
-              <Icon icon="solar:download-minimalistic-linear" width="13" /> Download Video (.mp4)
-            </a>
-          </div>
+
 
           <div className="flex min-h-0 flex-1 flex-col">
             <div className="hidden sm:flex flex-1 flex-col min-h-0">
@@ -299,9 +298,13 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
                   <CodeBlock code={codes[mobileTab]} lang={FW_CONFIG[mobileTab].lang} />
                 )}
               </div>
-              <div className="mt-3 flex shrink-0 items-center gap-2 border-t border-white/5 pt-3">
+              <div className="mt-3 flex flex-col shrink-0 gap-2 border-t border-white/5 pt-3">
+
                 <CopyButton code={codes[mobileTab]} />
                 <DownloadZipButton video={video} format={FW_CONFIG[mobileTab].format} />
+                <a href={video.videoSrc} download={`${video.slug}.mp4`} className="flex items-center gap-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white transition-colors hover:bg-white/10 sm:w-fit">
+                  <Icon icon="solar:download-minimalistic-linear" width="13" /> Download Video
+                </a>
               </div>
             </div>
           </div>

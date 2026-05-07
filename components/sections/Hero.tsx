@@ -1,25 +1,36 @@
-﻿import { Icon } from "@iconify/react";
+﻿"use client"
+
+import { Icon } from "@iconify/react";
+import MetallicPaint from "../ui/MetallicPaint";
 
 export default function Hero() {
+
     return (
-        <div className="relative overflow-hidden font-sans ">
+        <div className="relative overflow-hidden font-sans animate-fade-in">
             <div
                 className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-72 opacity-25"
             />
-            <section className="mx-auto max-w-7xl px-6 pt-28 pb-16 sm:pt-36 sm:pb-20 lg:px-8">
+            <section className="mx-auto max-w-7xl px-6 pt-28 pb-14 sm:pt-34 sm:pb-16 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center">
-                    <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl lg:text-7xl">
+                    <h1 className="text-5xl font-black tracking-tight text-white sm:text-6xl z-20 lg:text-7xl drop-shadow-[1.2px_1.2px_100.2px_rgba(183,203,248,1)]">
                         Stunning {" "}
-                        <span className="relative inline-block">
+                        <span className="relative inline-block ">
                             Hero
-                            <span className="absolute -top-3 -right-8 flex h-6 w-auto items-center justify-center rounded-full bg-accent px-2 text-[10px] font-bold text-accent-foreground border border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.15)] sm:-top-4 sm:-right-10 sm:text-xs">
-                                50+
-                            </span>
+                            
                         </span>
                         <br />
-                        <span className="text-neutral-500">Sections.</span>
+                        <span className="text-neutral-500 drop-shadow-[0_0_15px_rgba(0,0,0,0.2)] ">
+                            <MetallicPaint
+                                text="Sections."
+                                fontWeight="900"
+                                fontSize={75}
+                                tintColor="#ffffff"
+                                speed={0.2}
+                                darkColor="#ffffff"
+                                brightness={1.8}
+                            /></span>
                     </h1>
-                    <p className="mt-6 text-lg leading-8 text-neutral-300">
+                    <p className="mt-6 text-lg leading-8 text-neutral-300 drop-shadow-[1.2px_1.2px_100.2px_rgba(183,203,248,1)]">
                         Browse cinematic video backgrounds paired with polished hero layouts. Preview in real-time, and download in <span className="font-medium text-neutral-200">HTML</span>,{" "}
                         <span className="font-medium text-neutral-200">React</span>, or{" "}
                         <span className="font-medium text-neutral-200">Next.js</span> - zero dependencies.

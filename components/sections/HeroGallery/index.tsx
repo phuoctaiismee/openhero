@@ -13,7 +13,6 @@ interface HeroGalleryProps {
 
 export default function HeroGallery({ videos, categories }: HeroGalleryProps) {
   const [activeCategory, setActiveCategory] = useState("all");
-  const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop");
 
   const filtered =
     activeCategory === "all"
@@ -23,9 +22,9 @@ export default function HeroGallery({ videos, categories }: HeroGalleryProps) {
   return (
     <section
       id="gallery"
-      className="min-h-screen px-6 pb-24 pt-8 font-sans text-white"
+      className="min-h-screen px-6 pb-24 pt-6 font-sans text-white animate-fade-in"
     >
-      <div className="mb-8 flex items-center justify-between gap-4">
+      <div className="mb-6 flex items-center justify-between gap-4">
         <CategoryFilter
           categories={categories}
           activeCategory={activeCategory}
@@ -35,11 +34,7 @@ export default function HeroGallery({ videos, categories }: HeroGalleryProps) {
 
       {filtered.length > 0 ? (
         <div
-          className={`grid gap-x-4 gap-y-6 transition-all duration-300 ${
-            viewMode === "desktop"
-              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-              : "grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
-          }`}
+          className="grid gap-x-4 gap-y-6 transition-all duration-300 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
           {filtered.map((video) => (
             <VideoCard key={`${video.category}-${video.slug}`} video={video} />
