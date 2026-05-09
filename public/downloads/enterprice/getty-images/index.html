@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Getty Images | Visual Solutions for Business</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['"Inter"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        serif: ['"Playfair Display"', 'serif'],
+      },
+      colors: {
+        obsidian: 'oklch(15% 0.02 240)',
+        'golden-hour': 'oklch(75% 0.18 45)',
+        'light-thread': 'oklch(100% 0 0 / 0.1)',
+      },
+      backgroundImage: {
+        'obsidian-gradient': 'linear-gradient(145deg, oklch(20% 0.02 240), oklch(10% 0.02 240))',
+      }
+    }
+  }
+}
+</script>
+<style>
+  :root {
+    --obsidian: oklch(15% 0.02 240);
+    --golden-hour: oklch(75% 0.18 45);
+    --light-thread: oklch(100% 0 0 / 0.1);
+  }
+
+  body {
+    background-color: var(--obsidian);
+    color: white;
+    margin: 0;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  .optical-breach {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .video-layer {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mask-image: radial-gradient(ellipse 120% 120% at 85% 50%, black 45%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 120% 120% at 85% 50%, black 45%, transparent 70%);
+    transform: scale(1.05);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .video-layer {
+      animation: diaphragmOpen linear both;
+      animation-timeline: scroll(block root);
+    }
+  }
+
+  @keyframes diaphragmOpen {
+    0% { mask-size: 100% 100%; transform: scale(1.05); }
+    100% { mask-size: 150% 150%; transform: scale(1); }
+  }
+
+  .lens-flare {
+    position: fixed;
+    width: 60vw;
+    height: 60vh;
+    background: radial-gradient(circle, var(--golden-hour) 0%, transparent 70%);
+    filter: blur(100px);
+    opacity: 0.15;
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+
+  .glass-panel {
+    background: oklch(15% 0.02 240 / 0.4);
+    backdrop-filter: blur(50px) contrast(1.1) brightness(0.8);
+    -webkit-backdrop-filter: blur(50px) contrast(1.1) brightness(0.8);
+    border-right: 1px solid var(--light-thread);
+  }
+
+  .shutter-btn {
+    position: relative;
+    overflow: hidden;
+    background: var(--obsidian);
+    border: 1px solid var(--light-thread);
+    box-shadow: 
+      inset 1px 1px 2px rgba(255, 255, 255, 0.1),
+      inset -1px -1px 4px rgba(0, 0, 0, 0.8),
+      0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateZ(0);
+  }
+
+  .shutter-btn::after {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 60%);
+    opacity: 0;
+    transform: scale(0.1);
+    transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+    pointer-events: none;
+  }
+
+  .shutter-btn:hover {
+    border-color: var(--golden-hour);
+    box-shadow: 
+      inset 1px 1px 2px rgba(255, 255, 255, 0.15),
+      inset -1px -1px 4px rgba(0, 0, 0, 0.9),
+      0 0 25px oklch(75% 0.18 45 / 0.3);
+  }
+
+  .shutter-btn:active::after {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0s, transform 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .focus-container:hover .focus-item {
+    filter: blur(8px) grayscale(50%);
+    opacity: 0.4;
+    transform: scale(0.98);
+  }
+
+  .focus-container .focus-item {
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: filter, opacity, transform;
+  }
+
+  .focus-container .focus-item:hover {
+    filter: blur(0) grayscale(0%);
+    opacity: 1;
+    transform: scale(1.02) translateZ(20px);
+    z-index: 10;
+  }
+
+  .obsidian-card {
+    background: var(--obsidian);
+    border: 1px solid var(--light-thread);
+    box-shadow: 
+      inset 2px 2px 5px rgba(255, 255, 255, 0.03), 
+      inset -2px -2px 10px rgba(0, 0, 0, 0.8), 
+      10px 10px 30px rgba(0, 0, 0, 0.6);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .obsidian-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.03), transparent);
+    transform: skewX(-20deg);
+    transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .obsidian-card:hover::before {
+    left: 200%;
+  }
+
+  .text-golden {
+    color: var(--golden-hour);
+    text-shadow: 0 0 20px oklch(75% 0.18 45 / 0.4);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--obsidian);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--light-thread);
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body class="antialiased selection:bg-golden-hour/30 selection:text-white">
+
+<div class="lens-flare" style="top: -10%; right: 10%;"></div>
+<div class="lens-flare" style="bottom: -20%; left: 20%; width: 40vw; background: radial-gradient(circle, oklch(80% 0.15 200) 0%, transparent 70%);"></div>
+
+<div class="optical-breach">
+  <video autoPlay loop muted playsInline class="video-layer">
+    <source src="./video.mp4" type="video/mp4" />
+  </video>
+</div>
+
+<div class="relative z-10 flex w-full min-h-screen">
+  
+  <aside class="glass-panel w-full md:w-[38%] min-h-screen fixed left-0 top-0 flex flex-col justify-between p-10 md:p-16 z-20">
+    <header>
+      <div class="flex items-center gap-3 mb-16">
+        <iconify-icon icon="ph:aperture-light" class="text-3xl text-golden-hour"></iconify-icon>
+        <span class="font-serif tracking-widest text-sm uppercase opacity-80">Visual Solutions</span>
+      </div>
+      
+      <h1 class="font-serif text-5xl md:text-6xl leading-[1.1] mb-6">
+        Mastering the <br /> <i class="text-golden font-light">Optical Breach</i>
+      </h1>
+      
+      <p class="font-sans font-light text-sm text-white/60 leading-relaxed max-w-sm mb-12">
+        Corporate portraiture elevated through strict Medium Format workflows and High-dynamic-range (HDR) mastering. We engineer light to sculpt brand authority.
+      </p>
+
+      <button class="shutter-btn px-8 py-4 rounded-full flex items-center gap-4 text-xs tracking-widest uppercase font-medium">
+        Initiate Capture
+        <iconify-icon icon="ph:focus-light" class="text-lg text-golden-hour"></iconify-icon>
+      </button>
+    </header>
+
+    <div class="flex flex-col gap-6 font-sans text-xs tracking-widest text-white/40 uppercase">
+      <div class="flex items-center gap-4 hover:text-golden-hour transition-colors cursor-crosshair">
+        <span class="w-8 h-px bg-current"></span>
+        <span>01. Chromatic Aberration Correction</span>
+      </div>
+      <div class="flex items-center gap-4 hover:text-golden-hour transition-colors cursor-crosshair">
+        <span class="w-8 h-px bg-current"></span>
+        <span>02. Subsurface Scattering</span>
+      </div>
+      <div class="flex items-center gap-4 hover:text-golden-hour transition-colors cursor-crosshair">
+        <span class="w-8 h-px bg-current"></span>
+        <span>03. Spectral Mastering</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="w-full md:w-[62%] ml-auto min-h-[200vh] relative z-10 p-10 md:p-24 flex flex-col justify-end pt-[60vh]">
+    
+    <div class="focus-container grid grid-cols-1 md:grid-cols-2 gap-8 mb-32 perspective-1000">
+      
+      <div class="focus-item obsidian-card p-10 rounded-2xl cursor-none">
+        <iconify-icon icon="ph:f-stop-light" class="text-4xl text-golden-hour mb-8"></iconify-icon>
+        <h3 class="font-serif text-2xl mb-4">Precision Optics</h3>
+        <p class="font-sans font-light text-sm text-white/50 leading-relaxed">
+          Our lenses resolve at levels that demand meticulous chromatic aberration correction, ensuring edges remain pure and unpolluted by digital artifacts.
+        </p>
+      </div>
+
+      <div class="focus-item obsidian-card p-10 rounded-2xl cursor-none transform translate-y-12">
+        <iconify-icon icon="ph:sun-dim-light" class="text-4xl text-golden-hour mb-8"></iconify-icon>
+        <h3 class="font-serif text-2xl mb-4">Volume Over Plane</h3>
+        <p class="font-sans font-light text-sm text-white/50 leading-relaxed">
+          We don't light surfaces; we light volumes. Utilizing subsurface scattering techniques to give subjects a profound, organic depth that standard commercial lighting flattens.
+        </p>
+      </div>
+
+      <div class="focus-item obsidian-card p-10 rounded-2xl cursor-none">
+        <iconify-icon icon="ph:camera-light" class="text-4xl text-golden-hour mb-8"></iconify-icon>
+        <h3 class="font-serif text-2xl mb-4">Medium Format</h3>
+        <p class="font-sans font-light text-sm text-white/50 leading-relaxed">
+          The 100-megapixel sensor acts as our canvas, providing unparalleled dynamic range and tonal transitions that feel distinctly analog.
+        </p>
+      </div>
+
+      <div class="focus-item obsidian-card p-10 rounded-2xl cursor-none transform translate-y-12">
+        <iconify-icon icon="ph:sliders-horizontal-light" class="text-4xl text-golden-hour mb-8"></iconify-icon>
+        <h3 class="font-serif text-2xl mb-4">HDR Mastering</h3>
+        <p class="font-sans font-light text-sm text-white/50 leading-relaxed">
+          Proprietary algorithmic blending ensures highlight retention in the brightest optical flares while maintaining pure, noise-free information in deep obsidian shadows.
+        </p>
+      </div>
+
+    </div>
+
+    <footer class="border-t border-light-thread pt-12 mt-32 flex justify-between items-center text-xs tracking-widest text-white/30 uppercase font-sans">
+      <span>Getty Images Architecture</span>
+      <span>ISO 100 &middot; f/1.4 &middot; 1/8000s</span>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  const coords = { x: 0, y: 0 };
+  const cursor = document.createElement('div');
+  cursor.style.cssText = `
+    position: fixed;
+    top: 0; left: 0;
+    width: 40px; height: 40px;
+    border: 1px solid var(--golden-hour);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s;
+    mix-blend-mode: exclusion;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+  
+  const innerDot = document.createElement('div');
+  innerDot.style.cssText = `
+    width: 4px; height: 4px;
+    background: var(--golden-hour);
+    border-radius: 50%;
+  `;
+  
+  cursor.appendChild(innerDot);
+  document.body.appendChild(cursor);
+
+  window.addEventListener('mousemove', (e) => {
+    coords.x = e.clientX;
+    coords.y = e.clientY;
+    cursor.style.transform = `translate(${coords.x - 20}px, ${coords.y - 20}px)`;
+  });
+
+  const interactables = document.querySelectorAll('.focus-item, .shutter-btn, a');
+  interactables.forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.width = '60px';
+      cursor.style.height = '60px';
+      cursor.style.background = 'oklch(75% 0.18 45 / 0.1)';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.width = '40px';
+      cursor.style.height = '40px';
+      cursor.style.background = 'transparent';
+    });
+  });
+</script>
+</body>
+</html>

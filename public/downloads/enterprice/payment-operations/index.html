@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Treasury | Payment Operations & Real-time Ledgers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Inter+Tight:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pearl: "black",
+                        white: "white",
+                        glass: "oklch(90% 0.02 240 / 0.4)",
+                    },
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        tight: ['"Inter Tight"', 'sans-serif'],
+                    },
+                    letterSpacing: {
+                        tighter: '-0.03em',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            background-color: black;
+            scroll-behavior: smooth;
+        }
+
+        main,
+        nav,
+        footer {
+            position: relative;
+            z-index: 10;
+        }
+
+        .bg-video-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .bg-video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.05);
+        }
+
+        .bg-video-mask {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom,
+                    oklch(98% 0.01 240 / 0.02) 0%,
+                    oklch(98% 0.01 240 / 0.18) 55%,
+                    oklch(98% 0.01 240 / 0.35) 100%);
+        }
+
+        .apple-sharpness {
+            background: oklch(98% 0.01 240 / 0.6);
+            backdrop-filter: blur(24px) saturate(1.2);
+            -webkit-backdrop-filter: blur(24px) saturate(1.2);
+            border: 0.5px solid oklch(100% 0 0 / 0.8);
+            box-shadow: inset 0 1px 1px oklch(100% 0 0), 0 20px 40px rgba(0, 0, 0, 0.03);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .apple-sharpness:hover {
+            background: oklch(100% 0 0 / 0.7);
+            border-color: oklch(100% 0 0);
+            box-shadow: inset 0 1px 1px oklch(100% 0 0), 0 24px 48px rgba(0, 0, 0, 0.05);
+        }
+
+        .liquid-btn {
+            position: relative;
+            overflow: hidden;
+            background: white;
+            color: black;
+            border: 0.5px solid oklch(10% 0.02 240);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+        }
+
+        .liquid-btn::before {
+            content: '';
+            position: absolute;
+            top: var(--y, 50%);
+            left: var(--x, 50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.25) 0%, transparent 60%);
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .liquid-btn:hover {
+            transform: scale(1.02) translateY(-1px);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.25), 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .liquid-btn:hover::before {
+            opacity: 1;
+        }
+
+        .liquid-btn>* {
+            position: relative;
+            z-index: 2;
+        }
+
+        .nav-link {
+            position: relative;
+            color: rgba(255, 255, 255, 0.8);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: rgba(255, 255, 255, 1);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: white;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .kinetic-element {
+            will-change: transform, opacity;
+        }
+
+        .reveal-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-up.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        input::placeholder {
+            color: oklch(20% 0.02 240 / 0.4);
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-white selection:text-pearl">
+
+    <div class="bg-video-container">
+        <video autoPlay loop muted playsInline>
+            <source src="./video.mp4" type="video/mp4" />
+        </video>
+        <div class="bg-video-mask"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 px-6 py-5 flex items-center justify-between transition-all duration-500"
+        id="navbar">
+        <div class="flex items-center gap-2 group cursor-pointer">
+            <div
+                class="w-8 h-8 rounded-full bg-white flex items-center justify-center text-pearl shadow-lg transition-transform duration-500 group-hover:rotate-90">
+                <iconify-icon icon="ph:infinity-bold" class="text-lg"></iconify-icon>
+            </div>
+            <span class="font-sans font-medium text-white tracking-tighter text-lg">MODERN TREASURY</span>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-8 font-tight text-[13px] font-medium tracking-wide">
+            <a href="#" class="nav-link flex items-center gap-1">Products <iconify-icon icon="ph:caret-down-bold"
+                    class="text-[10px] opacity-50"></iconify-icon></a>
+            <a href="#" class="nav-link flex items-center gap-1">Solutions <iconify-icon icon="ph:caret-down-bold"
+                    class="text-[10px] opacity-50"></iconify-icon></a>
+            <a href="#" class="nav-link flex items-center gap-1">Resources <iconify-icon icon="ph:caret-down-bold"
+                    class="text-[10px] opacity-50"></iconify-icon></a>
+            <a href="#" class="nav-link flex items-center gap-1">About <iconify-icon icon="ph:caret-down-bold"
+                    class="text-[10px] opacity-50"></iconify-icon></a>
+            <a href="#" class="nav-link">Pricing</a>
+        </div>
+
+        <div class="flex items-center gap-6">
+            <a href="#"
+                class="font-tight text-[13px] font-medium text-white/80 hover:text-white transition-colors hidden md:block">Log
+                in</a>
+            <button
+                class="liquid-btn px-5 py-2.5 rounded-full font-tight text-[13px] font-medium tracking-wide flex items-center gap-2">
+                Open account
+                <iconify-icon icon="ph:arrow-right-bold" class="text-[10px]"></iconify-icon>
+            </button>
+        </div>
+    </nav>
+
+    <main class="relative z-10 w-full min-h-[120vh] flex flex-col items-center pt-[25vh]">
+        <div class="relative z-10 flex flex-col items-center text-center px-4 max-w-4xl mx-auto kinetic-element"
+            id="hero-content">
+            <h1
+                class="font-sans text-6xl md:text-7xl lg:text-[5.5rem] font-medium tracking-tighter text-white leading-[1.05] reveal-up active">
+                Radically different banking
+            </h1>
+
+            <p
+                class="mt-6 text-lg md:text-xl font-tight text-white/70 max-w-2xl tracking-tight reveal-up active delay-100">
+                Apply online in 10 minutes to experience financial infrastructure built for the scale of the modern
+                internet.
+            </p>
+
+            <div
+                class="mt-10 apple-sharpness rounded-full p-1.5 flex items-center w-full max-w-md reveal-up active delay-200">
+                <input type="email" placeholder="Enter your email"
+                    class="flex-1 bg-transparent border-none outline-none px-6 py-3 font-tight text-[15px] text-white placeholder-white/40" />
+                <button
+                    class="liquid-btn px-6 py-3 rounded-full font-tight text-[14px] font-medium tracking-wide whitespace-nowrap flex items-center gap-2">
+                    Open account
+                </button>
+            </div>
+
+            <div
+                class="mt-8 flex items-center gap-4 text-xs font-tight text-white/40 uppercase tracking-widest reveal-up active delay-300">
+                <span>Sub-millisecond finality</span>
+                <span class="w-1 h-1 rounded-full bg-white/20"></span>
+                <span>Automated reconciliation</span>
+            </div>
+        </div>
+
+        <div class="w-full max-w-[1200px] mx-auto px-6 mt-40 pb-32 kinetic-element grid grid-cols-1 md:grid-cols-3 gap-6"
+            id="features-grid">
+            <div class="apple-sharpness rounded-3xl p-8 reveal-up flex flex-col group cursor-default">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-gray-600 border border-white flex items-center justify-center shadow-sm mb-16 text-white group-hover:scale-110 transition-transform duration-500">
+                    <iconify-icon icon="ph:globe-hemisphere-west-light" class="text-2xl"></iconify-icon>
+                </div>
+                <h3 class="font-sans text-xl font-medium text-white tracking-tighter mb-3">Cross-Border Liquidity
+                </h3>
+                <p class="font-tight text-sm text-white/60 leading-relaxed">
+                    Multi-entity consolidation across 130+ currencies. Settle global obligations instantly without
+                    correspondent banking friction.
+                </p>
+            </div>
+
+            <div class="apple-sharpness rounded-3xl p-8 reveal-up delay-100 flex flex-col group cursor-default">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-gray-600 border border-white flex items-center justify-center shadow-sm mb-16 text-white group-hover:scale-110 transition-transform duration-500">
+                    <iconify-icon icon="ph:chart-line-up-light" class="text-2xl"></iconify-icon>
+                </div>
+                <h3 class="font-sans text-xl font-medium text-white tracking-tighter mb-3">Liquidity Forecasting</h3>
+                <p class="font-tight text-sm text-white/60 leading-relaxed">
+                    Predictive models engineered for treasury teams. Visualize cash burn, runway, and float with perfect
+                    granular clarity.
+                </p>
+            </div>
+
+            <div class="apple-sharpness rounded-3xl p-8 reveal-up delay-200 flex flex-col group cursor-default">
+                <div
+                    class="w-12 h-12 rounded-2xl bg-gray-600 border border-white flex items-center justify-center shadow-sm mb-16 text-white group-hover:scale-110 transition-transform duration-500">
+                    <iconify-icon icon="ph:database-light" class="text-2xl"></iconify-icon>
+                </div>
+                <h3 class="font-sans text-xl font-medium text-white tracking-tighter mb-3">Real-time Ledgers</h3>
+                <p class="font-tight text-sm text-white/60 leading-relaxed">
+                    Double-entry immutability at web scale. Programmatic money movement backed by synchronous API
+                    reconciliation.
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="relative z-10 w-full bg-gray-800 border-t border-white/5 py-12 px-6">
+        <div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <iconify-icon icon="ph:infinity-bold" class="text-white text-xl"></iconify-icon>
+                <span class="font-sans font-medium text-white tracking-tighter text-sm">MODERN TREASURY</span>
+            </div>
+            <p class="font-tight text-[11px] text-white/40 max-w-xl text-center md:text-right leading-relaxed">
+                Modern Treasury is a financial technology company, not a bank. Banking services provided by global
+                partner institutions. <br>
+                High-Finance B2B Protocol • Pearl Mode Architecture
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.liquid-btn').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                btn.style.setProperty('--x', `${x}px`);
+                btn.style.setProperty('--y', `${y}px`);
+            });
+        });
+
+        const heroContent = document.getElementById('hero-content');
+        const featuresGrid = document.getElementById('features-grid');
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+
+            if (heroContent) {
+                const translateY = scrollY * 0.4;
+                const opacity = Math.max(0, 1 - scrollY / 600);
+                heroContent.style.transform = `translate(-50%, calc(-50% + ${translateY}px))`;
+                heroContent.style.opacity = opacity;
+            }
+
+            if (featuresGrid) {
+                const translateY = scrollY * 0.15;
+                featuresGrid.style.transform = `translateY(-${translateY}px)`;
+            }
+
+            if (scrollY > 50) {
+                navbar.classList.add('bg-gray-600/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+                navbar.classList.remove('py-5');
+                navbar.classList.add('py-3');
+            } else {
+                navbar.classList.remove('bg-gray-600/80', 'backdrop-blur-xl', 'border-b', 'border-white/5');
+                navbar.classList.add('py-5');
+                navbar.classList.remove('py-3');
+            }
+        });
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -10% 0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-up:not(.active)').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+
+</html>

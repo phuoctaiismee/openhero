@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Line | Living Architecture & Neural Landscapes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        abyss: "oklch(10% 0.01 150)",
+        emerald: "oklch(60% 0.15 150)",
+        sun: "oklch(85% 0.15 70)",
+      },
+      fontFamily: {
+        data: ['"Space Grotesk"', 'sans-serif'],
+        hero: ['"Oswald"', 'sans-serif'],
+      }
+    }
+  }
+}
+</script>
+<style>
+  html {
+    scroll-behavior: smooth;
+    background-color: oklch(10% 0.01 150);
+  }
+  
+  body {
+    margin: 0;
+    overflow-x: hidden;
+    color: white;
+    background-color: oklch(10% 0.01 150);
+  }
+
+  ::-webkit-scrollbar {
+    width: 2px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(60% 0.15 150 / 0.5);
+  }
+
+  .vercel-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.04;
+    mix-blend-mode: screen;
+  }
+
+  .radial-portal {
+    -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
+    mask-image: radial-gradient(circle at center, black 30%, transparent 70%);
+    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), mask-size 1.5s ease;
+    will-change: transform, mask-image;
+  }
+
+  .radial-portal:hover {
+    transform: scale(1.05);
+  }
+
+  .kinetic-sway {
+    display: inline-block;
+    animation: sway 6s ease-in-out infinite alternate;
+    transform-origin: bottom center;
+  }
+
+  @keyframes sway {
+    0% { transform: rotate(-1.5deg) translateX(-2px); }
+    100% { transform: rotate(1.5deg) translateX(2px); }
+  }
+
+  .morning-sun-text {
+    background: linear-gradient(110deg, oklch(90% 0.1 70) 0%, oklch(85% 0.15 70) 40%, oklch(60% 0.15 150) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .apple-sharpness {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    background: oklch(100% 0 0 / 0.02);
+    border: 0.5px solid oklch(100% 0 0 / 0.1);
+    box-shadow: inset 0 1px 1px oklch(100% 0 0 / 0.05), 0 20px 40px rgba(0,0,0,0.4);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .dew-drop {
+    position: relative;
+    overflow: hidden;
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+    background: oklch(100% 0 0 / 0.03);
+    border: 0.5px solid oklch(100% 0 0 / 0.08);
+    box-shadow: inset 0 1px 2px oklch(100% 0 0 / 0.1);
+    border-radius: 99px;
+    transition: all 0.3s ease;
+  }
+
+  .dew-drop::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 20%; right: 20%; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.8), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .dew-drop:hover {
+    background: oklch(100% 0 0 / 0.06);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3), inset 0 1px 2px oklch(100% 0 0 / 0.2);
+  }
+
+  .dew-drop:hover::before {
+    opacity: 1;
+  }
+
+  .sss-card {
+    position: relative;
+  }
+
+  .sss-card::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(145deg, oklch(60% 0.15 150 / 0.4), transparent 40%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .sss-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 40px oklch(60% 0.15 150 / 0.05);
+    pointer-events: none;
+    transition: box-shadow 0.4s ease;
+  }
+
+  .sss-card:hover::after {
+    box-shadow: inset 0 0 60px oklch(60% 0.15 150 / 0.15);
+  }
+
+  .subsurface-glow {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: radial-gradient(circle, oklch(60% 0.15 150 / 0.4) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(20px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+  }
+
+  .sss-card:hover .subsurface-glow {
+    opacity: 1;
+  }
+
+  .ambient-light {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(140px);
+    pointer-events: none;
+    z-index: -1;
+    mix-blend-mode: screen;
+  }
+
+  .bloom-reveal {
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    filter: blur(10px);
+    transition: opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1), transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), filter 1.2s ease;
+  }
+
+  .bloom-reveal.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0px);
+  }
+
+  .delay-100 { transition-delay: 0.1s; }
+  .delay-200 { transition-delay: 0.2s; }
+  .delay-300 { transition-delay: 0.3s; }
+</style>
+</head>
+<body class="antialiased selection:bg-emerald/30 selection:text-white">
+
+<div class="vercel-grain"></div>
+
+<nav class="fixed top-0 inset-x-0 z-50 px-6 py-6 flex justify-between items-center w-full mix-blend-plus-lighter pointer-events-none">
+  <div class="flex items-center gap-4 pointer-events-auto group">
+    <div class="w-10 h-10 rounded-full apple-sharpness flex items-center justify-center relative overflow-hidden">
+      <div class="absolute inset-0 bg-emerald/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      <iconify-icon icon="ph:infinity-light" class="text-xl text-white relative z-10"></iconify-icon>
+    </div>
+    <span class="font-data text-xs tracking-[0.2em] uppercase text-white/80">The Line</span>
+  </div>
+  
+  <div class="hidden md:flex gap-4 pointer-events-auto">
+    <button class="dew-drop px-5 py-2 font-data text-[10px] tracking-widest uppercase text-white/70 hover:text-white flex items-center gap-2">
+      <iconify-icon icon="ph:tree-structure-light" class="text-emerald"></iconify-icon>
+      Neural Architecture
+    </button>
+    <button class="dew-drop px-5 py-2 font-data text-[10px] tracking-widest uppercase text-white/70 hover:text-white flex items-center gap-2">
+      <iconify-icon icon="ph:cloud-fog-light" class="text-sun"></iconify-icon>
+      Cloud Server Protocol
+    </button>
+  </div>
+</nav>
+
+<main class="relative w-full">
+  <div class="fixed top-[10%] left-[10%] w-[40vw] h-[40vw] ambient-light bg-sun/5"></div>
+  <div class="fixed bottom-[10%] right-[10%] w-[50vw] h-[50vw] ambient-light bg-emerald/10"></div>
+
+  <section class="min-h-screen w-full grid grid-cols-1 lg:grid-cols-2 relative z-10">
+    <div class="flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 pb-20 lg:py-0 z-20">
+      <div class="bloom-reveal active mb-6 inline-flex items-center gap-3">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald shadow-[0_0_12px_oklch(60%_0.15_150)]"></span>
+        <span class="font-data text-[9px] tracking-[0.4em] uppercase text-emerald/80">Andean Bio-Digitalism</span>
+      </div>
+
+      <h1 class="font-hero text-7xl md:text-8xl lg:text-[9rem] leading-[0.85] tracking-tight uppercase mb-8 bloom-reveal active delay-100">
+        <span class="block kinetic-sway morning-sun-text">Living</span>
+        <span class="block text-white">Architecture</span>
+      </h1>
+
+      <p class="font-data text-sm md:text-base text-white/50 max-w-md leading-relaxed bloom-reveal active delay-200 font-light">
+        Integrating high-altitude biomes with scalable carbon capture. We design structural mycelium integrity to house tomorrow's neural landscapes.
+      </p>
+
+      <div class="mt-12 flex items-center gap-6 bloom-reveal active delay-300">
+        <button class="dew-drop px-8 py-4 font-data text-[10px] tracking-[0.2em] uppercase text-white flex items-center gap-3">
+          Initiate Synthesis
+          <iconify-icon icon="ph:arrow-right-light" class="text-emerald text-base"></iconify-icon>
+        </button>
+        <span class="font-data text-[10px] tracking-widest uppercase text-white/30 border-b border-white/10 pb-1">Data Yield: 99.8%</span>
+      </div>
+    </div>
+
+    <div class="relative h-[60vh] lg:h-screen w-full flex items-center justify-center @container z-10">
+      <div class="absolute inset-0 w-full h-full radial-portal">
+        <video autoPlay loop muted playsInline class="w-full h-full object-cover scale-110">
+          <source src="./video.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 bg-abyss/40 mix-blend-multiply"></div>
+        <div class="absolute inset-0 bg-emerald/10 mix-blend-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-40 px-6 md:px-16 lg:px-24 w-full relative z-20">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-16 items-start">
+        
+        <div class="md:col-span-5 md:sticky top-40 bloom-reveal">
+          <h2 class="font-hero text-5xl md:text-7xl uppercase tracking-tight text-white mb-6 leading-none">
+            Cloud-Forest <br>
+            <span class="text-white/30">Cooling</span>
+          </h2>
+          <p class="font-data text-sm text-white/50 leading-relaxed font-light mb-8">
+            Leveraging natural thermodynamics of the Andean cloud forests. Our server arrays are integrated seamlessly into the biome, utilizing raw atmospheric moisture for absolute zero-emission cooling protocols.
+          </p>
+          <div class="h-px w-full bg-gradient-to-r from-emerald via-sun to-transparent opacity-20"></div>
+        </div>
+
+        <div class="md:col-span-7 flex flex-col gap-6">
+          
+          <div class="apple-sharpness sss-card rounded-3xl p-8 md:p-10 bloom-reveal delay-100 group overflow-hidden">
+            <div class="subsurface-glow"></div>
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-8">
+              <div class="w-16 h-16 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center backdrop-blur-md shrink-0">
+                <iconify-icon icon="ph:drop-half-bottom-light" class="text-3xl text-emerald"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-data text-xl text-white mb-3 tracking-wide">Atmospheric Extraction</h3>
+                <p class="font-data text-xs text-white/40 leading-relaxed font-light mb-6">
+                  Passive condensation networks extract micro-droplets directly from the mist, funneling highly pure water into the thermal core of our processing hubs.
+                </p>
+                <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                  <span class="font-data text-[10px] tracking-[0.2em] uppercase text-emerald">Status: Active</span>
+                  <span class="font-hero text-2xl text-white tracking-wider">14.2<span class="text-sm text-white/30 ml-1">L/s</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="apple-sharpness sss-card rounded-3xl p-8 md:p-10 bloom-reveal delay-200 group overflow-hidden">
+            <div class="subsurface-glow"></div>
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-8">
+              <div class="w-16 h-16 rounded-2xl border border-white/10 bg-white/5 flex items-center justify-center backdrop-blur-md shrink-0">
+                <iconify-icon icon="logos:graphql" class="text-3xl text-sun"></iconify-icon>
+              </div>
+              <div class="flex-1">
+                <h3 class="font-data text-xl text-white mb-3 tracking-wide">Mycelium Structural Integrity</h3>
+                <p class="font-data text-xs text-white/40 leading-relaxed font-light mb-6">
+                  Hardware racks grown, not assembled. Genetically optimized fungal networks form an impact-resistant, self-healing chassis around the server logic.
+                </p>
+                <div class="flex items-center justify-between border-t border-white/5 pt-4">
+                  <span class="font-data text-[10px] tracking-[0.2em] uppercase text-sun">Growth Phase: 4</span>
+                  <span class="font-hero text-2xl text-white tracking-wider">98.5<span class="text-sm text-white/30 ml-1">%</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="h-[50vh] w-full flex items-center justify-center relative z-20 mb-32">
+    <div class="text-center bloom-reveal">
+      <div class="w-px h-24 bg-gradient-to-b from-transparent via-emerald to-transparent mx-auto mb-8"></div>
+      <h2 class="font-hero text-3xl md:text-5xl uppercase tracking-widest text-white/20 hover:text-white transition-colors duration-700 cursor-default">
+        Return to the source
+      </h2>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  document.querySelectorAll('.sss-card').forEach(card => {
+    const glow = card.querySelector('.subsurface-glow');
+    if (!glow) return;
+    
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      glow.style.left = `${x}px`;
+      glow.style.top = `${y}px`;
+    });
+  });
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -15% 0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.bloom-reveal').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

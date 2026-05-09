@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>History | Colosseum: Engineering the Empire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@100;300;400&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          obsidian: "oklch(12% 0.01 240)",
+          gold: "oklch(75% 0.18 55)",
+          basalt: "oklch(40% 0.05 40)",
+          pearl: "oklch(100% 0 0)",
+        },
+        fontFamily: {
+          sans: ['"Inter"', 'sans-serif'],
+          serif: ['"Playfair Display"', 'serif'],
+          mono: ['"JetBrains Mono"', 'monospace'],
+        }
+      }
+    }
+  }
+</script>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background-color: oklch(12% 0.01 240);
+    color: oklch(100% 0 0 / 0.8);
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  .vercel-grain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.035;
+    mix-blend-mode: screen;
+  }
+
+  .nav-header {
+    transition: background-color 0.5s ease, backdrop-filter 0.5s ease, border-color 0.5s ease;
+    border-bottom: 0.5px solid transparent;
+  }
+
+  .nav-header.scrolled {
+    background-color: oklch(12% 0.01 240 / 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid oklch(100% 0 0 / 0.05);
+  }
+
+  .radial-portal {
+    -webkit-mask-image: radial-gradient(circle at center, black 25%, transparent 75%);
+    mask-image: radial-gradient(circle at center, black 25%, transparent 75%);
+    will-change: transform;
+  }
+
+  .gold-glow {
+    filter: drop-shadow(0 0 25px oklch(75% 0.18 55 / 0.25));
+    background: linear-gradient(135deg, oklch(85% 0.15 55) 0%, oklch(65% 0.2 55) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .subsurface-mass {
+    background: linear-gradient(145deg, oklch(13% 0.01 240), oklch(11% 0.01 240));
+    box-shadow: inset 0.5px 0.5px 0px oklch(100% 0 0 / 0.03), inset -0.5px -0.5px 0px rgba(0,0,0,0.8), 0 20px 40px rgba(0,0,0,0.5);
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s ease;
+  }
+
+  .subsurface-mass:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0.5px 0.5px 0px oklch(75% 0.18 55 / 0.1), inset -0.5px -0.5px 0px rgba(0,0,0,0.8), 0 30px 60px rgba(0,0,0,0.6);
+  }
+
+  .deboss-text {
+    background-color: oklch(12% 0.01 240);
+    color: transparent;
+    text-shadow: 1px 1px 1px oklch(100% 0 0 / 0.05), -1px -1px 1px rgba(0,0,0,0.9);
+    -webkit-background-clip: text;
+  }
+
+  .kinetic-z {
+    will-change: transform;
+    transform-style: preserve-3d;
+  }
+
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1), transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal-up.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .delay-100 { transition-delay: 0.1s; }
+  .delay-200 { transition-delay: 0.2s; }
+  .delay-300 { transition-delay: 0.3s; }
+
+  .monument-link {
+    position: relative;
+    color: oklch(100% 0 0 / 0.5);
+    transition: color 0.4s ease;
+  }
+
+  .monument-link:hover {
+    color: oklch(75% 0.18 55);
+  }
+
+  .monument-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: oklch(75% 0.18 55);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .monument-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+</style>
+</head>
+<body class="antialiased selection:bg-gold/20 selection:text-gold">
+
+<div class="vercel-grain"></div>
+
+<nav class="fixed top-0 w-full z-50 px-8 py-6 flex items-center justify-between nav-header" id="navbar">
+  <div class="flex items-center gap-4 cursor-pointer group">
+    <iconify-icon icon="ph:columns-light" class="text-2xl text-pearl/50 group-hover:text-gold transition-colors duration-500"></iconify-icon>
+    <div class="flex flex-col">
+      <span class="font-mono text-[9px] tracking-[0.3em] uppercase text-basalt">S.P.Q.R.</span>
+      <span class="font-serif italic text-[14px] text-pearl/80">Roma Antiqua</span>
+    </div>
+  </div>
+
+  <div class="hidden md:flex items-center gap-12 font-mono text-[10px] uppercase tracking-[0.2em]">
+    <a href="#hypogeum" class="monument-link">Hypogeum</a>
+    <a href="#vomitoria" class="monument-link">Vomitoria</a>
+    <a href="#velarium" class="monument-link">Velarium</a>
+  </div>
+
+  <div class="flex items-center gap-2">
+    <div class="w-1.5 h-1.5 rounded-full bg-gold animate-pulse"></div>
+    <span class="font-mono text-[9px] tracking-widest text-pearl/40 uppercase">Live Index</span>
+  </div>
+</nav>
+
+<main class="relative w-full z-10">
+  <section class="min-h-screen grid grid-cols-1 lg:grid-cols-2 relative perspective-1000">
+    <div class="relative flex flex-col justify-center px-8 md:px-16 lg:px-24 pt-32 lg:pt-0 z-20">
+      
+      <div class="hidden lg:block absolute left-6 top-1/2 -translate-y-1/2 transform -rotate-180" style="writing-mode: vertical-rl;">
+        <span class="font-mono text-[9px] tracking-[0.4em] text-basalt uppercase flex items-center gap-4">
+          <div class="w-[1px] h-12 bg-basalt/30"></div>
+          Lat 41.8902° N / Lon 12.4922° E
+          <div class="w-[1px] h-12 bg-basalt/30"></div>
+        </span>
+      </div>
+
+      <div class="kinetic-z" id="hero-text-container">
+        <div class="reveal-up active flex items-center gap-4 mb-8">
+          <iconify-icon icon="ph:compass-light" class="text-gold text-lg"></iconify-icon>
+          <span class="font-mono text-[10px] tracking-[0.4em] uppercase text-pearl/40">Flavian Amphitheater</span>
+        </div>
+
+        <h1 class="font-serif text-6xl md:text-8xl lg:text-[7rem] tracking-tighter text-pearl leading-[0.9] reveal-up active delay-100">
+          Engineering <br>
+          <i class="font-serif not-italic gold-glow tracking-tight pr-4">The Empire</i>
+        </h1>
+
+        <p class="mt-10 font-sans text-sm text-pearl/40 max-w-md font-light leading-relaxed reveal-up active delay-200">
+          A masterclass in Travertine structural mass. Explore the exactitude of ancient logistics, where monumental geometry meets absolute spatial dominance in the heart of Rome.
+        </p>
+
+        <div class="mt-12 flex items-center gap-8 reveal-up active delay-300">
+           <div class="flex flex-col gap-1">
+              <span class="font-mono text-[9px] text-basalt uppercase tracking-widest">Capacity</span>
+              <span class="font-serif text-2xl text-pearl/90">80,000</span>
+           </div>
+           <div class="w-[1px] h-8 bg-pearl/10"></div>
+           <div class="flex flex-col gap-1">
+              <span class="font-mono text-[9px] text-basalt uppercase tracking-widest">Material</span>
+              <span class="font-serif text-2xl text-pearl/90">Travertine</span>
+           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="relative h-[60vh] lg:h-screen w-full flex items-center justify-center lg:justify-end overflow-hidden z-10 pointer-events-none">
+      <div class="absolute inset-0 w-full h-full radial-portal lg:translate-x-12" id="orbital-container">
+        <video autoPlay loop muted playsInline class="w-full h-full object-cover filter contrast-125 saturate-50 opacity-80 mix-blend-screen scale-110" id="orbital-video">
+          <source src="./video.mp4" type="video/mp4" />
+        </video>
+        <div class="absolute inset-0 bg-obsidian/20 mix-blend-overlay"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="hypogeum" class="py-32 px-8 md:px-16 lg:px-24 max-w-[1600px] mx-auto border-t border-white/5">
+    <div class="flex flex-col md:flex-row justify-between items-end mb-20 reveal-up">
+      <h2 class="font-serif text-4xl md:text-5xl lg:text-6xl text-pearl tracking-tighter">
+        Architectural <br> <i class="text-gold italic not-italic">Archeology</i>
+      </h2>
+      <p class="font-sans text-xs text-pearl/40 max-w-xs font-light mt-6 md:mt-0 leading-relaxed">
+        Extracting the logic behind the empire's most sophisticated mechanical environment.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+      
+      <div class="subsurface-mass p-10 md:p-14 reveal-up delay-100 flex flex-col justify-between min-h-[400px]">
+        <div>
+          <span class="font-mono text-[10px] text-gold tracking-[0.3em] uppercase mb-6 block">01. Subterranean Logistics</span>
+          <h3 class="font-serif text-3xl text-pearl mb-4">Hypogeum Mechanics</h3>
+          <p class="font-sans text-sm text-pearl/40 leading-relaxed font-light max-w-md">
+            A complex two-level subterranean network of tunnels and 32 animal pens. Utilizing a system of pulleys and capstans operated by intricate kinetic engineering to elevate scenery seamlessly into the arena.
+          </p>
+        </div>
+        <iconify-icon icon="ph:kanban-light" class="text-4xl text-basalt mt-12"></iconify-icon>
+      </div>
+
+      <div id="vomitoria" class="subsurface-mass p-10 md:p-14 reveal-up delay-200 flex flex-col justify-between min-h-[400px]">
+        <div>
+          <span class="font-mono text-[10px] text-gold tracking-[0.3em] uppercase mb-6 block">02. Crowd Dynamics</span>
+          <h3 class="font-serif text-3xl text-pearl mb-4">Vomitoria Efficiency</h3>
+          <p class="font-sans text-sm text-pearl/40 leading-relaxed font-light max-w-md">
+            76 public entrances calibrated for hyper-efficient macroscopic flow. The vaulted passage architecture allowed an audience of 80,000 to evacuate the structural mass in exactly 15 minutes.
+          </p>
+        </div>
+        <iconify-icon icon="ph:wave-sine-light" class="text-4xl text-basalt mt-12"></iconify-icon>
+      </div>
+
+      <div id="velarium" class="subsurface-mass p-10 md:p-14 reveal-up delay-100 flex flex-col justify-between min-h-[400px] md:col-span-2 lg:col-span-1">
+        <div>
+          <span class="font-mono text-[10px] text-gold tracking-[0.3em] uppercase mb-6 block">03. Environmental Control</span>
+          <h3 class="font-serif text-3xl text-pearl mb-4">Velarium Implementation</h3>
+          <p class="font-sans text-sm text-pearl/40 leading-relaxed font-light max-w-md">
+            An active retractable awning system engineered by sailors of the Roman fleet. Manipulating massive canvas sails to regulate thermal exposure and create microclimates within the cavea.
+          </p>
+        </div>
+        <iconify-icon icon="ph:wind-light" class="text-4xl text-basalt mt-12"></iconify-icon>
+      </div>
+      
+      <div class="subsurface-mass p-10 md:p-14 reveal-up delay-200 flex flex-col justify-between min-h-[400px] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')]">
+         <div class="w-full h-full flex flex-col items-center justify-center text-center">
+            <iconify-icon icon="ph:cube-light" class="text-6xl text-gold mb-6 opacity-80 animate-[spin_30s_linear_infinite]"></iconify-icon>
+            <h3 class="font-serif text-2xl text-pearl mb-2">Travertine Matrix</h3>
+            <span class="font-mono text-[10px] text-basalt tracking-widest uppercase">100,000 Cubic Meters</span>
+         </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer class="relative z-20 py-24 px-8 md:px-16 lg:px-24 border-t border-white/5 bg-obsidian overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,oklch(75%_0.18_55/0.05)_0%,transparent_60%)] pointer-events-none"></div>
+  
+  <div class="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-16 md:gap-8 items-end">
+    
+    <div class="md:col-span-5 reveal-up">
+      <h3 class="font-serif text-5xl md:text-7xl deboss-text tracking-tighter uppercase font-bold select-none">
+        Aeternus
+      </h3>
+      <div class="flex items-center gap-4 mt-6">
+        <div class="h-[1px] w-12 bg-basalt/30"></div>
+        <p class="font-mono text-[10px] text-basalt tracking-[0.3em] uppercase">80 AD — Present</p>
+      </div>
+    </div>
+    
+    <div class="md:col-span-4 flex flex-col gap-5 reveal-up delay-100">
+      <span class="font-mono text-[9px] text-basalt uppercase tracking-widest mb-2">Imperial Archives</span>
+      <a href="#" class="font-sans text-[11px] text-pearl/40 hover:text-gold uppercase tracking-[0.2em] transition-colors flex items-center gap-2 w-fit">
+        Geographical Coordinates <iconify-icon icon="ph:arrow-up-right-light"></iconify-icon>
+      </a>
+      <a href="#" class="font-sans text-[11px] text-pearl/40 hover:text-gold uppercase tracking-[0.2em] transition-colors flex items-center gap-2 w-fit">
+        Travertine Sourcing <iconify-icon icon="ph:arrow-up-right-light"></iconify-icon>
+      </a>
+      <a href="#" class="font-sans text-[11px] text-pearl/40 hover:text-gold uppercase tracking-[0.2em] transition-colors flex items-center gap-2 w-fit">
+        Conservation Dept <iconify-icon icon="ph:arrow-up-right-light"></iconify-icon>
+      </a>
+    </div>
+    
+    <div class="md:col-span-3 text-left md:text-right reveal-up delay-200">
+      <iconify-icon icon="ph:bank-light" class="text-3xl text-basalt mb-4 md:ml-auto block"></iconify-icon>
+      <span class="font-serif text-sm text-pearl/30 block mb-1">Ministry of Cultural Heritage</span>
+      <span class="font-mono text-[9px] text-basalt tracking-widest uppercase block">Senatus Populusque Romanus</span>
+    </div>
+
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  const video = document.getElementById('orbital-video');
+  const videoContainer = document.getElementById('orbital-container');
+  const heroTextContainer = document.getElementById('hero-text-container');
+  
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const scrolled = window.scrollY;
+        
+        if (scrolled > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+
+        if (videoContainer && scrolled < window.innerHeight * 1.5) {
+          const rotation = scrolled * 0.02;
+          const scale = 1 + (scrolled * 0.0005);
+          videoContainer.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
+        }
+        
+        ticking = false;
+      });
+      ticking = true;
+    }
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!heroTextContainer) return;
+    const xAxis = (window.innerWidth / 2 - e.pageX) / 50;
+    const yAxis = (window.innerHeight / 2 - e.pageY) / 50;
+    heroTextContainer.style.transform = `translate3d(${xAxis}px, ${yAxis}px, 0)`;
+  });
+
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px 0px -10% 0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('active');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  document.querySelectorAll('.reveal-up').forEach(el => {
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
