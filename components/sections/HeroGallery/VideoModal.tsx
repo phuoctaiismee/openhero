@@ -159,21 +159,54 @@ function FrameworkDropdown({ active, onChange }: { active: Framework; onChange: 
 }
 
 function TabCodeContent({ code, lang, loading, video, format }: { code: string; lang: Language; loading: boolean; video: HeroVideo; format: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyCode = async () => {
+    if (!code) return;
+    await navigator.clipboard.writeText(code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleDownloadCode = () => {
+    const blob = new Blob([code], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = FW_CONFIG[format as Framework].filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="flex h-full min-h-0 flex-col">
+    <div className="flex h-full min-h-0 flex-col relative">
+      {/* Sticky action buttons */}
+      <div className="absolute top-3 right-3 z-10 flex items-center gap-2 sticky">
+        <button
+          onClick={handleCopyCode}
+          className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
+          title="Copy code"
+        >
+          <Icon icon={copied ? "solar:check-read-linear" : "solar:copy-linear"} width="12" />
+          {copied ? "Copied!" : "Copy"}
+        </button>
+        <button
+          onClick={handleDownloadCode}
+          className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
+          title="Download code file"
+        >
+          <Icon icon="solar:file-download-linear" width="12" />
+        </button>
+      </div>
+
       <div className="flex-1 min-h-0 overflow-auto custom-scroll rounded-lg border border-white/5 lg:h-auto">
         {loading ? (
           <div className="flex h-full items-center justify-center text-xs text-white/30">Loading…</div>
         ) : (
           <CodeBlock code={code} lang={lang} />
         )}
-      </div>
-      <div className="mt-3 flex shrink-0 items-center gap-2 border-t border-white/5 pt-3">
-        <CopyButton code={code} />
-        <DownloadZipButton video={video} format={format} />
-        <a href={`/downloads/${video.category}/${video.slug}/video.mp4`} download="video.mp4" className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white transition-colors hover:bg-white/10 w-fit">
-          <Icon icon="solar:download-minimalistic-linear" width="13" /> Download Video
-        </a>
       </div>
     </div>
   );
@@ -247,7 +280,6 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
     ...video.slug.split("-").filter((w) => !["the", "a", "of", "in", "on"].includes(w)).slice(0, 5),
   ];
 
-  // ¡AQUÍ SE PASA EL ICONO AL COMPONENTE VERCELTABS!
   const vercelTabsData = (Object.keys(FW_CONFIG) as Framework[]).map((fw) => ({
     label: FW_CONFIG[fw].label,
     value: fw,
@@ -287,9 +319,29 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
                 <span key={t} className="rounded-xl border border-white/5 bg-white/5 px-2 py-0.5 text-[11px] text-white/40">{t}</span>
               ))}
             </div>
+
+            {/* Action buttons */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              <a
+                href={`/downloads/${video.category}/${video.slug}/video.mp4`}
+                download="video.mp4"
+                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
+              >
+                <Icon icon="solar:download-minimalistic-linear" width="12" />
+                Download Video
+              </a>
+              <DownloadZipButton video={video} format={mobileTab} />
+              <a
+                href={`/preview/${video.category}/${video.slug}/${mobileTab}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
+              >
+                <Icon icon="solar:eye-linear" width="12" />
+                Preview
+              </a>
+            </div>
           </div>
-
-
 
           <div className="flex min-h-0 flex-1 flex-col">
             <div className="hidden sm:flex flex-1 flex-col min-h-0">
@@ -300,20 +352,40 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
               <div className="mb-3 shrink-0">
                 <FrameworkDropdown active={mobileTab} onChange={setMobileTab} />
               </div>
-              <div className="h-48 min-h-0 flex-1 overflow-auto custom-scroll rounded-lg border border-white/5 lg:h-auto">
+              <div className="relative h-48 min-h-0 flex-1 overflow-auto custom-scroll rounded-lg border border-white/5 lg:h-auto">
+                {/* Sticky action buttons for mobile */}
+                <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 sticky">
+                  <button
+                    onClick={async () => {
+                      if (!codes[mobileTab]) return;
+                      await navigator.clipboard.writeText(codes[mobileTab]);
+                    }}
+                    className="flex items-center gap-1 rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm px-2 py-1 text-[10px] text-white transition-colors hover:bg-white/10"
+                  >
+                    <Icon icon="solar:copy-linear" width="10" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      const blob = new Blob([codes[mobileTab]], { type: "text/plain" });
+                      const url = URL.createObjectURL(blob);
+                      const link = document.createElement("a");
+                      link.href = url;
+                      link.download = FW_CONFIG[mobileTab].filename;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                      URL.revokeObjectURL(url);
+                    }}
+                    className="flex items-center gap-1 rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm px-2 py-1 text-[10px] text-white transition-colors hover:bg-white/10"
+                  >
+                    <Icon icon="solar:file-download-linear" width="10" />
+                  </button>
+                </div>
                 {loading ? (
                   <div className="flex h-full items-center justify-center text-xs text-white/30">Loading…</div>
                 ) : (
                   <CodeBlock code={codes[mobileTab]} lang={FW_CONFIG[mobileTab].lang} />
                 )}
-              </div>
-              <div className="mt-3 flex flex-col shrink-0 gap-2 border-t border-white/5 pt-3">
-
-                <CopyButton code={codes[mobileTab]} />
-                <DownloadZipButton video={video} format={FW_CONFIG[mobileTab].format} />
-                <a href={`/downloads/${video.category}/${video.slug}/video.mp4`} download="video.mp4" className="flex items-center gap-2 w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white transition-colors hover:bg-white/10 sm:w-fit">
-                  <Icon icon="solar:download-minimalistic-linear" width="13" /> Download Video
-                </a>
               </div>
             </div>
           </div>

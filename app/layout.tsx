@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "openhero - Video Hero Gallery",
   description:
-    "Browse cinematic video backgrounds paired with polished hero layouts. Download the video and grab the source code in HTML, React, or Next.js - zero dependencies.",
+    "Browse cinematic video backgrounds paired with polished hero layouts. Download the video and grab the source code in HTML, React, or Next.js",
 };
 
 export default function RootLayout({
