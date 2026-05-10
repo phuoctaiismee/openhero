@@ -164,7 +164,7 @@ function TabCodeContent({ code, lang, loading, video, format }: { code: string; 
 
   return (
     <div className="flex h-full min-h-0 flex-col relative">
-      <div className="absolute top-3 right-3 z-10 flex items-center gap-2 sticky">
+      <div className="absolute top-3 right-3 z-10 flex items-center gap-2">
         <button
           onClick={handleCopyCode}
           className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-black/80 backdrop-blur-sm px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
