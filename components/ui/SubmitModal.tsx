@@ -22,7 +22,6 @@ export function SubmitModal({ onClose }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const overlayRef = useRef<HTMLDivElement>(null);
 
-    // Close on Escape
     useEffect(() => {
         const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
         document.addEventListener("keydown", onKey);
@@ -240,7 +239,7 @@ export function SubmitModal({ onClose }: Props) {
                             )}
                         </button>
 
-                        <p className="text-center text-[10px] text-white/20">
+                        <p className="text-center text-[10px] text-white/30">
                             Max 2 submissions every 30 days · Reviewed manually before publishing
                         </p>
                     </form>

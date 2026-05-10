@@ -48,7 +48,7 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-300 md:flex">
-            <a href="/assets" className="transition-colors hover:text-white">Assets</a>
+            <a href="/assets" target="_blank" className="transition-colors hover:text-white">Assets</a>
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=oliverachavezcristian@gmail.com"
               target="_blank"
