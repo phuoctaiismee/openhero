@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Line | Living Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Syne:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --amber:oklch(85% 0.1 45);
+  --amber-glow:oklch(80% 0.12 42 / 0.4);
+  --rose:oklch(75% 0.1 340);
+  --rose-glow:oklch(75% 0.1 340 / 0.25);
+  --sage:oklch(72% 0.08 160);
+  --sage-glow:oklch(72% 0.08 160 / 0.2);
+  --pearl:oklch(96% 0.02 80);
+  --deep:oklch(12% 0.02 260);
+  --midnight:oklch(8% 0.015 260);
+  --text-primary:oklch(94% 0.01 60);
+  --text-secondary:oklch(78% 0.02 50);
+  --text-muted:oklch(60% 0.02 50);
+  --glass-bg:oklch(18% 0.03 260 / 0.55);
+  --glass-border:oklch(85% 0.05 60 / 0.12);
+  --glass-border-hover:oklch(85% 0.08 45 / 0.3);
+  --serif:'DM Serif Display',serif;
+  --serif-alt:'Instrument Serif',serif;
+  --sans:'Syne',sans-serif;
+  --data:'Space Grotesk',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  background:var(--midnight);
+  color:var(--text-primary);
+  font-family:var(--sans);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+::-webkit-scrollbar{width:3px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:oklch(85% 0.08 45 / 0.4);border-radius:99px}
+
+.cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--amber);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s ease,width 0.3s ease,height 0.3s ease,opacity 0.3s ease;
+  mix-blend-mode:screen;
+}
+.cursor-trail{
+  position:fixed;width:40px;height:40px;
+  border:1px solid oklch(85% 0.1 45 / 0.3);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.25s ease,width 0.4s ease,height 0.4s ease;
+}
+
+.hero{
+  position:relative;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+
+.video-portal{
+  position:absolute;inset:0;z-index:0;
+}
+.video-portal video{
+  width:100%;height:100%;object-fit:cover;
+  filter:brightness(0.75);
+}
+.video-portal::after{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 100% at 50% 60%,transparent 45%,var(--midnight) 92%);
+  pointer-events:none;
+}
+
+.atmospheric-mask{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:75vw;height:65vh;
+  z-index:1;
+  border-radius:60% 40% 55% 45% / 45% 55% 40% 60%;
+  mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 40%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 40%,transparent 75%);
+  animation:blob-drift 18s ease-in-out infinite;
+  overflow:hidden;
+}
+.atmospheric-mask video{
+  width:130%;height:130%;object-fit:cover;
+  margin:-15%;
+}
+@keyframes blob-drift{
+  0%,100%{border-radius:60% 40% 55% 45% / 45% 55% 40% 60%;transform:translate(-50%,-50%) scale(1)}
+  33%{border-radius:40% 60% 45% 55% / 55% 40% 65% 35%;transform:translate(-50%,-50%) scale(1.03)}
+  66%{border-radius:55% 45% 60% 40% / 40% 65% 35% 60%;transform:translate(-50%,-50%) scale(0.97)}
+}
+
+.light-corridor{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:radial-gradient(ellipse at 50% 50%,oklch(85% 0.08 30 / 0.18) 0%,oklch(75% 0.1 340 / 0.07) 40%,transparent 80%);
+}
+
+.hero-content{
+  position:relative;z-index:10;
+  text-align:center;
+  max-width:900px;
+  padding:0 2rem;
+}
+.hero-eyebrow{
+  font-family:var(--data);
+  font-size:0.72rem;
+  font-weight:400;
+  letter-spacing:0.35em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:2rem;
+  opacity:0;
+  animation:fade-rise 1.2s 0.4s ease forwards;
+}
+.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(3.2rem,8vw,8rem);
+  line-height:0.9;
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation:fade-rise 1.4s 0.6s ease forwards;
+}
+.hero-title em{
+  font-style:italic;
+  color:var(--amber);
+  display:block;
+}
+.hero-subtitle{
+  font-family:var(--data);
+  font-size:0.9rem;
+  font-weight:300;
+  color:var(--text-secondary);
+  letter-spacing:0.08em;
+  max-width:480px;
+  margin:0 auto 3rem;
+  line-height:1.7;
+  opacity:0;
+  animation:fade-rise 1.4s 0.9s ease forwards;
+}
+.hero-cta-group{
+  display:flex;align-items:center;justify-content:center;gap:1.5rem;
+  opacity:0;
+  animation:fade-rise 1.2s 1.2s ease forwards;
+}
+
+.btn-liquid{
+  position:relative;
+  padding:1rem 2.5rem;
+  border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;
+  border:1px solid var(--glass-border-hover);
+  background:oklch(85% 0.08 45 / 0.08);
+  color:var(--text-primary);
+  font-family:var(--data);
+  font-size:0.82rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  cursor:none;
+  overflow:hidden;
+  transition:border-radius 0.6s ease,border-color 0.3s ease,background 0.3s ease;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.75rem;
+}
+.btn-liquid::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%),oklch(85% 0.1 45 / 0.25) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+.btn-liquid::after{
+  content:'';
+  position:absolute;
+  top:-50%;left:-50%;
+  width:200%;height:200%;
+  background:conic-gradient(transparent 30%,oklch(85% 0.1 45 / 0.15) 40%,transparent 50%);
+  animation:shimmer-spin 4s linear infinite;
+  opacity:0;
+  transition:opacity 0.4s ease;
+}
+.btn-liquid:hover{
+  border-radius:60% 40% 30% 70% / 60% 30% 70% 40%;
+  border-color:oklch(85% 0.1 45 / 0.5);
+  background:oklch(85% 0.08 45 / 0.15);
+}
+.btn-liquid:hover::before,.btn-liquid:hover::after{opacity:1}
+@keyframes shimmer-spin{to{transform:rotate(360deg)}}
+
+.btn-ghost{
+  padding:1rem 2rem;
+  background:transparent;
+  border:none;
+  color:var(--text-muted);
+  font-family:var(--data);
+  font-size:0.82rem;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  cursor:none;
+  transition:color 0.3s ease;
+  text-decoration:none;
+}
+.btn-ghost:hover{color:var(--text-secondary)}
+
+@keyframes fade-rise{
+  from{opacity:0;transform:translateY(30px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.scroll-hint{
+  position:absolute;bottom:3rem;left:50%;
+  transform:translateX(-50%);
+  z-index:10;
+  display:flex;flex-direction:column;align-items:center;gap:0.75rem;
+  opacity:0;animation:fade-rise 1s 2s ease forwards;
+}
+.scroll-hint span{
+  font-family:var(--data);font-size:0.65rem;
+  letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.scroll-line{
+  width:1px;height:48px;
+  background:linear-gradient(to bottom,var(--amber-glow),transparent);
+  animation:scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse{
+  0%,100%{opacity:0.3;transform:scaleY(1)}
+  50%{opacity:1;transform:scaleY(1.2)}
+}
+
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1.75rem 4rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:background 0.5s ease,backdrop-filter 0.5s ease;
+}
+nav.scrolled{
+  background:oklch(10% 0.02 260 / 0.7);
+  backdrop-filter:blur(20px) saturate(1.2);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-logo{
+  font-family:var(--serif);
+  font-size:1.2rem;
+  color:var(--text-primary);
+  letter-spacing:0.02em;
+  text-decoration:none;
+}
+.nav-logo span{color:var(--amber)}
+.nav-links{
+  display:flex;align-items:center;gap:3rem;
+  list-style:none;
+}
+.nav-links a{
+  font-family:var(--data);
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  text-decoration:none;
+  transition:color 0.3s ease;
+  position:relative;
+}
+.nav-links a::after{
+  content:'';
+  position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;
+  background:var(--amber);
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:transform 0.3s ease;
+}
+.nav-links a:hover{color:var(--text-primary)}
+.nav-links a:hover::after{transform:scaleX(1)}
+
+.section-divider{
+  height:1px;
+  background:radial-gradient(ellipse 60% 100% at 50% 50%,oklch(85% 0.1 45 / 0.4),transparent);
+  margin:0 8vw;
+}
+
+section{padding:8rem 0}
+
+.container{max-width:1320px;margin:0 auto;padding:0 4rem}
+
+.section-label{
+  font-family:var(--data);
+  font-size:0.65rem;
+  letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:1rem;
+}
+
+.manifesto{
+  background:transparent;
+  position:relative;
+}
+.manifesto::before{
+  content:'';
+  position:absolute;
+  top:0;left:50%;transform:translateX(-50%);
+  width:70vw;height:100%;
+  background:radial-gradient(ellipse 100% 80% at 50% 30%,oklch(85% 0.08 45 / 0.06),transparent 70%);
+  pointer-events:none;
+}
+.manifesto-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8rem;
+  align-items:center;
+}
+.manifesto-text h2{
+  font-family:var(--serif);
+  font-size:clamp(2.4rem,4vw,4.2rem);
+  line-height:1.05;
+  margin-bottom:2rem;
+}
+.manifesto-text h2 em{
+  font-style:italic;
+  color:oklch(80% 0.1 340);
+}
+.manifesto-text p{
+  font-family:var(--data);
+  font-size:0.92rem;
+  font-weight:300;
+  line-height:1.85;
+  color:var(--text-secondary);
+  margin-bottom:1.5rem;
+}
+.manifesto-metrics{
+  display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;
+}
+.metric-orb{
+  padding:2.5rem 2rem;
+  border-radius:40% 60% 55% 45% / 50% 40% 60% 50%;
+  background:var(--glass-bg);
+  border:1px solid var(--glass-border);
+  backdrop-filter:blur(20px);
+  text-align:center;
+  transition:border-radius 0.8s ease,border-color 0.4s ease,transform 0.4s ease;
+  animation:float-orb var(--dur,6s) ease-in-out infinite;
+  animation-delay:var(--delay,0s);
+}
+.metric-orb:hover{
+  border-radius:60% 40% 45% 55% / 40% 60% 50% 60%;
+  border-color:oklch(85% 0.1 45 / 0.35);
+  transform:translateY(-4px);
+}
+@keyframes float-orb{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+.metric-value{
+  font-family:var(--serif);
+  font-size:3rem;
+  color:var(--amber);
+  line-height:1;
+  margin-bottom:0.5rem;
+}
+.metric-label{
+  font-family:var(--data);
+  font-size:0.72rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+}
+
+.pillars{padding:8rem 0;position:relative}
+.pillars::before{
+  content:'';position:absolute;
+  left:0;right:0;top:0;bottom:0;
+  background:radial-gradient(ellipse 80% 60% at 20% 50%,oklch(72% 0.08 160 / 0.06),transparent 60%),
+             radial-gradient(ellipse 60% 80% at 80% 60%,oklch(75% 0.1 340 / 0.05),transparent 60%);
+  pointer-events:none;
+}
+.pillars-header{
+  text-align:center;
+  margin-bottom:5rem;
+}
+.pillars-header h2{
+  font-family:var(--serif);
+  font-size:clamp(2rem,3.5vw,3.5rem);
+  line-height:1.1;
+}
+.pillars-header h2 em{font-style:italic;color:var(--sage)}
+.pillars-header p{
+  font-family:var(--data);
+  font-size:0.9rem;
+  font-weight:300;
+  color:var(--text-muted);
+  max-width:500px;
+  margin:1.5rem auto 0;
+  line-height:1.7;
+}
+.pillars-flow{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:0;
+  position:relative;
+}
+.pillar-card{
+  padding:3rem 2rem;
+  position:relative;
+  border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;
+  background:oklch(16% 0.02 260 / 0.6);
+  border:1px solid var(--glass-border);
+  margin:0.75rem;
+  backdrop-filter:blur(16px);
+  transition:border-radius 0.9s ease,transform 0.4s ease,background 0.4s ease,border-color 0.4s ease;
+  overflow:hidden;
+}
+.pillar-card::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(circle at 50% 0%,var(--card-glow,oklch(85% 0.1 45 / 0.1)) 0%,transparent 60%);
+  opacity:0;transition:opacity 0.4s ease;
+}
+.pillar-card:hover{
+  border-radius:60% 40% 30% 70% / 50% 60% 40% 50%;
+  transform:translateY(-8px) rotate(-0.5deg);
+  background:oklch(18% 0.03 260 / 0.75);
+  border-color:var(--glass-border-hover);
+}
+.pillar-card:hover::before{opacity:1}
+.pillar-card:nth-child(2){--card-glow:oklch(72% 0.08 160 / 0.12)}
+.pillar-card:nth-child(3){--card-glow:oklch(75% 0.1 340 / 0.1)}
+.pillar-card:nth-child(4){--card-glow:oklch(75% 0.12 250 / 0.1)}
+.pillar-icon{
+  width:48px;height:48px;margin-bottom:1.75rem;
+  border-radius:50%;
+  background:oklch(85% 0.08 45 / 0.08);
+  border:1px solid var(--glass-border);
+  display:flex;align-items:center;justify-content:center;
+}
+.pillar-icon svg{width:22px;height:22px;stroke:var(--amber);fill:none;stroke-width:1.5}
+.pillar-card:nth-child(2) .pillar-icon svg{stroke:var(--sage)}
+.pillar-card:nth-child(3) .pillar-icon svg{stroke:oklch(75% 0.1 340)}
+.pillar-card:nth-child(4) .pillar-icon svg{stroke:oklch(72% 0.1 250)}
+.pillar-tag{
+  font-family:var(--data);
+  font-size:0.62rem;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:0.75rem;
+}
+.pillar-title{
+  font-family:var(--serif-alt);
+  font-size:1.4rem;
+  margin-bottom:1rem;
+  color:var(--text-primary);
+}
+.pillar-body{
+  font-family:var(--data);
+  font-size:0.82rem;
+  line-height:1.8;
+  color:var(--text-muted);
+  font-weight:300;
+}
+
+.projects{padding:8rem 0;position:relative}
+.projects-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:4rem;
+}
+.projects-header h2{
+  font-family:var(--serif);
+  font-size:clamp(2.2rem,3.5vw,3.8rem);
+  line-height:1;
+  max-width:500px;
+}
+.projects-header h2 em{font-style:italic;color:var(--amber)}
+.projects-nav{
+  display:flex;gap:0.75rem;
+}
+.proj-btn{
+  width:42px;height:42px;
+  border-radius:50%;
+  background:transparent;
+  border:1px solid var(--glass-border);
+  color:var(--text-muted);
+  cursor:none;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color 0.3s ease,background 0.3s ease,color 0.3s ease;
+  font-size:1.1rem;
+}
+.proj-btn:hover{
+  border-color:var(--glass-border-hover);
+  background:oklch(85% 0.08 45 / 0.08);
+  color:var(--text-primary);
+}
+.projects-track-wrapper{overflow:hidden}
+.projects-track{
+  display:flex;gap:1.5rem;
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+.project-card{
+  flex:0 0 calc(50% - 0.75rem);
+  border-radius:40% 60% 50% 50% / 50% 40% 60% 50%;
+  overflow:hidden;
+  position:relative;
+  aspect-ratio:16/10;
+  transition:border-radius 0.9s ease,transform 0.5s ease;
+  background:oklch(15% 0.03 260);
+  border:1px solid var(--glass-border);
+  cursor:none;
+}
+.project-card:hover{
+  border-radius:55% 45% 40% 60% / 40% 60% 50% 50%;
+  transform:scale(1.02);
+}
+.project-bg{
+  position:absolute;inset:0;
+  background:var(--project-bg);
+  filter:saturate(1.2) brightness(0.6);
+  transition:filter 0.5s ease,transform 0.7s ease;
+}
+.project-card:hover .project-bg{
+  filter:saturate(1.4) brightness(0.7);
+  transform:scale(1.05);
+}
+.project-card:nth-child(1){--project-bg:radial-gradient(ellipse at 30% 60%,oklch(65% 0.15 160),oklch(20% 0.05 200))}
+.project-card:nth-child(2){--project-bg:radial-gradient(ellipse at 70% 40%,oklch(60% 0.12 340),oklch(18% 0.04 280))}
+.project-card:nth-child(3){--project-bg:radial-gradient(ellipse at 50% 70%,oklch(70% 0.1 45),oklch(20% 0.06 260))}
+.project-card:nth-child(4){--project-bg:radial-gradient(ellipse at 40% 50%,oklch(55% 0.1 250),oklch(15% 0.04 280))}
+.project-info{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:2.5rem;
+  background:linear-gradient(to top,oklch(8% 0.02 260 / 0.9) 0%,transparent 100%);
+}
+.project-kv{
+  font-family:var(--data);
+  font-size:0.62rem;
+  letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--amber);
+  margin-bottom:0.6rem;
+}
+.project-title{
+  font-family:var(--serif);
+  font-size:1.8rem;
+  margin-bottom:0.4rem;
+}
+.project-loc{
+  font-family:var(--data);
+  font-size:0.78rem;
+  color:var(--text-muted);
+  letter-spacing:0.08em;
+}
+
+.data-strip{
+  padding:5rem 0;
+  position:relative;
+  overflow:hidden;
+}
+.data-strip::before{
+  content:'';
+  position:absolute;inset:0;
+  background:oklch(14% 0.025 260 / 0.8);
+  backdrop-filter:blur(2px);
+}
+.data-strip::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:radial-gradient(ellipse 50% 100% at 50% 0%,oklch(85% 0.1 45 / 0.3),transparent);
+}
+.data-row{
+  position:relative;z-index:1;
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:1px;
+}
+.data-cell{
+  padding:2.5rem 2rem;
+  text-align:center;
+  border-right:1px solid var(--glass-border);
+  position:relative;
+}
+.data-cell:last-child{border-right:none}
+.data-cell-num{
+  font-family:var(--serif);
+  font-size:2.8rem;
+  color:var(--text-primary);
+  line-height:1;
+  margin-bottom:0.4rem;
+}
+.data-cell-num span{
+  font-size:1.4rem;
+  color:var(--amber);
+}
+.data-cell-label{
+  font-family:var(--data);
+  font-size:0.65rem;
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+}
+
+.philosophy{
+  padding:8rem 0;
+  position:relative;
+}
+.philosophy::before{
+  content:'';
+  position:absolute;
+  right:-20%;top:10%;
+  width:60vw;height:60vw;
+  border-radius:50%;
+  background:radial-gradient(circle,oklch(75% 0.1 340 / 0.04) 0%,transparent 65%);
+  pointer-events:none;
+}
+.philosophy-inner{
+  display:grid;
+  grid-template-columns:2fr 3fr;
+  gap:8rem;
+  align-items:start;
+}
+.philosophy-sticky{
+  position:sticky;top:10rem;
+}
+.philosophy-sticky h2{
+  font-family:var(--serif);
+  font-size:clamp(2rem,3vw,3.2rem);
+  line-height:1.05;
+  margin-bottom:2rem;
+}
+.philosophy-sticky h2 em{font-style:italic;color:oklch(80% 0.1 340)}
+.philosophy-sticky p{
+  font-family:var(--data);
+  font-size:0.85rem;
+  font-weight:300;
+  line-height:1.8;
+  color:var(--text-secondary);
+  margin-bottom:2.5rem;
+}
+.phil-line-item{
+  display:flex;gap:1.25rem;align-items:start;
+  padding:2rem 0;
+  border-top:1px solid var(--glass-border);
+  position:relative;
+}
+.phil-line-item::after{
+  content:'';
+  position:absolute;top:0;left:0;right:0;height:1px;
+  background:radial-gradient(ellipse 30% 100% at 50% 0%,oklch(85% 0.1 45 / 0.25),transparent);
+}
+.phil-number{
+  font-family:var(--serif-alt);
+  font-size:1rem;
+  color:var(--amber);
+  font-style:italic;
+  min-width:2rem;
+  margin-top:0.1rem;
+}
+.phil-content h3{
+  font-family:var(--sans);
+  font-size:1rem;
+  font-weight:600;
+  margin-bottom:0.5rem;
+  letter-spacing:0.02em;
+}
+.phil-content p{
+  font-family:var(--data);
+  font-size:0.82rem;
+  line-height:1.75;
+  color:var(--text-muted);
+  font-weight:300;
+}
+
+.ecology-ticker{
+  padding:2.5rem 0;
+  overflow:hidden;
+  position:relative;
+  border-top:1px solid var(--glass-border);
+  border-bottom:1px solid var(--glass-border);
+}
+.ecology-ticker::before,.ecology-ticker::after{
+  content:'';
+  position:absolute;top:0;bottom:0;width:15vw;z-index:2;
+}
+.ecology-ticker::before{
+  left:0;
+  background:linear-gradient(to right,var(--midnight),transparent);
+}
+.ecology-ticker::after{
+  right:0;
+  background:linear-gradient(to left,var(--midnight),transparent);
+}
+.ticker-inner{
+  display:flex;gap:4rem;
+  animation:ticker 30s linear infinite;
+  white-space:nowrap;
+}
+.ticker-item{
+  display:flex;align-items:center;gap:1rem;
+  font-family:var(--data);
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+}
+.ticker-dot{
+  width:5px;height:5px;
+  border-radius:50%;
+  background:var(--amber);
+  flex-shrink:0;
+}
+@keyframes ticker{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+
+.contact-section{
+  padding:10rem 0 8rem;
+  position:relative;
+  text-align:center;
+}
+.contact-section::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 100% at 50% 50%,oklch(85% 0.08 45 / 0.05),transparent 70%);
+}
+.contact-eyebrow{
+  font-family:var(--data);
+  font-size:0.68rem;
+  letter-spacing:0.4em;
+  text-transform:uppercase;
+  color:var(--text-muted);
+  margin-bottom:1.5rem;
+}
+.contact-h{
+  font-family:var(--serif);
+  font-size:clamp(3rem,6vw,6.5rem);
+  line-height:0.95;
+  margin-bottom:2.5rem;
+  position:relative;z-index:1;
+}
+.contact-h em{font-style:italic;color:var(--amber)}
+.contact-sub{
+  font-family:var(--data);
+  font-size:0.9rem;
+  color:var(--text-muted);
+  max-width:420px;
+  margin:0 auto 3.5rem;
+  line-height:1.7;
+  font-weight:300;
+}
+.contact-form{
+  max-width:560px;
+  margin:0 auto;
+  display:grid;gap:1rem;
+  position:relative;z-index:1;
+}
+.input-shell{
+  position:relative;
+}
+.input-shell input,.input-shell textarea{
+  width:100%;
+  padding:1.2rem 1.75rem;
+  border-radius:40% 60% 70% 30% / 40% 50% 60% 50%;
+  background:oklch(16% 0.025 260 / 0.6);
+  border:1px solid var(--glass-border);
+  color:var(--text-primary);
+  font-family:var(--data);
+  font-size:0.88rem;
+  outline:none;
+  transition:border-radius 0.6s ease,border-color 0.3s ease,background 0.3s ease;
+  backdrop-filter:blur(10px);
+}
+.input-shell textarea{
+  resize:none;height:120px;
+  border-radius:30% 70% 50% 50% / 50% 30% 70% 50%;
+}
+.input-shell input::placeholder,.input-shell textarea::placeholder{
+  color:var(--text-muted);
+  letter-spacing:0.08em;
+  font-size:0.82rem;
+}
+.input-shell input:focus{
+  border-radius:60% 40% 30% 70% / 50% 60% 40% 60%;
+  border-color:oklch(85% 0.1 45 / 0.4);
+  background:oklch(18% 0.03 260 / 0.7);
+}
+.input-shell textarea:focus{
+  border-radius:50% 50% 60% 40% / 40% 60% 50% 50%;
+  border-color:oklch(85% 0.1 45 / 0.4);
+  background:oklch(18% 0.03 260 / 0.7);
+}
+
+footer{
+  padding:3rem 4rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-top:1px solid var(--glass-border);
+}
+.footer-logo{
+  font-family:var(--serif);
+  font-size:1.1rem;
+  color:var(--text-muted);
+}
+.footer-logo span{color:var(--amber)}
+.footer-copy{
+  font-family:var(--data);
+  font-size:0.7rem;
+  letter-spacing:0.15em;
+  color:oklch(40% 0.01 60);
+}
+.footer-links{
+  display:flex;gap:2rem;list-style:none;
+}
+.footer-links a{
+  font-family:var(--data);
+  font-size:0.7rem;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:oklch(40% 0.01 60);
+  text-decoration:none;
+  transition:color 0.3s;
+}
+.footer-links a:hover{color:var(--text-muted)}
+
+.breeze-word{
+  display:inline-block;
+  transition:transform 0.1s ease;
+}
+
+.reveal-up{
+  opacity:0;
+  transform:translateY(40px);
+  transition:opacity 0.9s ease,transform 0.9s cubic-bezier(0.16,1,0.3,1);
+}
+.reveal-up.visible{opacity:1;transform:none}
+
+.ambient-orbs{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+}
+.amb-orb{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(80px);
+  animation:orb-drift var(--dur) ease-in-out infinite;
+  animation-delay:var(--delay);
+}
+@keyframes orb-drift{
+  0%,100%{transform:translate(0,0)}
+  33%{transform:translate(var(--dx1),var(--dy1))}
+  66%{transform:translate(var(--dx2),var(--dy2))}
+}
+
+.preloader{
+  position:fixed;inset:0;z-index:9999;
+  background:var(--midnight);
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.8s ease;
+}
+.preloader.hidden{opacity:0;pointer-events:none}
+.pre-logo{
+  font-family:var(--serif);
+  font-size:2rem;
+  animation:pre-pulse 1.5s ease-in-out infinite;
+}
+.pre-logo em{color:var(--amber);font-style:italic}
+@keyframes pre-pulse{
+  0%,100%{opacity:0.3}
+  50%{opacity:1}
+}
+
+.grain-overlay{
+  position:fixed;inset:0;z-index:1;pointer-events:none;
+  opacity:0.025;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:200px 200px;
+}
+</style>
+</head>
+<body>
+
+<div class="preloader" id="preloader">
+  <div class="pre-logo">The Line <em>&</em> Living</div>
+</div>
+
+<div class="grain-overlay"></div>
+
+<div class="ambient-orbs">
+  <div class="amb-orb" style="width:600px;height:600px;top:-200px;left:-150px;background:oklch(72% 0.08 160 / 0.03);--dur:22s;--delay:0s;--dx1:80px;--dy1:60px;--dx2:-40px;--dy2:120px"></div>
+  <div class="amb-orb" style="width:500px;height:500px;bottom:-100px;right:-100px;background:oklch(75% 0.1 340 / 0.04);--dur:28s;--delay:-8s;--dx1:-60px;--dy1:-80px;--dx2:40px;--dy2:-40px"></div>
+  <div class="amb-orb" style="width:400px;height:400px;top:40%;left:60%;background:oklch(85% 0.08 45 / 0.025);--dur:18s;--delay:-4s;--dx1:40px;--dy1:-60px;--dx2:-80px;--dy2:30px"></div>
+</div>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="cursorTrail"></div>
+
+<nav id="mainNav">
+  <a href="#" class="nav-logo">The Line <span>|</span> Living Architecture</a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Philosophy</a></li>
+    <li><a href="#pillars">Pillars</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="btn-liquid" style="padding:0.7rem 1.5rem;font-size:0.7rem">Inquire</a>
+</nav>
+
+<section class="hero">
+  <div class="video-portal">
+    <video autoplay muted loop playsinline>
+      <source src="./video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="atmospheric-mask">
+    <video autoplay muted loop playsinline>
+      <source src="./video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="light-corridor"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Atmospheric Equilibrium · Biophilic Integration · Est. 2024</div>
+    <h1 class="hero-title">
+      Living<br><em>Architecture</em>
+    </h1>
+    <p class="hero-subtitle">Where carbon-negative structuralism meets the quiet rhythm of regenerative ecosystems. Buildings that breathe.</p>
+    <div class="hero-cta-group">
+      <a href="#manifesto" class="btn-liquid">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        Explore Doctrine
+      </a>
+      <a href="#projects" class="btn-ghost">View Projects →</a>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="manifesto" id="manifesto">
+  <div class="container">
+    <div class="manifesto-grid">
+      <div class="manifesto-text reveal-up">
+        <div class="section-label">Our Philosophy</div>
+        <h2>Structure is<br><em>ecology</em>, not<br>its antonym</h2>
+        <p>In the symbiosis of biophilic integration and engineered living systems, we find a new grammar of form—where every facade is a lung, every surface a meadow in waiting. The atmosphere is not a byproduct of construction. It is the material itself.</p>
+        <p>The Line operates at the intersection of atmospheric equilibrium and carbon-negative structuralism, designing environments that actively sequester, regenerate, and return.</p>
+        <a href="#pillars" class="btn-liquid" style="margin-top:1rem">Our Principles</a>
+      </div>
+      <div class="manifesto-metrics reveal-up">
+        <div class="metric-orb" style="--dur:7s;--delay:0s">
+          <div class="metric-value">−94<span>%</span></div>
+          <div class="metric-label">Carbon Reduction</div>
+        </div>
+        <div class="metric-orb" style="--dur:8s;--delay:-2s">
+          <div class="metric-value">3.2<span>×</span></div>
+          <div class="metric-label">Biodiversity Index</div>
+        </div>
+        <div class="metric-orb" style="--dur:6s;--delay:-1s">
+          <div class="metric-value">180<span>k</span></div>
+          <div class="metric-label">Species Restored</div>
+        </div>
+        <div class="metric-orb" style="--dur:9s;--delay:-3s">
+          <div class="metric-value">47<span>%</span></div>
+          <div class="metric-label">Water Regenerated</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="ecology-ticker">
+  <div class="ticker-inner" id="ticker">
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Atmospheric Equilibrium</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Biophilic Integration</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Carbon-Negative Structuralism</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Regenerative Ecosystems</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Living Facade Systems</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Hydro-Responsive Architecture</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Mycorrhizal Networks</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Atmospheric Equilibrium</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Biophilic Integration</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Carbon-Negative Structuralism</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Regenerative Ecosystems</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Living Facade Systems</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Hydro-Responsive Architecture</span></div>
+    <div class="ticker-item"><div class="ticker-dot"></div><span>Mycorrhizal Networks</span></div>
+  </div>
+</div>
+
+<section class="pillars" id="pillars">
+  <div class="container">
+    <div class="pillars-header reveal-up">
+      <div class="section-label">The Four Pillars</div>
+      <h2>Doctrine of <em>Living</em> Form</h2>
+      <p>Four principles that form the backbone of every intervention—from single dwellings to the terraforming of entire urban districts.</p>
+    </div>
+    <div class="pillars-flow">
+      <div class="pillar-card reveal-up">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L8 7H2l4 4-2 7 8-4 8 4-2-7 4-4h-6L12 2z"/></svg>
+        </div>
+        <div class="pillar-tag">01 · Atmosphere</div>
+        <div class="pillar-title">Atmospheric Equilibrium</div>
+        <p class="pillar-body">Every structure is calibrated to restore the thermal, hydrological, and gaseous balance of its immediate biome—a self-correcting climate engine embedded in form.</p>
+      </div>
+      <div class="pillar-card reveal-up">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="pillar-tag">02 · Biology</div>
+        <div class="pillar-title">Biophilic Integration</div>
+        <p class="pillar-body">Living systems do not ornament our buildings—they constitute them. Root structures, fungal webs, and photosynthetic surfaces are load-bearing elements of the new vernacular.</p>
+      </div>
+      <div class="pillar-card reveal-up">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        </div>
+        <div class="pillar-tag">03 · Carbon</div>
+        <div class="pillar-title">Carbon-Negative Structuralism</div>
+        <p class="pillar-body">Net negative from groundbreaking to centennial. Mass timber, hempcrete, and algae-seeded concrete sequester more than the entire construction footprint generates.</p>
+      </div>
+      <div class="pillar-card reveal-up">
+        <div class="pillar-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9 9 9 0 0 0-9 9"/><path d="M3 12a9 9 0 0 0 9 9 9 9 0 0 0 9-9"/><path d="M12 3c-1.2 5.4-1.2 13.2 0 18"/><path d="M12 3c1.2 5.4 1.2 13.2 0 18"/></svg>
+        </div>
+        <div class="pillar-tag">04 · Ecology</div>
+        <div class="pillar-title">Regenerative Ecosystems</div>
+        <p class="pillar-body">Each project increases local biodiversity by minimum 3×. Corridors of continuous habitat connect structure to landscape, so wildlife navigates the city as seamlessly as water.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="data-strip">
+  <div class="container">
+    <div class="data-row">
+      <div class="data-cell">
+        <div class="data-cell-num">28<span>+</span></div>
+        <div class="data-cell-label">Projects Realised</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-num">14<span>mn</span></div>
+        <div class="data-cell-label">m² of Living Surface</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-num">430<span>k</span></div>
+        <div class="data-cell-label">Tonnes CO₂ Sequestered</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-num">62<span>+</span></div>
+        <div class="data-cell-label">Species Re-established</div>
+      </div>
+      <div class="data-cell">
+        <div class="data-cell-num">9<span>×</span></div>
+        <div class="data-cell-label">Industry Water Efficiency</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="projects" id="projects">
+  <div class="container">
+    <div class="projects-header reveal-up">
+      <h2>Selected<br><em>Works</em></h2>
+      <div class="projects-nav">
+        <button class="proj-btn" id="projPrev">←</button>
+        <button class="proj-btn" id="projNext">→</button>
+      </div>
+    </div>
+    <div class="projects-track-wrapper">
+      <div class="projects-track" id="projectsTrack">
+        <div class="project-card">
+          <div class="project-bg"></div>
+          <div class="project-info">
+            <div class="project-kv">Vertical Forest · 2024</div>
+            <div class="project-title">The Verdant Tower</div>
+            <div class="project-loc">Singapore, SG — 87 Storeys</div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-bg"></div>
+          <div class="project-info">
+            <div class="project-kv">Wetland Campus · 2024</div>
+            <div class="project-title">Aquifer House</div>
+            <div class="project-loc">Rotterdam, NL — 4.2 Ha</div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-bg"></div>
+          <div class="project-info">
+            <div class="project-kv">Desert Terraforming · 2023</div>
+            <div class="project-title">Dune Meridian</div>
+            <div class="project-loc">Al Ula, SA — 220 Ha</div>
+          </div>
+        </div>
+        <div class="project-card">
+          <div class="project-bg"></div>
+          <div class="project-info">
+            <div class="project-kv">Urban Rewilding · 2023</div>
+            <div class="project-title">The Hollow City</div>
+            <div class="project-loc">Oslo, NO — 14 Districts</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider" style="margin:2rem 8vw"></div>
+
+<section class="philosophy" id="philosophy">
+  <div class="container">
+    <div class="philosophy-inner">
+      <div class="philosophy-sticky reveal-up">
+        <div class="section-label">Design Doctrine</div>
+        <h2>The quiet <em>intelligence</em> of organic form</h2>
+        <p>The built environment of the 21st century must not merely coexist with the living world. It must be indistinguishable from it.</p>
+        <a href="#contact" class="btn-liquid">Begin a Project</a>
+      </div>
+      <div>
+        <div class="phil-line-item reveal-up">
+          <div class="phil-number">I</div>
+          <div class="phil-content">
+            <h3>No form without ecological purpose</h3>
+            <p>Every curve, every aperture, every structural decision is evaluated first by its ecological contribution. Aesthetics and function are inseparable from biological performance.</p>
+          </div>
+        </div>
+        <div class="phil-line-item reveal-up">
+          <div class="phil-number">II</div>
+          <div class="phil-content">
+            <h3>The building as a living organism</h3>
+            <p>Our structures inhale, metabolise, and exhale. Moisture cycles, nutrient flows, and photosynthetic activity are integrated into the mechanical and structural systems at the design phase—not applied as afterthought.</p>
+          </div>
+        </div>
+        <div class="phil-line-item reveal-up">
+          <div class="phil-number">III</div>
+          <div class="phil-content">
+            <h3>Luxury is regeneration, not consumption</h3>
+            <p>The highest expression of design is a space that grows more beautiful, more biodiverse, and more efficient with each passing decade. A building that improves the world is the only true luxury.</p>
+          </div>
+        </div>
+        <div class="phil-line-item reveal-up">
+          <div class="phil-number">IV</div>
+          <div class="phil-content">
+            <h3>Rhizomatic urbanism</h3>
+            <p>Cities are networks, not nodes. Every intervention we design strengthens the connective tissue of urban ecosystems—mycelial infrastructure, pollinator corridors, and hydrological webs that treat the metropolis as a single, continuous biome.</p>
+          </div>
+        </div>
+        <div class="phil-line-item reveal-up">
+          <div class="phil-number">V</div>
+          <div class="phil-content">
+            <h3>Atmospheric stewardship</h3>
+            <p>We are accountable to the air. Particulate capture, humidity regulation, and the reduction of the urban heat island are not ambitious extras. They are the minimum viable standard for any structure bearing The Line insignia.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-eyebrow">Begin Collaboration</div>
+    <h2 class="contact-h reveal-up">Shape the<br><em>Living</em> World</h2>
+    <p class="contact-sub reveal-up">We work with clients who understand that the greatest act of luxury is leaving the earth more alive than you found it.</p>
+    <div class="contact-form reveal-up">
+      <div class="input-shell">
+        <input type="text" placeholder="Your Name">
+      </div>
+      <div class="input-shell">
+        <input type="email" placeholder="Email Address">
+      </div>
+      <div class="input-shell">
+        <textarea placeholder="Describe your vision..."></textarea>
+      </div>
+      <button class="btn-liquid" style="width:100%;justify-content:center;padding:1.2rem">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+        Transmit Inquiry
+      </button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">The Line <span>|</span> L.A.</div>
+  <div class="footer-copy">© 2024 The Line · Living Architecture. All rights reserved.</div>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li>
+    <li><a href="#">Doctrine</a></li>
+    <li><a href="#">Careers</a></li>
+  </ul>
+</footer>
+
+<script>
+(function(){
+  const preloader=document.getElementById('preloader');
+  const cursor=document.getElementById('cursor');
+  const trail=document.getElementById('cursorTrail');
+  const nav=document.getElementById('mainNav');
+  let mx=0,my=0,tx=0,ty=0;
+
+  setTimeout(()=>{preloader.classList.add('hidden')},1400);
+
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+'px';
+    cursor.style.top=my+'px';
+    document.querySelectorAll('.btn-liquid').forEach(btn=>{
+      const r=btn.getBoundingClientRect();
+      const bx=((mx-r.left)/r.width*100).toFixed(1);
+      const by=((my-r.top)/r.height*100).toFixed(1);
+      btn.style.setProperty('--mx',bx+'%');
+      btn.style.setProperty('--my',by+'%');
+    });
+  });
+
+  function animTrail(){
+    tx+=(mx-tx)*0.12;
+    ty+=(my-ty)*0.12;
+    trail.style.left=tx+'px';
+    trail.style.top=ty+'px';
+    requestAnimationFrame(animTrail);
+  }
+  animTrail();
+
+  document.querySelectorAll('a,button,.pillar-card,.project-card,.metric-orb').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cursor.style.width='6px';
+      cursor.style.height='6px';
+      trail.style.width='60px';
+      trail.style.height='60px';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cursor.style.width='12px';
+      cursor.style.height='12px';
+      trail.style.width='40px';
+      trail.style.height='40px';
+    });
+  });
+
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled',window.scrollY>80);
+  });
+
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){e.target.classList.add('visible')}
+    });
+  },{threshold:0.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.reveal-up').forEach(el=>io.observe(el));
+
+  let projIdx=0;
+  const track=document.getElementById('projectsTrack');
+  const cards=track.children;
+  const totalCards=cards.length;
+
+  function updateTrack(){
+    const cardW=cards[0].getBoundingClientRect().width;
+    const gap=24;
+    track.style.transform=`translateX(-${projIdx*(cardW+gap)}px)`;
+  }
+  document.getElementById('projNext').addEventListener('click',()=>{
+    if(projIdx<totalCards-2)projIdx++;
+    updateTrack();
+  });
+  document.getElementById('projPrev').addEventListener('click',()=>{
+    if(projIdx>0)projIdx--;
+    updateTrack();
+  });
+  window.addEventListener('resize',()=>{if(projIdx>0)updateTrack()});
+
+  const breezeSections=document.querySelectorAll('.hero-content,.pillars-header,.contact-section');
+  breezeSections.forEach(sec=>{
+    const walker=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,null);
+    const texts=[];
+    let node;
+    while(node=walker.nextNode()){
+      if(node.textContent.trim().length>0)texts.push(node);
+    }
+    texts.forEach(textNode=>{
+      const words=textNode.textContent.split(' ');
+      const frag=document.createDocumentFragment();
+      words.forEach((w,i)=>{
+        if(!w.trim()){frag.appendChild(document.createTextNode(' '));return;}
+        const span=document.createElement('span');
+        span.className='breeze-word';
+        span.textContent=w;
+        span.style.animationDelay=(i*0.04)+'s';
+        frag.appendChild(span);
+        if(i<words.length-1)frag.appendChild(document.createTextNode(' '));
+      });
+      textNode.parentNode.replaceChild(frag,textNode);
+    });
+  });
+
+  let ticking=false;
+  window.addEventListener('scroll',()=>{
+    if(!ticking){
+      requestAnimationFrame(()=>{
+        const sy=window.scrollY;
+        document.querySelectorAll('.breeze-word').forEach((w,i)=>{
+          const phase=Math.sin((sy*0.008)+(i*0.15))*2.5;
+          const phaseX=Math.sin((sy*0.005)+(i*0.2))*0.8;
+          w.style.transform=`translateY(${phase}px) translateX(${phaseX}px)`;
+        });
+        ticking=false;
+      });
+      ticking=true;
+    }
+  });
+
+  document.querySelectorAll('.btn-liquid').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      const ripple=document.createElement('span');
+      ripple.style.cssText=`position:absolute;width:4px;height:4px;border-radius:50%;background:oklch(85% 0.1 45/0.5);left:${e.offsetX}px;top:${e.offsetY}px;transform:translate(-50%,-50%) scale(1);animation:ripple-out 0.8s ease forwards;pointer-events:none;`;
+      const style=document.createElement('style');
+      style.textContent='@keyframes ripple-out{to{transform:translate(-50%,-50%) scale(100);opacity:0}}';
+      document.head.appendChild(style);
+      btn.appendChild(ripple);
+      setTimeout(()=>ripple.remove(),800);
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

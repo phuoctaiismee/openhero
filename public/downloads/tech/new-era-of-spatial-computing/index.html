@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apple Vision Pro | A New Era of Spatial Computing</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;300;400;600&family=Inter:wght@200;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --obsidian-void: oklch(12% 0.01 240);
+  --holo-cyan: oklch(65% 0.2 260);
+  --photon-white: oklch(98% 0.01 240);
+  --flare-leak: radial-gradient(circle at 50% 50%, oklch(65% 0.2 260 / 0.15), transparent 70%);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--obsidian-void);
+  color: var(--photon-white);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  view-transition-name: root;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kinetic-anchor {
+  position: fixed;
+  top: 10vh;
+  right: -5vw;
+  width: 70vw;
+  height: 90vh;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%), polygon(15% 0%, 100% 10%, 85% 100%, 0% 90%);
+  mask-composite: intersect;
+  -webkit-mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 70%), polygon(15% 0%, 100% 10%, 85% 100%, 0% 90%);
+  -webkit-mask-composite: source-in;
+  transform-style: preserve-3d;
+  animation: float 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  pointer-events: none;
+  opacity: 0.95;
+}
+
+.kinetic-anchor video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.2);
+  /* Sin filtros destructivos, mostramos el video original */
+}
+
+.lens-refraction {
+  background: color-mix(in oklch, var(--photon-white) 4%, transparent);
+  backdrop-filter: blur(40px) brightness(1.1);
+  -webkit-backdrop-filter: blur(40px) brightness(1.1);
+  box-shadow: 
+    0 40px 100px -20px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.05);
+  border-radius: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.photon-glow {
+  background: var(--holo-cyan);
+  color: #fff;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 
+    0 0 30px oklch(65% 0.2 260 / 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  border: none;
+  border-radius: 9999px;
+}
+
+.photon-glow:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 
+    0 0 50px oklch(65% 0.2 260 / 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.6);
+}
+
+.optical-flare {
+  position: absolute;
+  width: 150vw;
+  height: 150vh;
+  background: var(--flare-leak);
+  top: -25vh;
+  left: -25vw;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(100px);
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotateX(2deg) rotateY(-2deg) scale(1); }
+  100% { transform: translateY(-40px) rotateX(-2deg) rotateY(3deg) scale(1.02); }
+}
+
+@keyframes atomic-assembly {
+  from {
+    opacity: 0;
+    transform: translateY(80px) scale(0.95) rotateX(5deg);
+    filter: blur(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg);
+    filter: blur(0);
+  }
+}
+
+.scroll-assembly {
+  animation: atomic-assembly linear both;
+  animation-timeline: view();
+  animation-range: entry 10% cover 35%;
+  transform-style: preserve-3d;
+}
+
+h1, h2, h3 {
+  font-family: 'SF Pro Display', sans-serif;
+  letter-spacing: -0.04em;
+}
+
+.asymmetric-hub {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) minmax(400px, 1.5fr);
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .asymmetric-hub {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body class="antialiased selection:bg-[oklch(65%_0.2_260)] selection:text-white">
+
+<div class="kinetic-anchor">
+  <video autoplay loop muted playsinline>
+    <source src="./video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="optical-flare"></div>
+
+<nav class="fixed top-0 w-full z-50 p-6 flex justify-between items-center transition-all duration-500 bg-gradient-to-b from-[oklch(12%_0.01_240_/_0.8)] to-transparent">
+  <div class="flex items-center gap-3">
+    <span class="iconify text-3xl" data-icon="ic:baseline-apple"></span>
+    <span class="text-sm tracking-widest font-semibold uppercase">Vision Pro</span>
+  </div>
+  <div class="flex gap-8 text-sm tracking-wide">
+    <a href="#" class="hover:text-[oklch(65%_0.2_260)] transition-colors transition-link">Spatial Architecture</a>
+    <a href="#" class="hover:text-[oklch(65%_0.2_260)] transition-colors transition-link">Neural Processing</a>
+    <a href="#" class="hover:text-[oklch(65%_0.2_260)] transition-colors transition-link">Immersive SDK</a>
+  </div>
+</nav>
+
+<main class="relative z-10 container mx-auto px-6 pt-48 pb-32">
+  
+  <section class="min-h-[80vh] flex flex-col justify-center max-w-4xl @container">
+    <div class="lens-refraction p-12 inline-block w-max max-w-full mb-8 backdrop-blur-3xl">
+      <h1 class="text-7xl md:text-8xl font-light leading-tight bg-clip-text text-transparent bg-gradient-to-br from-white via-gray-300 to-[oklch(65%_0.2_260)]">
+        Spatial Computing.<br>
+        <span class="font-semibold">Absolute Reality.</span>
+      </h1>
+    </div>
+    
+    <p class="text-xl md:text-2xl font-light max-w-2xl leading-relaxed mt-6 lens-refraction p-8 text-gray-300">
+      Experience neural-engine orchestration combined with sub-millisecond inference. The new standard for immersive hardware interfaces.
+    </p>
+
+    <div class="mt-12 flex gap-6 items-center">
+      <button class="photon-glow px-10 py-5 text-lg font-medium flex items-center gap-3 transition-link">
+        Initialize Sequence
+        <span class="iconify text-xl" data-icon="ph:arrow-right-light"></span>
+      </button>
+      <button class="lens-refraction px-10 py-5 text-lg font-medium hover:bg-white/10 transition-colors">
+        View Telemetry
+      </button>
+    </div>
+  </section>
+
+  <section class="mt-64 asymmetric-hub scroll-assembly @container">
+    <div class="flex flex-col gap-12">
+      <div class="lens-refraction p-10 transform -rotate-1 hover:rotate-0 transition-transform duration-700">
+        <span class="iconify text-4xl text-[oklch(65%_0.2_260)] mb-6" data-icon="ph:cpu-light"></span>
+        <h3 class="text-3xl font-semibold mb-4">Terabit-Scale Throughput</h3>
+        <p class="text-lg text-gray-300 leading-relaxed">
+          Quantum-level data processing enables real-time spatial SKU visualization sin latencia. La geometría de tu mundo, calculada a la velocidad de la luz.
+        </p>
+      </div>
+      <div class="lens-refraction p-10 ml-12 transform rotate-1 hover:rotate-0 transition-transform duration-700">
+        <span class="iconify text-4xl text-[oklch(65%_0.2_260)] mb-6" data-icon="ph:bounding-box-light"></span>
+        <h3 class="text-3xl font-semibold mb-4">Holographic Optics</h3>
+        <p class="text-lg text-gray-300 leading-relaxed">
+          Custom micro-OLED matrices powered by photonic grids. Precisión óptica absoluta que elimina efectos de malla para una verdadera presencia volumétrica.
+        </p>
+      </div>
+    </div>
+    
+    <div class="lens-refraction h-full min-h-[600px] flex flex-col justify-end p-12 relative overflow-hidden group">
+      <div class="absolute inset-0 bg-gradient-to-t from-[oklch(65%_0.2_260_/_0.15)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+      <div class="relative z-10">
+        <h2 class="text-5xl font-light mb-6">Fluid Geometry</h2>
+        <p class="text-xl max-w-md text-gray-300">
+          La interfaz ya no está limitada por el cristal. Responde a la intención fisiológica, ensamblándose y desensamblándose como un organismo digital vivo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-64 scroll-assembly">
+    <div class="lens-refraction p-16 md:p-24 text-center max-w-5xl mx-auto flex flex-col items-center">
+      <span class="iconify text-6xl text-[oklch(65%_0.2_260)] mb-8 animate-pulse" data-icon="ph:aperture-light"></span>
+      <h2 class="text-5xl md:text-7xl font-light mb-8">Enter the Vanguard</h2>
+      <p class="text-2xl text-gray-300 max-w-2xl mx-auto mb-12">
+        Cero fronteras. Cero restricciones. Arquitecta la próxima dimensión de la simbiosis humano-computadora.
+      </p>
+      <button class="photon-glow px-12 py-6 text-xl font-medium">
+        Deploy Prototype
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+document.querySelectorAll('.transition-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    if (!document.startViewTransition) {
+      window.location.reload();
+      return;
+    }
+    document.startViewTransition(() => {
+      document.body.style.opacity = '0.9';
+      setTimeout(() => { document.body.style.opacity = '1'; }, 100);
+    });
+  });
+});
+</script>
+</body>
+</html>
