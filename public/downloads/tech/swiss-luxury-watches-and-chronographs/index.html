@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hublot | Swiss Luxury Watches & Chronographs</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@100;200;300;400;600&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep-obsidian: oklch(15% 0.02 280);
+  --safety-orange: oklch(65% 0.25 45);
+  --titanium-white: oklch(95% 0.01 240);
+  --flare-orange: radial-gradient(circle at 50% 50%, oklch(65% 0.25 45 / 0.18), transparent 60%);
+}
+
+body {
+  font-family: 'SF Pro Display', sans-serif;
+  background-color: var(--deep-obsidian);
+  color: var(--titanium-white);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  view-transition-name: root;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+h1, h2, h3, .syncopate {
+  font-family: 'Syncopate', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.kinetic-anchor {
+  position: fixed;
+  top: 5vh;
+  right: -10vw;
+  width: 75vw;
+  height: 95vh;
+  z-index: 0;
+  mask-image: 
+    polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%),
+    polygon(30% 10%, 70% 10%, 90% 50%, 70% 90%, 30% 90%, 10% 50%);
+  mask-composite: exclude;
+  -webkit-mask-image: 
+    polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%),
+    radial-gradient(circle at 50% 50%, black 30%, transparent 60%);
+  -webkit-mask-composite: source-out;
+  transform-style: preserve-3d;
+  animation: tourbillon-float 24s cubic-bezier(0.25, 0.1, 0.25, 1) infinite alternate;
+  pointer-events: none;
+  opacity: 0.85;
+  filter: drop-shadow(0 0 30px oklch(65% 0.25 45 / 0.3));
+}
+
+.kinetic-anchor video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.3) rotate(-5deg);
+  filter: contrast(1.15) brightness(1.05);
+}
+
+.lens-refraction {
+  background: color-mix(in oklch, var(--titanium-white) 2%, transparent);
+  backdrop-filter: blur(60px) brightness(1.1);
+  -webkit-backdrop-filter: blur(60px) brightness(1.1);
+  box-shadow: 
+    0 30px 80px -20px rgba(0, 0, 0, 0.9),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 1px 0 rgba(255, 255, 255, 0.02),
+    inset 0 0 40px oklch(65% 0.25 45 / 0.05);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+}
+
+.lens-refraction-hex {
+  clip-path: polygon(50% 0%, 100% 20%, 100% 80%, 50% 100%, 0% 80%, 0% 20%);
+  border-radius: 0;
+}
+
+.magnetic-liquid {
+  background: transparent;
+  color: var(--safety-orange);
+  position: relative;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--safety-orange);
+  clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.magnetic-liquid::before {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--safety-orange);
+  z-index: -1;
+  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.magnetic-liquid:hover {
+  color: var(--deep-obsidian);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 15px 40px oklch(65% 0.25 45 / 0.4);
+}
+
+.magnetic-liquid:hover::before {
+  top: 0;
+}
+
+.optical-flare {
+  position: absolute;
+  width: 180vw;
+  height: 180vh;
+  background: var(--flare-orange);
+  top: -30vh;
+  left: -40vw;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(120px);
+  mix-blend-mode: screen;
+}
+
+@keyframes tourbillon-float {
+  0% { transform: translateY(0) rotateZ(0deg) rotateX(2deg) rotateY(-3deg) scale(1); }
+  50% { transform: translateY(-20px) rotateZ(1deg) rotateX(-1deg) rotateY(1deg) scale(1.02); }
+  100% { transform: translateY(-40px) rotateZ(-1deg) rotateX(-2deg) rotateY(4deg) scale(1.04); }
+}
+
+@keyframes atomic-assembly {
+  from {
+    opacity: 0;
+    transform: translateY(150px) scale(0.9) rotateX(-15deg) rotateY(10deg);
+    filter: blur(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1) rotateX(0deg) rotateY(0deg);
+    filter: blur(0);
+  }
+}
+
+.scroll-assembly {
+  animation: atomic-assembly linear both;
+  animation-timeline: view();
+  animation-range: entry 5% cover 40%;
+  transform-style: preserve-3d;
+}
+
+.hex-hub {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 3rem;
+  align-items: center;
+}
+
+.glow-text {
+  text-shadow: 0 0 30px oklch(65% 0.25 45 / 0.6);
+}
+</style>
+</head>
+<body class="antialiased selection:bg-[oklch(65%_0.25_45)] selection:text-[oklch(15%_0.02_280)]">
+
+<div class="kinetic-anchor">
+  <video autoplay loop muted playsinline>
+    <source src="./video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<div class="optical-flare"></div>
+
+<nav class="fixed top-0 w-full z-50 p-8 flex justify-between items-center bg-gradient-to-b from-[oklch(15%_0.02_280_/_0.9)] to-transparent backdrop-blur-sm">
+  <div class="flex items-center gap-4">
+    <span class="iconify text-4xl text-[oklch(65%_0.25_45)]" data-icon="mdi:watch-vibrating"></span>
+    <span class="text-xs tracking-[0.3em] font-light uppercase syncopate">Hublot</span>
+  </div>
+  <div class="flex gap-10 text-xs tracking-widest uppercase font-light">
+    <a href="#" class="hover:text-[oklch(65%_0.25_45)] transition-colors transition-link">Materials</a>
+    <a href="#" class="hover:text-[oklch(65%_0.25_45)] transition-colors transition-link">Complications</a>
+    <a href="#" class="hover:text-[oklch(65%_0.25_45)] transition-colors transition-link">Manufacture</a>
+  </div>
+</nav>
+
+<main class="relative z-10 container mx-auto px-8 pt-56 pb-40">
+  
+  <section class="min-h-[85vh] flex flex-col justify-center max-w-5xl @container">
+    <div class="lens-refraction p-16 inline-block w-max max-w-full mb-10 transform -skew-x-3">
+      <h1 class="text-6xl md:text-8xl font-bold leading-none bg-clip-text text-transparent bg-gradient-to-r from-white via-gray-400 to-[oklch(65%_0.25_45)] uppercase tracking-tighter">
+        Orange Sapphire.<br>
+        <span class="font-light text-white glow-text text-5xl md:text-7xl">Absolute Fusion.</span>
+      </h1>
+    </div>
+    
+    <p class="text-xl md:text-2xl font-light max-w-3xl leading-relaxed mt-4 text-gray-300 transform skew-x-2">
+      Witness the apex of materials engineering. Unibody sapphire construction fused with sub-millisecond escapement precision. A geometric breach in traditional horology.
+    </p>
+
+    <div class="mt-16 flex gap-8 items-center">
+      <button class="magnetic-liquid px-12 py-6 text-sm tracking-widest uppercase font-bold flex items-center gap-4 transition-link">
+        Engage Caliber
+        <span class="iconify text-2xl" data-icon="ph:arrow-right-bold"></span>
+      </button>
+      <button class="lens-refraction px-12 py-6 text-sm tracking-widest uppercase font-light hover:bg-white/5 transition-colors">
+        Read Telemetry
+      </button>
+    </div>
+  </section>
+
+  <section class="mt-40 hex-hub scroll-assembly @container">
+    <div class="flex flex-col gap-16 relative">
+      <div class="lens-refraction lens-refraction-hex p-16 transform hover:scale-105 transition-transform duration-1000 bg-[oklch(15%_0.02_280_/_0.4)] backdrop-blur-3xl">
+        <span class="iconify text-5xl text-[oklch(65%_0.25_45)] mb-8 animate-pulse" data-icon="mdi:cog-transfer"></span>
+        <h3 class="text-2xl font-bold mb-4 uppercase tracking-wider syncopate">Tourbillon Synchronization</h3>
+        <p class="text-sm font-light text-gray-400 leading-relaxed tracking-wide">
+          Gravitational displacement eradicated. The floating hexagonal cage ensures sub-millisecond escapement precision regardless of the spatial vector.
+        </p>
+      </div>
+      <div class="lens-refraction lens-refraction-hex p-16 ml-12 transform hover:scale-105 transition-transform duration-1000 bg-[oklch(15%_0.02_280_/_0.4)] backdrop-blur-3xl">
+        <span class="iconify text-5xl text-[oklch(65%_0.25_45)] mb-8" data-icon="mdi:battery-charging-high"></span>
+        <h3 class="text-2xl font-bold mb-4 uppercase tracking-wider syncopate">72-H Power Telemetry</h3>
+        <p class="text-sm font-light text-gray-400 leading-relaxed tracking-wide">
+          Advanced mainspring architecture. Monitor energy reservoirs through the skeletal dial, driven by a self-winding neuro-mechanical rotor.
+        </p>
+      </div>
+    </div>
+    
+    <div class="lens-refraction h-full min-h-[700px] flex flex-col justify-between p-16 relative overflow-hidden group border-l-[oklch(65%_0.25_45_/_0.3)] border-l-2">
+      <div class="absolute inset-0 bg-gradient-to-br from-[oklch(65%_0.25_45_/_0.1)] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+      <div class="relative z-10 flex justify-end">
+        <span class="iconify text-7xl text-[oklch(65%_0.25_45)] opacity-20 group-hover:opacity-80 transition-opacity duration-700 animate-spin-slow" data-icon="mdi:hexagon-outline"></span>
+      </div>
+      <div class="relative z-10">
+        <h2 class="text-4xl font-bold mb-6 uppercase tracking-tight syncopate">Orange Ceramic Anodization</h2>
+        <p class="text-lg font-light text-gray-300 leading-relaxed">
+          Through intense thermal plasma and pressure synthesis, the raw structure achieves a vibrant, indestructible exterior. Physicality elevated to high-fidelity art.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mt-64 scroll-assembly">
+    <div class="lens-refraction p-24 md:p-32 text-center max-w-6xl mx-auto flex flex-col items-center relative overflow-hidden">
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[200%] h-[200%] bg-[radial-gradient(circle_at_50%_0%,_oklch(65%_0.25_45_/_0.2),_transparent_60%)] pointer-events-none"></div>
+      <span class="iconify text-8xl text-[oklch(65%_0.25_45)] mb-12" data-icon="mdi:rhombus-split-outline"></span>
+      <h2 class="text-5xl md:text-7xl font-bold mb-8 uppercase tracking-tighter syncopate glow-text">Architect Time</h2>
+      <p class="text-xl font-light text-gray-400 max-w-2xl mx-auto mb-16 tracking-wide">
+        No containers. No boundaries. Only the pure geometry of horological perfection.
+      </p>
+      <button class="magnetic-liquid px-16 py-8 text-xl tracking-widest uppercase font-bold">
+        Acquire Masterpiece
+      </button>
+    </div>
+  </section>
+
+</main>
+
+<script>
+document.querySelectorAll('.transition-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    if (!document.startViewTransition) {
+      window.location.reload();
+      return;
+    }
+    document.startViewTransition(() => {
+      document.body.style.opacity = '0.9';
+      document.body.style.transform = 'scale(0.99)';
+      setTimeout(() => { 
+        document.body.style.opacity = '1'; 
+        document.body.style.transform = 'scale(1)';
+      }, 150);
+    });
+  });
+});
+</script>
+</body>
+</html>
