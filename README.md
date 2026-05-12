@@ -1,6 +1,6 @@
 ﻿<div align="center">
 
-<img src="https://openhero.art/images/metadata/preview-openhero.webp" alt="openhero" width="900" />
+<img width="1280" height="720" alt="export-1778593653300 (1) (1)" src="https://github.com/user-attachments/assets/4c50b909-aa20-49fb-a0ce-7b10d3dd82f4" />
 
 <br/>
 
