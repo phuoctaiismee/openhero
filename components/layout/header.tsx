@@ -8,6 +8,7 @@ import { LiquidMetalButton } from "../ui/liquid-metal-button";
 import { SubmitModal } from "../ui/SubmitModal";
 
 export default function Header() {
+  const [isHovered, setIsHovered] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [showSubmit, setShowSubmit] = useState(false);
@@ -48,7 +49,33 @@ export default function Header() {
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm font-medium text-neutral-300 md:flex">
-            <a href="/assets" target="_blank" className="transition-colors hover:text-white">Assets</a>
+
+            <div
+              className="relative"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              <a href="/assets" className="transition-colors hover:text-white py-4">
+                Assets
+              </a>
+
+              {isHovered && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 pt-6 animate-in fade-in zoom-in duration-200 z-50">
+                  <div className="relative w-[500px] h-auto overflow-hidden rounded-2xl border border-white/10 bg-neutral-900 shadow-2xl">
+                    <img
+                      src="/images/pages/assets-preview.avif"
+                      alt="Preview"
+                      className="w-full h-auto object-cover mask-b-from-20% mask-b-to-80%"
+                    />
+
+                    <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
+                      <p className="text-xs text-white font-semibold">Explora los Assets</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
             <a
               href="https://mail.google.com/mail/?view=cm&fs=1&to=oliverachavezcristian@gmail.com"
               target="_blank"
@@ -116,7 +143,7 @@ export default function Header() {
                   href="/assets"
                   className="hover:text-accent transition-colors"
                 >
-                  Contact
+                  Assets
                 </a>
                 <a
                   href="https://mail.google.com/mail/?view=cm&fs=1&to=oliverachavezcristian@gmail.com"

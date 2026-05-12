@@ -81,7 +81,7 @@ export function AssetModal({ asset, assets, onClose, onNavigate }: AssetModalPro
             />
 
             <div className="relative z-50 flex items-center justify-between border-b border-white/5 bg-black/40 px-4 sm:px-20 py-4 backdrop-blur-md">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                     <div className="flex flex-col">
                         <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50">
                             {asset.category}
@@ -89,7 +89,7 @@ export function AssetModal({ asset, assets, onClose, onNavigate }: AssetModalPro
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2 sm:gap-4">
                     <span className="font-mono text-xs tabular-nums text-white/50">
                         {currentIndex + 1} <span className="opacity-100">/</span> {assets.length}
                     </span>
