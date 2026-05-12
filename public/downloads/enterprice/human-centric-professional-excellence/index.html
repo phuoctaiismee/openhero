@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summit Academy | Human-Centric Professional Excellence</title>
+    <script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Manrope:wght@200;300;400;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: 'oklch(25% 0.01 240)',
+                        canvas: 'oklch(98% 0.01 240)',
+                        taupe: 'oklch(85% 0.02 60)',
+                        atelier: 'oklch(20% 0.02 160)', 
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Manrope', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            background-color: oklch(98% 0.01 240);
+            --scroll-reveal: 0;
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: oklch(25% 0.01 240 / 0.1); border-radius: 10px; }
+
+        .squircle-mask {
+            mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+            -webkit-mask-image: radial-gradient(circle at center, black 30%, transparent 75%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        }
+
+        .vellum-overlay {
+            background: rgba(255, 255, 255, 0.01);
+            backdrop-filter: blur(20px) contrast(0.95);
+            -webkit-backdrop-filter: blur(20px) contrast(0.95);
+        }
+
+        .matte-silk {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 4px 0px rgba(0,0,0,0);
+        }
+
+        .matte-silk:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+        }
+
+        .reveal-text {
+            animation: reveal-fade linear both;
+            animation-timeline: view();
+            animation-range: entry 20% cover 40%;
+        }
+
+        @keyframes reveal-fade {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .timeline-line {
+            height: 0%;
+            animation: grow-line linear both;
+            animation-timeline: view();
+        }
+
+        @keyframes grow-line {
+            from { height: 0%; }
+            to { height: 100%; }
+        }
+
+        body {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="black" opacity="0.2"/></svg>'), auto;
+        }
+    </style>
+</head>
+<body class="bg-canvas text-charcoal font-sans antialiased selection:bg-taupe selection:text-charcoal">
+
+    <header class="fixed top-0 left-0 w-full z-50 px-12 py-8 flex justify-between items-center mix-blend-multiply">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full border border-charcoal/20 flex items-center justify-center">
+                <div class="w-1 h-1 bg-charcoal rounded-full"></div>
+            </div>
+            <span class="font-serif italic text-lg tracking-tight">Summit Academy</span>
+        </div>
+        <nav class="hidden md:flex gap-12 text-[11px] uppercase tracking-[0.2em] font-light">
+            <a href="#curriculum" class="hover:opacity-70 transition-opacity">Pedagogy</a>
+            <a href="#metrics" class="hover:opacity-70 transition-opacity">Telemetry</a>
+            <a href="#footer" class="hover:opacity-70 transition-opacity">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="min-h-screen grid grid-cols-1 lg:grid-cols-[40fr_60fr] items-center pt-20">
+            <div class="px-12 lg:px-24 flex flex-col justify-center">
+                <span class="text-[10px] uppercase tracking-[0.4em] text-charcoal/40 mb-8 block">Refining Human Capital</span>
+                <h1 class="font-serif text-6xl lg:text-8xl leading-[0.9] mb-12 italic">
+                    Silent<br>Excellence.
+                </h1>
+                <p class="font-light text-lg leading-relaxed text-charcoal/70 mb-12 max-w-sm">
+                    An adaptive pedagogy designed for the modern executive. Orchestrating professional-life balance through cognitive-load optimization.
+                </p>
+                <div class="flex gap-4">
+                    <button class="matte-silk bg-charcoal text-canvas px-10 py-5 text-[10px] uppercase tracking-widest rounded-full">
+                        Curate Path
+                    </button>
+                    <button class="matte-silk border border-charcoal/10 px-10 py-5 text-[10px] uppercase tracking-widest rounded-full">
+                        Overview
+                    </button>
+                </div>
+            </div>
+
+            <div class="relative h-[80vh] lg:h-screen flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0 bg-taupe/20 scale-110 blur-3xl rounded-full translate-x-1/4"></div>
+                <div class="relative w-[85%] h-[85%] squircle-mask overflow-hidden shadow-2xl">
+                    <video autoplay muted loop playsinline class="w-full h-full object-cover scale-105 contrast-[0.9] saturate-[0.8]">
+                        <source src="./video.mp4" type="video/mp4">
+                    </video>
+                    <div class="absolute inset-0 bg-charcoal/5 mix-blend-overlay"></div>
+                </div>
+                <div class="absolute bottom-24 right-24 vellum-overlay p-8 rounded-2xl border border-charcoal/5 max-w-[200px]">
+                    <span class="font-serif italic block mb-2 text-lg">Deep Focus</span>
+                    <p class="text-[12px] uppercase tracking-widest opacity-80">Environment Optimized for Cognitive Flow</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="curriculum" class="py-60 px-12 lg:px-24 relative overflow-hidden">
+            <div class="absolute left-1/2 top-0 w-px h-full bg-charcoal/5 -translate-x-1/2">
+                <div class="timeline-line w-full bg-charcoal/20 origin-top"></div>
+            </div>
+            
+            <div class="max-w-3xl mx-auto text-center">
+                <div class="mb-32 reveal-text">
+                    <span class="font-serif text-4xl italic block mb-8">01 / Career Pathing</span>
+                    <h2 class="text-sm uppercase tracking-[0.5em] font-light mb-12">Dynamic Curriculum Orchestration</h2>
+                    <p class="text-charcoal/50 leading-loose font-light">
+                        We move beyond linear learning. Our telemetry systems monitor skill-acquisition in real-time, adjusting difficulty and content density to maintain peak mental state.
+                    </p>
+                </div>
+
+                <div class="mb-32 reveal-text">
+                    <span class="font-serif text-4xl italic block mb-8">02 / Wellness Synthesis</span>
+                    <h2 class="text-sm uppercase tracking-[0.5em] font-light mb-12">Sustaining the Executive Mind</h2>
+                    <p class="text-charcoal/50 leading-loose font-light">
+                        High performance is a byproduct of balance. Every module integrates physiological wellness checkpoints and environmental optimization protocols.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="metrics" class="py-40 px-12 lg:px-24 bg-charcoal/2 border-y border-charcoal/5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-charcoal/5">
+                <div class="bg-canvas p-16 flex flex-col justify-between aspect-square md:aspect-auto">
+                    <div class="w-8 h-[1px] bg-charcoal/20"></div>
+                    <div>
+                        <span class="font-serif text-6xl block mb-4 italic">92%</span>
+                        <p class="text-[10px] uppercase tracking-widest opacity-40">Retention Rate via Cognitive Load Management</p>
+                    </div>
+                </div>
+                <div class="bg-canvas p-16 flex flex-col justify-between">
+                    <div class="w-8 h-[1px] bg-charcoal/20"></div>
+                    <div>
+                        <span class="font-serif text-6xl block mb-4 italic">120+</span>
+                        <p class="text-[10px] uppercase tracking-widest opacity-40">Global Corporate Partners in Wellness</p>
+                    </div>
+                </div>
+                <div class="bg-canvas p-16 flex flex-col justify-between">
+                    <div class="w-8 h-[1px] bg-charcoal/20"></div>
+                    <div>
+                        <span class="font-serif text-6xl block mb-4 italic">24/7</span>
+                        <p class="text-[10px] uppercase tracking-widest opacity-40">Adaptive Telemetry Support</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="footer" class="bg-atelier py-40 px-12 lg:px-24 text-canvas overflow-hidden relative">
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+                <svg class="w-full h-full" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="0.1" />
+                </svg>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-24 relative z-10">
+                <div>
+                    <h2 class="font-serif text-7xl leading-none italic mb-20">The Atelier of<br>Professional Growth.</h2>
+                    <div class="flex gap-12 font-serif italic text-lg opacity-60">
+                        <a href="#" class="hover:opacity-100 transition-opacity">Geneva</a>
+                        <a href="#" class="hover:opacity-100 transition-opacity">London</a>
+                        <a href="#" class="hover:opacity-100 transition-opacity">Tokyo</a>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col justify-end items-end text-right">
+                    <nav class="space-y-4 text-xs uppercase tracking-[0.4em] font-light mb-24">
+                        <a href="#" class="block hover:opacity-50">Private Dossier</a>
+                        <a href="#" class="block hover:opacity-50">Faculty Research</a>
+                        <a href="#" class="block hover:opacity-50">Alumni Terminal</a>
+                    </nav>
+                    <div class="w-full h-px bg-canvas/10 mb-8"></div>
+                    <div class="flex justify-between w-full text-[9px] uppercase tracking-[0.3em] opacity-30">
+                        <span>© 2026 Summit Academy</span>
+                        <span>Built for Human Focus</span>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('reveal-active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-text').forEach(el => observer.observe(el));
+        });
+    </script>
+</body>
+</html>

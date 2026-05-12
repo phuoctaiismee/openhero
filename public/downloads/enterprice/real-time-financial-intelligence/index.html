@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flux Capital | Real-Time Financial Intelligence</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: light;
+            --white: oklch(98% 0.01 240);
+            --white-2: oklch(96.8% 0.01 240);
+            --graphite: oklch(18% 0.05 30);
+            --graphite-2: oklch(14% 0.04 30);
+            --slate: oklch(52% 0.09 255);
+            --slate-2: oklch(64% 0.11 255);
+            --blue: oklch(71% 0.15 255);
+            --ink: oklch(18% 0.02 240);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: "Inter Tight", sans-serif;
+            background:
+                radial-gradient(circle at 14% 10%, rgba(80, 128, 196, .08), transparent 16%),
+                radial-gradient(circle at 84% 14%, rgba(0, 0, 0, .035), transparent 15%),
+                linear-gradient(180deg, var(--white) 0%, var(--white-2) 100%);
+            color: var(--ink);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 0, 0, .03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, .03) 1px, transparent 1px);
+            background-size: 120px 120px;
+            opacity: .26;
+            z-index: -2;
+        }
+
+        .mono {
+            font-family: "IBM Plex Mono", monospace;
+        }
+
+        .display {
+            font-weight: 900;
+        }
+
+        .audit-bar {
+            position: fixed;
+            inset: 0 0 auto 0;
+            z-index: 80;
+            background: rgba(255, 255, 255, .82);
+            backdrop-filter: blur(14px) brightness(1.02);
+            border-bottom: 1px solid rgba(0, 0, 0, .08);
+        }
+
+        .audit-inner {
+            width: min(1600px, calc(100% - 28px));
+            margin: 0 auto;
+            min-height: 64px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .brand-mark {
+            width: 40px;
+            height: 40px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(0, 0, 0, .12);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(247, 247, 247, .9));
+            border-radius: 3px;
+        }
+
+        .brand-copy {
+            min-width: 0;
+        }
+
+        .brand-copy .name {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, .55);
+        }
+
+        .brand-copy .sub {
+            margin-top: 4px;
+            font-size: 14px;
+            color: rgba(0, 0, 0, .86);
+            white-space: nowrap;
+        }
+
+        .audit-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .55);
+        }
+
+        .audit-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .audit-nav a {
+            text-decoration: none;
+            color: inherit;
+            white-space: nowrap;
+            transition: .25s ease;
+        }
+
+        .audit-nav a:hover {
+            color: var(--slate);
+        }
+
+        .audit-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meter {
+            width: 220px;
+            height: 8px;
+            background: rgba(0, 0, 0, .08);
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .meter span {
+            display: block;
+            height: 100%;
+            width: 78%;
+            background: linear-gradient(90deg, rgba(65, 120, 196, .88), rgba(116, 165, 255, .98));
+        }
+
+        .aero {
+            position: relative;
+            overflow: hidden;
+            height: 40px;
+            padding: 0 16px;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 0, 0, .12);
+            background: linear-gradient(180deg, rgba(255, 255, 255, .98), rgba(246, 246, 246, .86));
+            color: rgba(0, 0, 0, .84);
+            text-transform: uppercase;
+            font-size: 10px;
+            cursor: pointer;
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), border-color .35s ease, box-shadow .35s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .9);
+        }
+
+        .aero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            background:
+                linear-gradient(90deg, transparent, rgba(74, 145, 255, .26), transparent);
+            transition: .35s ease;
+            pointer-events: none;
+        }
+
+        .aero:hover {
+            transform: translateY(-2px);
+            border-color: rgba(74, 145, 255, .4);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .96),
+                0 0 0 1px rgba(74, 145, 255, .14);
+        }
+
+        .aero:hover::after {
+            opacity: 1;
+        }
+
+        .hero {
+            position: relative;
+            /* Necesario para contener el video absoluto */
+            min-height: 100svh;
+            display: grid;
+            grid-template-columns: 1fr;
+            background: var(--white);
+            padding-top: 64px;
+            overflow: hidden;
+            /* Evita que el video se desborde */
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 10;
+            /* Asegura que el contenido quede por encima del video */
+            width: min(1600px, calc(100% - 28px));
+            margin: 0 auto;
+            min-height: calc(100svh - 64px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: stretch;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 4;
+            padding: 72px 24px 48px 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            /* Cambiamos el fondo a transparente para que el video luzca detrás del texto */
+            background: transparent;
+            border-right: none;
+        }
+
+        .hero-side {
+            position: relative;
+            /* Quitamos el gradiente sólido para que el video pase libremente */
+            background: transparent;
+            overflow: visible;
+            min-height: calc(100svh - 64px);
+        }
+
+        .video-shell {
+            position: absolute;
+            inset: 0;
+            /* Hace que ocupe el 100% del hero */
+            z-index: 1;
+            /* Lo manda al fondo, detrás de hero-grid */
+            overflow: hidden;
+            /* Máscara que es transparente a la izquierda y sólida a la derecha */
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 55%, black 100%);
+            mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 55%, black 100%);
+            filter: saturate(1.06) contrast(1.04) brightness(.96);
+        }
+
+        .hero-copy-inner {
+            width: 100%;
+            max-width: 640px;
+            padding: 18px 18px 18px 0;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background: rgba(255, 255, 255, .72);
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .62);
+            backdrop-filter: blur(8px);
+        }
+
+        .eyebrow span {
+            width: 8px;
+            height: 8px;
+            background: var(--blue);
+            display: inline-block;
+        }
+
+        .hero-title {
+            margin-top: 22px;
+            font-size: clamp(4.6rem, 8.8vw, 8.8rem);
+            line-height: .86;
+            color: #080808;
+            text-transform: none;
+        }
+
+        .hero-title .line {
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero-title .line span {
+            display: inline-block;
+            transform: translateY(100%);
+            opacity: 0;
+            filter: blur(8px);
+        }
+
+        .typed {
+            animation: typedIn .8s cubic-bezier(.16, 1, .3, 1) forwards;
+        }
+
+        .glitch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            overflow: hidden;
+            opacity: .6;
+            pointer-events: none;
+            clip-path: inset(0 0 0 0);
+        }
+
+        .glitch::before {
+            transform: translate(1px, 0);
+            color: #4a87ff;
+            animation: glitchA 1.8s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            transform: translate(-1px, 0);
+            color: #9ec0ff;
+            animation: glitchB 2.2s infinite linear alternate-reverse;
+        }
+
+        .hero-copy-text {
+            margin-top: 24px;
+            max-width: 560px;
+            font-size: 16px;
+            line-height: 2;
+            color: rgba(0, 0, 0, .72);
+        }
+
+        .hero-specs {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .hero-specs span {
+            padding: 10px 12px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background: rgba(255, 255, 255, .84);
+            border-radius: 3px;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .62);
+        }
+
+        .hero-actions {
+            margin-top: 26px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-actions button {
+            height: 46px;
+            padding: 0 18px;
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+    
+        .video-shell {
+            position: absolute;
+            inset: 0 -12% 0 -8%;
+            z-index: 2;
+            overflow: hidden;
+            -webkit-mask: url(#dataPulseMask);
+            mask: url(#dataPulseMask);
+            filter: saturate(1.06) contrast(1.04) brightness(.96);
+        }
+
+        .video-shell video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scale(1.06);
+            will-change: transform;
+        }
+
+        .video-shell::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 20%, rgba(255, 255, 255, .18), transparent 16%),
+                radial-gradient(circle at 65% 28%, rgba(77, 143, 255, .2), transparent 14%),
+                linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(0, 0, 0, .18));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .video-shell::after {
+            content: "";
+            position: absolute;
+            inset: -2%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, .22), transparent 24%);
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .ticker-stack {
+            position: absolute;
+            inset: 20px 18px 20px auto;
+            z-index: 6;
+            width: min(360px, 46%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .ticker {
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, .1);
+            border: 1px solid rgba(255, 255, 255, .12);
+            backdrop-filter: blur(40px) brightness(1.1);
+            -webkit-backdrop-filter: blur(40px) brightness(1.1);
+            color: white;
+            border-radius: 3px;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+        }
+
+        .ticker .top {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: black;
+        }
+
+        .ticker .value {
+            margin-top: 10px;
+            font-size: 28px;
+            line-height: 1;
+            color: #050505;
+        }
+
+        .ticker .small {
+            margin-top: 8px;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            color: black;
+        }
+
+        .section {
+            padding: 110px 0;
+        }
+
+        .shell {
+            width: min(1600px, calc(100% - 28px));
+            margin: 0 auto;
+        }
+
+        .section-h {
+            display: flex;
+            justify-content: space-between;
+            gap: 22px;
+            align-items: flex-end;
+            margin-bottom: 26px;
+        }
+
+        .section-h h2 {
+            font-size: clamp(2.6rem, 5.2vw, 5.8rem);
+            line-height: .88;
+            color: #090909;
+        }
+
+        .section-h p {
+            max-width: 430px;
+            color: rgba(0, 0, 0, .66);
+            line-height: 1.95;
+        }
+
+        .dual-stream {
+            position: relative;
+            display: grid;
+            grid-template-columns: .45fr .55fr;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .ledger-panel {
+            padding: 38px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .95), rgba(248, 248, 248, .84));
+            border: 1px solid rgba(0, 0, 0, .08);
+            border-radius: 3px;
+        }
+
+        .ledger-panel .label {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .54);
+        }
+
+        .ledger-panel h3 {
+            margin-top: 16px;
+            font-size: clamp(2rem, 4vw, 4.3rem);
+            line-height: .9;
+            color: #050505;
+        }
+
+        .ledger-panel p {
+            margin-top: 18px;
+            line-height: 2;
+            color: rgba(0, 0, 0, .68);
+            max-width: 52ch;
+        }
+
+        .audit-list {
+            margin-top: 22px;
+            border-top: 1px solid rgba(0, 0, 0, .08);
+        }
+
+        .audit-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 14px;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, .08);
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: rgba(0, 0, 0, .7);
+        }
+
+        .audit-row strong {
+            color: #000;
+            font-family: inherit;
+        }
+
+        .monitor {
+            position: relative;
+            overflow: hidden;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(245, 247, 250, .82));
+            min-height: 580px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .monitor::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .42), transparent 20%),
+                linear-gradient(90deg, rgba(74, 143, 255, .08), transparent 52%);
+            pointer-events: none;
+        }
+
+        .monitor .pane {
+            padding: 22px;
+            border-right: 1px solid rgba(0, 0, 0, .08);
+        }
+
+        .monitor .pane:last-child {
+            border-right: none;
+        }
+
+        .pane-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .55);
+        }
+
+        .box {
+            margin-top: 16px;
+            padding: 18px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background: rgba(255, 255, 255, .9);
+            border-radius: 3px;
+        }
+
+        .box .name {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .5);
+        }
+
+        .box .amount {
+            margin-top: 10px;
+            font-size: 34px;
+            color: #050505;
+        }
+
+        .box .desc {
+            margin-top: 10px;
+            color: rgba(0, 0, 0, .66);
+            line-height: 1.85;
+            font-size: 14px;
+        }
+
+        .mini-graph {
+            margin-top: 18px;
+            width: 100%;
+            height: 160px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .96), rgba(246, 248, 251, .86));
+            border-radius: 3px;
+            padding: 16px;
+        }
+
+        .metrics {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .metric {
+            padding: 16px;
+            border: 1px solid rgba(0, 0, 0, .08);
+            background: rgba(255, 255, 255, .92);
+            border-radius: 3px;
+        }
+
+        .metric .k {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(0, 0, 0, .55);
+        }
+
+        .metric .v {
+            margin-top: 10px;
+            font-size: 28px;
+            color: #050505;
+        }
+
+        .telemetry {
+            padding: 110px 0;
+            background:
+                linear-gradient(180deg, #0f1114 0%, #11151a 100%);
+            color: white;
+        }
+
+        .telemetry-shell {
+            width: min(1600px, calc(100% - 28px));
+            margin: 0 auto;
+        }
+
+        .telemetry-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: flex-end;
+            margin-bottom: 28px;
+        }
+
+        .telemetry-head h2 {
+            font-size: clamp(2.7rem, 5.4vw, 5.6rem);
+            line-height: .88;
+        }
+
+        .telemetry-head p {
+            max-width: 440px;
+            color: rgba(255, 255, 255, .66);
+            line-height: 1.95;
+        }
+
+        .grid-board {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+
+        .tile {
+            grid-column: span 4;
+            min-height: 220px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity .6s ease, transform .6s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .tile.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .tile::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(73, 136, 255, .18), transparent 60%),
+                linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 25%);
+            pointer-events: none;
+        }
+
+        .tile .t {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .55);
+        }
+
+        .tile h3 {
+            margin-top: 18px;
+            font-size: clamp(1.6rem, 2.8vw, 2.8rem);
+            line-height: .95;
+            color: white;
+        }
+
+        .tile p {
+            margin-top: 14px;
+            color: rgba(255, 255, 255, .68);
+            line-height: 1.85;
+            max-width: 42ch;
+            font-size: 14px;
+        }
+
+        .tile svg {
+            width: 100%;
+            height: 84px;
+            margin-top: 16px;
+            overflow: visible;
+        }
+
+        .tile.wide {
+            grid-column: span 8;
+        }
+
+        .tile.tall {
+            min-height: 278px;
+        }
+
+        .telemetry-foot {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .signal {
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .03);
+            border-radius: 3px;
+        }
+
+        .signal .name {
+            text-transform: uppercase;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .52);
+        }
+
+        .signal .value {
+            margin-top: 10px;
+            font-size: 30px;
+        }
+
+        .ledger-footer {
+            padding: 110px 0 90px;
+            background:
+                linear-gradient(180deg, #111 0%, #0b0c0f 100%);
+            color: white;
+        }
+
+        .ledger-shell {
+            width: min(1600px, calc(100% - 28px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr .9fr;
+            gap: 18px;
+        }
+
+        .ledger-card {
+            padding: 36px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .03);
+            border-radius: 3px;
+        }
+
+        .ledger-card h2 {
+            font-size: clamp(2.7rem, 5vw, 5.2rem);
+            line-height: .9;
+        }
+
+        .ledger-card p {
+            margin-top: 16px;
+            color: rgba(255, 255, 255, .68);
+            line-height: 2;
+            max-width: 760px;
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 12px;
+            line-height: 1.95;
+            color: rgba(255, 255, 255, .78);
+        }
+
+        .capabilities {
+            display: grid;
+            gap: 14px;
+        }
+
+        .cap {
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .03);
+            border-radius: 3px;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 12px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, .76);
+        }
+
+        .bottom-line {
+            margin-top: 24px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .25), transparent);
+        }
+
+        .footer-bar {
+            margin-top: 18px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, .55);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        @keyframes typedIn {
+            from {
+                opacity: 0;
+                filter: blur(10px);
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                filter: blur(0);
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glitchA {
+            0% {
+                clip-path: inset(0 0 92% 0);
+            }
+
+            20% {
+                clip-path: inset(12% 0 78% 0);
+            }
+
+            40% {
+                clip-path: inset(54% 0 30% 0);
+            }
+
+            60% {
+                clip-path: inset(28% 0 56% 0);
+            }
+
+            80% {
+                clip-path: inset(64% 0 14% 0);
+            }
+
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes glitchB {
+            0% {
+                clip-path: inset(84% 0 0 0);
+            }
+
+            20% {
+                clip-path: inset(72% 0 8% 0);
+            }
+
+            40% {
+                clip-path: inset(18% 0 58% 0);
+            }
+
+            60% {
+                clip-path: inset(42% 0 32% 0);
+            }
+
+            80% {
+                clip-path: inset(6% 0 80% 0);
+            }
+
+            100% {
+                clip-path: inset(0 0 0 0);
+            }
+        }
+
+        @keyframes sheen {
+            to {
+                transform: translateX(240%) rotate(10deg);
+            }
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: .72s;
+            animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @media (max-width: 1180px) {
+            .audit-inner {
+                grid-template-columns: 1fr auto;
+            }
+
+            .audit-nav {
+                display: none;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-copy {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, .08);
+            }
+
+            .hero-side {
+                min-height: 72vh;
+            }
+
+            .dual-stream,
+            .ledger-shell {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-board {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .tile,
+            .tile.wide {
+                grid-column: span 6;
+            }
+
+            .telemetry-foot {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .audit-inner {
+                width: min(100% - 18px, 1600px);
+            }
+
+            .hero-grid,
+            .shell,
+            .telemetry-shell,
+            .ledger-shell {
+                width: min(100% - 18px, 1600px);
+            }
+
+            .hero-copy {
+                padding-top: 36px;
+            }
+
+            .hero-copy-inner,
+            .ledger-panel,
+            .monitor,
+            .ledger-card {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+            .hero-title {
+                font-size: clamp(3.2rem, 14vw, 6.2rem);
+            }
+
+            .section-h,
+            .telemetry-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .grid-board {
+                grid-template-columns: 1fr;
+            }
+
+            .tile,
+            .tile.wide {
+                grid-column: span 1;
+            }
+
+            .monitor {
+                grid-template-columns: 1fr;
+            }
+
+            .monitor .pane {
+                border-right: none;
+                border-bottom: 1px solid rgba(0, 0, 0, .08);
+            }
+
+            .monitor .pane:last-child {
+                border-bottom: none;
+            }
+        }
+
+        @container (min-width: 700px) {
+            .hero-copy-text {
+                font-size: 17px;
+            }
+
+            .ticker .value {
+                font-size: 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+        <defs>
+            <filter id="maskFeather">
+                <feGaussianBlur stdDeviation="0.03" />
+            </filter>
+
+            <mask id="dataPulseMask" maskUnits="objectBoundingBox" maskContentUnits="objectBoundingBox">
+                <rect x="0" y="0" width="1" height="1" fill="black"></rect>
+                <g filter="url(#maskFeather)">
+                    <path
+                        d="M0.02,0.14 C0.17,0.05 0.28,0.02 0.40,0.08 C0.50,0.13 0.60,0.09 0.69,0.06 C0.81,0.02 0.95,0.10 0.98,0.24 C1.00,0.33 0.92,0.40 0.95,0.50 C0.99,0.61 0.95,0.74 0.89,0.82 C0.82,0.91 0.70,0.98 0.58,0.95 C0.47,0.93 0.39,0.98 0.28,0.98 C0.15,0.98 0.04,0.91 0.02,0.79 C0.00,0.68 0.05,0.58 0.02,0.47 C0.00,0.39 -0.01,0.20 0.02,0.14 Z"
+                        fill="white"></path>
+                </g>
+                <path
+                    d="M0.04,0.16 C0.17,0.08 0.28,0.05 0.40,0.10 C0.52,0.15 0.62,0.12 0.71,0.09 C0.82,0.06 0.93,0.13 0.96,0.25 C0.98,0.34 0.91,0.40 0.94,0.50 C0.97,0.61 0.93,0.73 0.88,0.81 C0.81,0.90 0.71,0.96 0.59,0.94 C0.48,0.92 0.39,0.96 0.29,0.96 C0.16,0.96 0.05,0.89 0.04,0.79 C0.02,0.69 0.06,0.58 0.04,0.48 C0.02,0.39 0.01,0.20 0.04,0.16 Z"
+                    fill="white" opacity=".86"></path>
+            </mask>
+        </defs>
+    </svg>
+
+    <div class="audit-bar">
+        <div class="audit-inner">
+            <div class="brand">
+                <div class="brand-mark">
+                    <iconify-icon icon="ph:bank-bold" class="text-xl text-[#4a87ff]"></iconify-icon>
+                </div>
+                <div class="brand-copy">
+                    <div class="name">Flux Capital</div>
+                    <div class="sub">Real-Time Financial Intelligence</div>
+                </div>
+            </div>
+
+            <nav class="audit-nav">
+                <a href="#dual">Dual-Stream</a>
+                <a href="#telemetry">Telemetry</a>
+                <a href="#ledger">Ledger</a>
+            </nav>
+
+            <div class="audit-actions">
+                <div class="meter hidden sm:block"><span></span></div>
+                <button class="aero">Open Console</button>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <section class="hero">
+
+            <div class="video-shell">
+                <video id="heroVideo" autoplay muted loop playsinline>
+                    <source src="./video.mp4" type="video/mp4" />
+                </video>
+            </div>
+
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <div class="hero-copy-inner panel-module">
+                        <div class="eyebrow reveal">
+                            <span></span> Asynchronous ledger processing · fiscal-neural mapping
+                        </div>
+                        <h1 class="hero-title display reveal" id="heroTitle">
+                            <span class="line"><span data-text="Flux Capital">Flux Capital</span></span>
+                            <span class="line"><span data-text="Real-Time Financial Intelligence">Real-Time Financial
+                                    Intelligence</span></span>
+                        </h1>
+                        <p class="hero-copy-text reveal">
+                            A precision-built B2B banking and invoice platform for multi-entity consolidation, liquidity
+                            telemetry, and fast-moving financial operations.
+                        </p>
+                        <div class="hero-specs reveal">
+                            <span>Clinical White</span>
+                            <span>Slate Blue</span>
+                            <span>Graphite Grey</span>
+                        </div>
+                        <div class="hero-actions reveal">
+                            <button class="aero">Start Free Trial</button>
+                            <button class="textured-touch">View Banking Flow</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-side">
+                    <div class="heat-line"></div>
+
+                    <div class="ticker-stack">
+                        <div class="ticker reveal">
+                            <div class="top">
+                                <span>Liquidity</span>
+                                <span class="mono">LIVE</span>
+                            </div>
+                            <div class="value display" data-count="428">0</div>
+                            <div class="small">Real-time liquidity telemetry across all operating entities.</div>
+                        </div>
+                        <div class="ticker reveal">
+                            <div class="top">
+                                <span>Invoices</span>
+                                <span class="mono">SYNC</span>
+                            </div>
+                            <div class="value display" data-count="12.8">0</div>
+                            <div class="small">Asynchronous ledger processing with automated reconciliation.</div>
+                        </div>
+                        <div class="ticker reveal">
+                            <div class="top">
+                                <span>AUM</span>
+                                <span class="mono">UTC</span>
+                            </div>
+                            <div class="value display" data-count="94.2">0</div>
+                            <div class="small">Global asset overlays projected from the dual-monitor workstation.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="dual" class="section">
+            <div class="shell">
+                <div class="section-h reveal">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.34em] text-black/50">The Dual-Stream</div>
+                        <h2 class="display mt-5 text-black">Two operational streams, one financial surface.</h2>
+                    </div>
+                    <p>
+                        Technical data sits on the left while monitored outcomes and invoice activity populate the
+                        right, like mirrored workstations inside a compliance cockpit.
+                    </p>
+                </div>
+
+                <div class="dual-stream">
+                    <div class="ledger-panel reveal">
+                        <div class="label">System ledger</div>
+                        <h3 class="display">Every entity, invoice, and payment thread stays aligned.</h3>
+                        <p>
+                            Flux Capital manages multi-entity consolidation through a clean audit layer, visible state
+                            transitions, and deterministic control over cash movement.
+                        </p>
+
+                        <div class="audit-list">
+                            <div class="audit-row">
+                                <span>01</span>
+                                <strong>Invoice ingestion</strong>
+                                <span>8 ms</span>
+                            </div>
+                            <div class="audit-row">
+                                <span>02</span>
+                                <strong>Entity mapping</strong>
+                                <span>12 ms</span>
+                            </div>
+                            <div class="audit-row">
+                                <span>03</span>
+                                <strong>Liquidity sweep</strong>
+                                <span>19 ms</span>
+                            </div>
+                            <div class="audit-row">
+                                <span>04</span>
+                                <strong>Settlement route</strong>
+                                <span>41 ms</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="monitor reveal module">
+                        <div class="pane">
+                            <div class="pane-head">
+                                <span>Invoice stream</span>
+                                <span class="mono">A1</span>
+                            </div>
+
+                            <div class="box">
+                                <div class="name">Pending approval</div>
+                                <div class="amount display" data-count="184">0</div>
+                                <div class="desc">High-confidence invoice queue with controlled routing and automatic
+                                    validation.</div>
+                            </div>
+
+                            <div class="metrics">
+                                <div class="metric">
+                                    <div class="k">Disputed</div>
+                                    <div class="v display" data-count="6">0</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="k">Approved</div>
+                                    <div class="v display" data-count="172">0</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="k">Paid</div>
+                                    <div class="v display" data-count="91">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pane">
+                            <div class="pane-head">
+                                <span>Banking output</span>
+                                <span class="mono">B2</span>
+                            </div>
+
+                            <div class="mini-graph">
+                                <svg viewBox="0 0 520 160" preserveAspectRatio="none" aria-hidden="true">
+                                    <path
+                                        d="M0 128 L64 118 L104 122 L152 94 L210 102 L262 64 L316 78 L372 42 L436 56 L520 28"
+                                        fill="none" stroke="rgba(74,143,255,.9)" stroke-width="2.2" />
+                                    <path
+                                        d="M0 126 L64 115 L104 118 L152 89 L210 96 L262 58 L316 71 L372 36 L436 48 L520 20"
+                                        fill="none" stroke="rgba(74,143,255,.3)" stroke-width="1" />
+                                    <path d="M0 138 L520 138" fill="none" stroke="rgba(0,0,0,.08)" stroke-width="1" />
+                                </svg>
+                            </div>
+
+                            <div class="box">
+                                <div class="name">Global transfer volume</div>
+                                <div class="amount display" data-count="38.7">0</div>
+                                <div class="desc">High-frequency movement tracked with subtle blue-laser clarity and
+                                    locked audit trail integrity.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="telemetry" class="telemetry">
+            <div class="telemetry-shell">
+                <div class="telemetry-head reveal">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.34em] text-white/50">Telemetry Grid</div>
+                        <h2 class="display mt-5">Thin neon lines, dense state, no decorative noise.</h2>
+                    </div>
+                    <p>
+                        Live charts and operational modules update like a high-frequency trading surface, with each tile
+                        reporting a different layer of system health.
+                    </p>
+                </div>
+
+                <div class="grid-board">
+                    <article class="tile wide tall reveal">
+                        <div class="t">
+                            <span>Cash flow</span>
+                            <span class="mono">Q1 / LIVE</span>
+                        </div>
+                        <h3 class="display">Real-time liquidity telemetry</h3>
+                        <p>Watch available cash shift across operating units as treasury logic reconciles every movement
+                            in near real time.</p>
+                        <svg viewBox="0 0 800 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path
+                                d="M0 56 L80 54 L136 58 L192 44 L248 48 L304 28 L360 36 L416 20 L472 26 L528 14 L584 24 L640 16 L704 20 L800 10"
+                                fill="none" stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                            <path
+                                d="M0 72 L80 70 L136 74 L192 64 L248 66 L304 50 L360 56 L416 42 L472 46 L528 34 L584 40 L640 32 L704 36 L800 28"
+                                fill="none" stroke="rgba(115,165,255,.28)" stroke-width="1.2" />
+                        </svg>
+                    </article>
+
+                    <article class="tile reveal">
+                        <div class="t">
+                            <span>Approvals</span>
+                            <span class="mono">N-01</span>
+                        </div>
+                        <h3 class="display">Control tower routing</h3>
+                        <p>Payment decisions are scored and routed with strict policy alignment and deterministic
+                            thresholds.</p>
+                        <svg viewBox="0 0 520 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M0 62 L84 52 L172 58 L248 30 L332 38 L404 22 L520 18" fill="none"
+                                stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                        </svg>
+                    </article>
+
+                    <article class="tile reveal">
+                        <div class="t">
+                            <span>Compliance</span>
+                            <span class="mono">S-04</span>
+                        </div>
+                        <h3 class="display">Policy boundary checks</h3>
+                        <p>Every rule is explicit, observable, and ready for audit without sacrificing operational
+                            speed.</p>
+                        <svg viewBox="0 0 520 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M0 58 L70 58 L112 46 L168 46 L220 34 L292 34 L350 22 L420 22 L520 18" fill="none"
+                                stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                        </svg>
+                    </article>
+
+                    <article class="tile wide reveal">
+                        <div class="t">
+                            <span>Entity consolidation</span>
+                            <span class="mono">M-09</span>
+                        </div>
+                        <h3 class="display">Multi-entity operating view</h3>
+                        <p>One plane for subsidiaries, regions, and bank accounts, all condensed into a single financial
+                            instrument.</p>
+                        <svg viewBox="0 0 800 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path
+                                d="M0 62 L88 66 L146 50 L210 56 L282 32 L348 42 L420 22 L492 28 L574 16 L660 26 L800 14"
+                                fill="none" stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                        </svg>
+                    </article>
+
+                    <article class="tile reveal">
+                        <div class="t">
+                            <span>Automation</span>
+                            <span class="mono">R-14</span>
+                        </div>
+                        <h3 class="display">Asynchronous ledger processing</h3>
+                        <p>Queue depth remains visible while entries settle in the background with zero interface
+                            stutter.</p>
+                        <svg viewBox="0 0 520 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M0 62 L96 62 L156 48 L220 48 L286 28 L352 28 L430 16 L520 16" fill="none"
+                                stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                        </svg>
+                    </article>
+
+                    <article class="tile reveal">
+                        <div class="t">
+                            <span>Routing</span>
+                            <span class="mono">R-21</span>
+                        </div>
+                        <h3 class="display">Global settlement lanes</h3>
+                        <p>Transfer paths adapt to region, currency, and account structure while remaining traceable
+                            from start to finish.</p>
+                        <svg viewBox="0 0 520 84" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M0 66 L66 58 L124 62 L186 40 L244 44 L310 24 L372 30 L440 16 L520 10" fill="none"
+                                stroke="rgba(115,165,255,.95)" stroke-width="2.2" />
+                        </svg>
+                    </article>
+                </div>
+
+                <div class="telemetry-foot">
+                    <div class="signal reveal">
+                        <div class="name">Latency</div>
+                        <div class="value display" data-count="11.2">0</div>
+                    </div>
+                    <div class="signal reveal">
+                        <div class="name">Uptime</div>
+                        <div class="value display" data-count="99.98">0</div>
+                    </div>
+                    <div class="signal reveal">
+                        <div class="name">Entities</div>
+                        <div class="value display" data-count="48">0</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ledger" class="ledger-footer">
+            <div class="ledger-shell">
+                <div class="ledger-card reveal">
+                    <div class="mono text-[10px] uppercase tracking-[0.34em] text-white/50">The Ledger Footer</div>
+                    <h2 class="display mt-5">Capabilities rendered like a machine-readable settlement log.</h2>
+                    <p>
+                        The final layer presents the platform as code, with immutable clarity, compact syntax, and no
+                        ornamental framing.
+                    </p>
+                    <div class="bottom-line"></div>
+                    <pre>
+01  invoice.ingest()
+02  entity.consolidate()
+03  balance.reconcile()
+04  liquidity.telemetry()
+05  payouts.route()
+06  exceptions.flag()
+07  approvals.sync()
+08  settlement.commit()
+          </pre>
+                </div>
+
+                <div class="capabilities">
+                    <div class="cap reveal">async-ledger-processor | multi-entity sync | invoice capture | payment
+                        routing</div>
+                    <div class="cap reveal">real-time treasury view | AML controls | ledger traceability | settlement
+                        queues</div>
+                    <div class="cap reveal">corporate banking APIs | liquidity thresholds | reconciliation engine |
+                        audit export</div>
+                    <div class="cap reveal">cross-border operations | role-based access | approval chains |
+                        deterministic logging</div>
+                </div>
+            </div>
+
+            <div class="shell">
+                <div class="footer-line"
+                    style="margin-top:24px;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent)">
+                </div>
+                <div class="footer-bar">
+                    <div>Flux Capital</div>
+                    <div>Clinical White · Slate Blue · Graphite Grey</div>
+                    <div>Real-Time Financial Intelligence</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const supportsViewTransitions = typeof document.startViewTransition === 'function';
+        const heroVideo = document.getElementById('heroVideo');
+
+        let ticking = false;
+
+        function updateHero() {
+            const progress = Math.min(window.scrollY / (window.innerHeight * 1.2), 1);
+            const scale = 1.06 + progress * 0.12;
+            const translate = progress * 18;
+
+            if (heroVideo) {
+                heroVideo.style.transform = `scale(${scale}) translateY(${translate}px)`;
+            }
+        }
+
+        function animateCount(el) {
+            const target = parseFloat(el.dataset.count || '0');
+            const duration = 1300;
+            const start = performance.now();
+
+            const step = (now) => {
+                const p = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - p, 3);
+                const value = target * eased;
+                el.textContent = target >= 10 ? Math.round(value).toLocaleString() : value.toFixed(1);
+                if (p < 1) requestAnimationFrame(step);
+            };
+
+            requestAnimationFrame(step);
+        }
+
+        updateHero();
+
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                updateHero();
+                ticking = false;
+            });
+        }, { passive: true });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                    const countEls = entry.target.querySelectorAll('[data-count]');
+                    countEls.forEach(animateCount);
+                }
+            });
+        }, { threshold: 0.18 });
+
+        document.querySelectorAll('.reveal, .tile').forEach((el) => revealObserver.observe(el));
+
+        document.querySelectorAll('button, a').forEach((el) => {
+            el.addEventListener('mouseenter', () => {
+                el.animate(
+                    [{ transform: 'translateY(0px)' }, { transform: 'translateY(-2px)' }],
+                    { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }
+                );
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.animate(
+                    [{ transform: 'translateY(-2px)' }, { transform: 'translateY(0px)' }],
+                    { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }
+                );
+            });
+        });
+
+        const lines = document.querySelectorAll('.hero-title .line span');
+        let baseDelay = 110;
+        lines.forEach((node, i) => {
+            const text = node.dataset.text || node.textContent;
+            node.textContent = '';
+            const chars = text.split('');
+            chars.forEach((ch, index) => {
+                setTimeout(() => {
+                    node.textContent += ch;
+                    node.classList.add('typed');
+                }, baseDelay + i * 180 + index * 18);
+            });
+        });
+
+        if (supportsViewTransitions) {
+            document.querySelectorAll('button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    document.startViewTransition(() => { });
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

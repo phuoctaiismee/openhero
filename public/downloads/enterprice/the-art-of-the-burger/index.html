@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prime Gravity | The Art of the Burger</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: oklch(12% 0.05 30);
+            --bg2: oklch(15% 0.04 30);
+            --charcoal: oklch(18% 0.03 30);
+            --ochre: oklch(76% 0.14 68);
+            --cheddar: oklch(72% 0.17 54);
+            --jalapeno: oklch(67% 0.14 145);
+            --ink: oklch(97% 0.01 30);
+            --muted: rgba(255, 255, 255, .66);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: "Inter Tight", sans-serif;
+            background:
+                radial-gradient(circle at 18% 10%, rgba(222, 141, 57, .13), transparent 16%),
+                radial-gradient(circle at 82% 14%, rgba(90, 176, 84, .08), transparent 14%),
+                linear-gradient(180deg, oklch(12% 0.05 30) 0%, oklch(10% 0.045 30) 48%, oklch(8% 0.04 30) 100%);
+            color: white;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px),
+                linear-gradient(135deg, transparent 0 48%, rgba(255, 255, 255, .025) 48% 52%, transparent 52%);
+            background-size: 120px 120px, 120px 120px, 280px 280px;
+            opacity: .22;
+            z-index: -2;
+        }
+
+        .display {
+            font-family: "Fraunces", serif;
+            letter-spacing: -.06em;
+        }
+
+        .copy {
+            font-family: "Inter Tight", sans-serif;
+        }
+
+        .smoked {
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .09);
+            backdrop-filter: blur(20px) contrast(.95);
+            -webkit-backdrop-filter: blur(20px) contrast(.95);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                0 18px 60px rgba(0, 0, 0, .35);
+        }
+
+        .textured-touch {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background:
+                linear-gradient(180deg, rgba(227, 178, 104, .88), rgba(183, 122, 59, .82)),
+                linear-gradient(135deg, rgba(255, 255, 255, .08), transparent 45%);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: #1c140d;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .4),
+                inset 0 -12px 18px rgba(0, 0, 0, .08),
+                0 20px 48px rgba(0, 0, 0, .3);
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), box-shadow .45s ease;
+        }
+
+        .textured-touch::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(135deg, rgba(0, 0, 0, .12) 0 1px, transparent 1px 100%),
+                linear-gradient(45deg, rgba(0, 0, 0, .06) 0 1px, transparent 1px 100%);
+            opacity: .28;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .textured-touch::after {
+            content: "";
+            position: absolute;
+            inset: -110%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(255, 255, 255, .35), transparent 16%),
+                radial-gradient(circle at 55% 60%, rgba(255, 255, 255, .18), transparent 20%),
+                linear-gradient(120deg, transparent 44%, rgba(255, 255, 255, .72) 50%, transparent 56%);
+            transform: translateX(-140%) rotate(12deg);
+            animation: sheen 8s ease-in-out infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            filter: blur(.2px);
+        }
+
+        .textured-touch:hover {
+            transform: translateY(-4px);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .48),
+                inset 0 -12px 18px rgba(0, 0, 0, .08),
+                0 28px 56px rgba(0, 0, 0, .36);
+        }
+
+        .textured-touch:active {
+            transform: translateY(1px) scale(.99);
+        }
+
+        .sizzle {
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            background: linear-gradient(180deg, rgba(235, 170, 84, .24), rgba(255, 255, 255, .06));
+            border: 1px solid rgba(235, 170, 84, .24);
+            color: white;
+            backdrop-filter: blur(20px) contrast(.95);
+            -webkit-backdrop-filter: blur(20px) contrast(.95);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                0 20px 48px rgba(0, 0, 0, .34);
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), box-shadow .45s ease, border-color .35s ease;
+        }
+
+        .sizzle::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, .18), transparent 12%),
+                radial-gradient(circle at 70% 68%, rgba(255, 255, 255, .12), transparent 10%),
+                radial-gradient(circle at 55% 45%, rgba(255, 255, 255, .14), transparent 10%);
+            opacity: 0;
+            transform: scale(.9);
+            transition: .5s ease;
+            pointer-events: none;
+        }
+
+        .sizzle::after {
+            content: "";
+            position: absolute;
+            inset: -100%;
+            background:
+                linear-gradient(120deg, transparent 46%, rgba(255, 255, 255, .58) 50%, transparent 54%);
+            transform: translateX(-130%) rotate(10deg);
+            animation: sheen 9s ease-in-out infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .sizzle:hover {
+            transform: translateY(-4px);
+            border-color: rgba(235, 170, 84, .4);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                0 26px 60px rgba(0, 0, 0, .42),
+                0 0 0 1px rgba(235, 170, 84, .12);
+        }
+
+        .sizzle:hover::before {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .slat-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 80;
+            background: rgba(10, 10, 10, .74);
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(14px) contrast(.96);
+            -webkit-backdrop-filter: blur(14px) contrast(.96);
+        }
+
+        .slat-inner {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 1.1fr .8fr;
+            gap: 18px;
+            align-items: stretch;
+            padding: 16px 0;
+        }
+
+        .slat-brand,
+        .slat-nav,
+        .slat-action {
+            min-height: 58px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .04);
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+        }
+
+        .slat-brand {
+            justify-content: flex-start;
+            gap: 14px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .slat-nav {
+            justify-content: center;
+            gap: 18px;
+            text-transform: uppercase;
+            letter-spacing: .26em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .62);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .slat-nav::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slat-nav a {
+            color: inherit;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: .25s ease;
+        }
+
+        .slat-nav a:hover {
+            color: #f2b965;
+        }
+
+        .slat-action {
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .mini-meter {
+            width: 100%;
+            max-width: 220px;
+            height: 8px;
+            background: rgba(255, 255, 255, .08);
+            overflow: hidden;
+        }
+
+        .mini-meter span {
+            display: block;
+            width: 72%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(237, 176, 84, .86), rgba(255, 232, 181, .95));
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100svh;
+            background: var(--bg);
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            position: relative;
+            z-index: 4;
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            min-height: 100svh;
+            display: grid;
+            grid-template-columns: .4fr .6fr;
+            gap: 0;
+            padding-top: 110px;
+        }
+
+        .hero-copy {
+            position: relative;
+            z-index: 30;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 56px 22px 56px 0;
+        }
+
+        .hero-copy-inner {
+            width: 100%;
+            max-width: 560px;
+            padding: 28px 28px 32px;
+            background: rgba(14, 14, 14, .44);
+            border: 1px solid rgba(255, 255, 255, .08);
+            backdrop-filter: blur(20px) contrast(.95);
+            -webkit-backdrop-filter: blur(20px) contrast(.95);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .08),
+                0 24px 60px rgba(0, 0, 0, .38);
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .hero-kicker span {
+            width: 8px;
+            height: 8px;
+            background: var(--ochre);
+            display: inline-block;
+        }
+
+        .hero-title {
+            margin-top: 22px;
+            font-size: clamp(4.2rem, 10vw, 8.6rem);
+            line-height: .82;
+            letter-spacing: -.08em;
+            color: white;
+            text-shadow:
+                0 8px 20px rgba(0, 0, 0, .22),
+                0 0 20px rgba(235, 170, 84, .06);
+        }
+
+        .heat-wave {
+            display: inline-block;
+            animation: heatWave 6.5s ease-in-out infinite;
+            transform-origin: left center;
+        }
+
+        .hero-text {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, .82);
+            font-family: "PP Neue Montreal", "Inter Tight", sans-serif;
+            line-height: 1.95;
+            font-size: 16px;
+        }
+
+        .specs {
+            margin-top: 22px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .specs span {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 26px;
+        }
+
+        .hero-cta button {
+            height: 54px;
+            padding: 0 20px;
+            border: none;
+            cursor: pointer;
+            font-size: 10px;
+            letter-spacing: .28em;
+            text-transform: uppercase;
+        }
+
+        .sizzle-wrap {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .hero-visual {
+            position: relative;
+            min-height: 100svh;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .splash-shell {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            width: 120%;
+            height: 110%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .splash-shell video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+        }
+
+        .mask-edge {
+            -webkit-mask-image: linear-gradient(to right,
+                    transparent 0%,
+                    black 15%,
+                    black 70%,
+                    transparent 90%);
+            mask-image: linear-gradient(to right,
+                    transparent 0%,
+                    black 15%,
+                    black 70%,
+                    transparent 90%);
+        }
+
+        .sauce-glow {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 26%, rgba(0, 0, 0, 0.28), transparent 18%),
+                radial-gradient(circle at 52% 24%, rgba(255, 228, 195, .12), transparent 16%),
+                radial-gradient(circle at 70% 62%, rgba(110, 208, 76, .16), transparent 16%),
+                linear-gradient(180deg, rgba(0, 37, 32, 0.08), rgba(0, 0, 0, .4));
+            pointer-events: none;
+        }
+
+        .ingredient-field {
+            position: absolute;
+            inset: 0;
+            z-index: 22;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .seed,
+        .drip {
+            position: absolute;
+            background: rgba(255, 242, 216, .9);
+            transform-origin: center;
+            filter: drop-shadow(0 0 8px rgba(255, 193, 85, .12));
+            animation: flight 10s linear infinite;
+        }
+
+        .seed {
+            width: 10px;
+            height: 4px;
+            border-radius: 2px;
+        }
+
+        .drip {
+            width: 18px;
+            height: 6px;
+            border-radius: 2px;
+            background: rgba(255, 126, 40, .9);
+        }
+
+        .heat-scrim {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 42%;
+            z-index: 28;
+            background:
+                linear-gradient(90deg, rgba(12, 12, 12, .64), rgba(12, 12, 12, .32) 55%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .section {
+            padding: 120px 0;
+        }
+
+        .shell {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .ledger {
+            position: relative;
+            padding: 32px 0 8px;
+        }
+
+        .ledger::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 153, 60, .35), rgba(118, 204, 86, .24), transparent);
+        }
+
+        .ledger-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-end;
+            margin-bottom: 26px;
+        }
+
+        .ledger-head h2 {
+            font-size: clamp(2.8rem, 5.7vw, 6rem);
+            line-height: .88;
+            letter-spacing: -.07em;
+            color: white;
+        }
+
+        .ledger-head p {
+            max-width: 420px;
+            line-height: 1.95;
+            color: rgba(255, 255, 255, .66);
+        }
+
+        .assemble {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: assembleIn .9s cubic-bezier(.16, 1, .3, 1) forwards;
+            animation-timeline: view();
+            animation-range: entry 12% cover 32%;
+        }
+
+        .strip {
+            display: grid;
+            grid-template-columns: .9fr 1.1fr .4fr;
+            gap: 18px;
+            align-items: end;
+            padding: 22px 0;
+            border-top: 1px solid rgba(255, 255, 255, .09);
+            border-bottom: 1px solid rgba(255, 255, 255, .05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .strip::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(255, 153, 60, .08), transparent 35%, rgba(118, 204, 86, .06) 75%, transparent 100%);
+            opacity: .55;
+            pointer-events: none;
+        }
+
+        .strip:nth-child(2) {
+            margin-left: 6%;
+            width: 88%;
+        }
+
+        .strip:nth-child(3) {
+            margin-left: 11%;
+            width: 82%;
+        }
+
+        .strip:nth-child(4) {
+            margin-left: 4%;
+            width: 92%;
+        }
+
+        .strip .label {
+            text-transform: uppercase;
+            letter-spacing: .3em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .55);
+        }
+
+        .strip h3 {
+            margin-top: 12px;
+            font-size: clamp(1.8rem, 3.2vw, 3.4rem);
+            line-height: .94;
+            letter-spacing: -.05em;
+            color: white;
+        }
+
+        .strip p {
+            margin-top: 16px;
+            max-width: 48ch;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, .68);
+        }
+
+        .strip .metric {
+            justify-self: end;
+            font-size: clamp(3rem, 6vw, 5.4rem);
+            line-height: 1;
+            letter-spacing: -.08em;
+            color: rgba(255, 255, 255, .14);
+        }
+
+        .text-stack {
+            padding: 120px 0;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 153, 60, .09), transparent 18%),
+                radial-gradient(circle at 84% 28%, rgba(118, 204, 86, .08), transparent 16%),
+                linear-gradient(180deg, rgba(17, 17, 17, .55), rgba(8, 8, 8, .92));
+        }
+
+        .text-stack-shell {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .recipe-wall {
+            padding: 48px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .025)),
+                linear-gradient(135deg, rgba(255, 255, 255, .035), transparent 42%);
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, .34);
+        }
+
+        .recipe-wall h2 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            line-height: .88;
+            letter-spacing: -.07em;
+            color: white;
+        }
+
+        .recipe-wall p {
+            margin-top: 18px;
+            max-width: 680px;
+            line-height: 2;
+            color: rgba(255, 255, 255, .68);
+            font-family: "PP Neue Montreal", "Inter Tight", sans-serif;
+            font-size: 16px;
+        }
+
+        .layer-rail {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            padding-top: 14px;
+        }
+
+        .layer {
+            min-height: 128px;
+            padding: 20px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .03)),
+                linear-gradient(135deg, rgba(255, 255, 255, .05), transparent 65%);
+            border: 1px solid rgba(255, 255, 255, .07);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, .24);
+            transform: translateX(0);
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), opacity .45s ease;
+            opacity: 0;
+        }
+
+        .layer:nth-child(2) {
+            margin-left: 6%;
+        }
+
+        .layer:nth-child(3) {
+            margin-left: 12%;
+        }
+
+        .layer:nth-child(4) {
+            margin-left: 4%;
+        }
+
+        .layer.in {
+            opacity: 1;
+        }
+
+        .layer .top {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .layer .tag {
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .55);
+        }
+
+        .layer .name {
+            font-size: clamp(1.5rem, 2.8vw, 2.7rem);
+            line-height: .95;
+            letter-spacing: -.05em;
+            color: white;
+        }
+
+        .layer .bar {
+            height: 8px;
+            background: rgba(255, 255, 255, .08);
+            overflow: hidden;
+            margin-top: 12px;
+        }
+
+        .layer .bar span {
+            display: block;
+            height: 100%;
+            width: var(--w, 70%);
+            background: linear-gradient(90deg, rgba(255, 153, 60, .75), rgba(118, 204, 86, .75));
+        }
+
+        .counter {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .counter span {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .7);
+        }
+
+        .finish {
+            padding: 120px 0 110px;
+        }
+
+        .finish-shell {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .menu-board {
+            padding: 56px;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .065), rgba(255, 255, 255, .02)),
+                linear-gradient(135deg, rgba(235, 170, 84, .08), transparent 35%, rgba(118, 204, 86, .06) 75%);
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow: 0 22px 70px rgba(0, 0, 0, .34);
+        }
+
+        .menu-board h2 {
+            font-size: clamp(3rem, 6vw, 6rem);
+            line-height: .88;
+            letter-spacing: -.07em;
+            color: white;
+        }
+
+        .menu-board p {
+            margin-top: 18px;
+            max-width: 740px;
+            color: rgba(255, 255, 255, .68);
+            line-height: 2;
+            font-family: "PP Neue Montreal", "Inter Tight", sans-serif;
+        }
+
+        .board-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 28px;
+        }
+
+        .info-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .info {
+            min-height: 160px;
+            padding: 24px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, .24);
+        }
+
+        .info .label {
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .52);
+        }
+
+        .info .value {
+            margin-top: 16px;
+            font-size: clamp(2.4rem, 4vw, 4.2rem);
+            line-height: .92;
+            letter-spacing: -.06em;
+            color: white;
+        }
+
+        .footer-line {
+            margin-top: 28px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .22), transparent);
+        }
+
+        .foot {
+            padding: 0 0 84px;
+        }
+
+        .foot-shell {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 28px 32px 34px;
+            background: rgba(255, 255, 255, .035);
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow: 0 22px 70px rgba(0, 0, 0, .22);
+        }
+
+        .foot-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .foot-grid .left {
+            max-width: 760px;
+        }
+
+        .foot-grid h3 {
+            font-size: clamp(2.2rem, 4vw, 4.6rem);
+            line-height: .92;
+            letter-spacing: -.06em;
+            color: white;
+        }
+
+        .foot-grid p {
+            margin-top: 16px;
+            color: rgba(255, 255, 255, .68);
+            line-height: 1.95;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+
+        .tags span {
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, .06);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes assembleIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heatWave {
+
+            0%,
+            100% {
+                transform: translateX(0) skewX(0deg);
+            }
+
+            25% {
+                transform: translateX(1px) skewX(-1deg);
+            }
+
+            50% {
+                transform: translateX(-1px) skewX(1deg);
+            }
+
+            75% {
+                transform: translateX(.5px) skewX(-.6deg);
+            }
+        }
+
+        @keyframes sheen {
+            to {
+                transform: translateX(240%) rotate(12deg);
+            }
+        }
+
+        @keyframes flight {
+            0% {
+                transform: translate3d(var(--x0), var(--y0), 0) rotate(var(--r0));
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate3d(var(--x1), var(--y1), 0) rotate(var(--r1));
+                opacity: 0;
+            }
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: .72s;
+            animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @media (max-width: 1180px) {
+            .slat-inner {
+                grid-template-columns: 1fr auto;
+            }
+
+            .slat-nav {
+                display: none;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                padding-top: 96px;
+            }
+
+            .hero-copy {
+                justify-content: flex-start;
+                padding: 36px 0 18px;
+            }
+
+            .hero-visual {
+                min-height: 70vh;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .heat-scrim {
+                width: 55%;
+            }
+
+            .text-stack-shell,
+            .finish-shell,
+            .sofa-split {
+                grid-template-columns: 1fr;
+            }
+
+            .strip {
+                grid-template-columns: 1fr auto;
+            }
+
+            .strip .metric {
+                grid-column: 2;
+                align-self: end;
+            }
+
+            .foot-grid {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .slat-inner {
+                width: min(100% - 20px, 1600px);
+            }
+
+            .hero-grid,
+            .shell,
+            .text-stack-shell,
+            .finish-shell,
+            .foot-shell {
+                width: min(100% - 20px, 1600px);
+            }
+
+            .hero-copy-inner,
+            .recipe-wall,
+            .menu-board {
+                padding: 24px;
+            }
+
+            .hero-title {
+                font-size: clamp(3.2rem, 16vw, 6rem);
+            }
+
+            .ledger-head,
+            .accessory-head {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .strip {
+                grid-template-columns: 1fr;
+            }
+
+            .strip .metric {
+                justify-self: start;
+            }
+
+            .shelf-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div
+            class="absolute left-[-8rem] top-24 h-[22rem] w-[22rem] bg-[radial-gradient(circle,rgba(255,149,53,.16),transparent_72%)] blur-3xl">
+        </div>
+        <div
+            class="absolute right-[-6rem] bottom-10 h-[22rem] w-[22rem] bg-[radial-gradient(circle,rgba(118,204,86,.1),transparent_72%)] blur-3xl">
+        </div>
+    </div>
+
+    <header class="slat-bar">
+        <div class="slat-inner">
+            <div class="slat-brand">
+                <div class="brand-mark">
+                    <iconify-icon icon="ph:hamburger-bold" class="text-2xl text-[#f2b965]"></iconify-icon>
+                </div>
+                <div class="leading-tight">
+                    <div class="copy text-[10px] uppercase tracking-[0.34em] text-white/50">Prime Gravity</div>
+                    <div class="text-sm text-white">The Art of the Burger</div>
+                </div>
+            </div>
+
+            <div class="slat-nav">
+                <a href="#assembly">Assembly</a>
+                <a href="#stack">Layering</a>
+                <a href="#finish">Finish</a>
+            </div>
+
+            <div class="slat-action">
+                <div class="mini-meter">
+                    <span></span>
+                </div>
+                <button class="textural-touch h-[44px] px-4 text-[10px] uppercase tracking-[0.28em]">
+                    Reserve
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-copy">
+                    <div class="hero-copy-inner">
+                        <div class="hero-kicker reveal">
+                            <span></span>
+                            Molecular assembly · Maillard-reaction aesthetics
+                        </div>
+
+                        <h1 class="hero-title display reveal">
+                            <span class="heat-wave block">Prime</span>
+                            <span class="heat-wave block">Gravity</span>
+                        </h1>
+
+                        <p class="hero-text reveal">
+                            An ultra-premium burger atelier shaped by hydro-suspension plating, textural layering, and a
+                            grill rhythm that feels engineered rather than served.
+                        </p>
+
+                        <div class="specs reveal">
+                            <span>Charcoal Black</span>
+                            <span>Molten Cheddar</span>
+                            <span>Jalapeño Finish</span>
+                        </div>
+
+                        <div class="hero-cta reveal">
+                            <button class="sizzle px-5">Sizzle-Glow Menu</button>
+                            <button class="textured-touch px-5">View ingredients</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="splash-shell">
+                        <video id="heroVideo" autoplay muted loop playsinline
+                            class="object-center w-full h-full object-cover [-webkit-mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_70%,transparent_90%)] [mask-image:linear-gradient(to_right,transparent_0%,black_15%,black_70%,transparent_90%)]">
+                            <source src="./video.mp4" type="video/mp4" />
+                        </video>
+                        <div class="sauce-glow"></div>
+                    </div>
+
+                    <div class="heat-scrim"></div>
+
+                    <div class="ingredient-field">
+                        <span class="seed"
+                            style="--x0:60vw;--y0:14vh;--x1:8vw;--y1:32vh;--r0:-12deg;--r1:16deg;left:58%;top:12%"></span>
+                        <span class="seed"
+                            style="--x0:62vw;--y0:22vh;--x1:12vw;--y1:44vh;--r0:14deg;--r1:-12deg;left:64%;top:18%"></span>
+                        <span class="seed"
+                            style="--x0:66vw;--y0:36vh;--x1:18vw;--y1:48vh;--r0:-8deg;--r1:8deg;left:70%;top:28%"></span>
+                        <span class="seed"
+                            style="--x0:58vw;--y0:48vh;--x1:14vw;--y1:58vh;--r0:10deg;--r1:-10deg;left:54%;top:38%"></span>
+                        <span class="seed"
+                            style="--x0:72vw;--y0:24vh;--x1:24vw;--y1:38vh;--r0:-14deg;--r1:14deg;left:76%;top:20%"></span>
+                        <span class="drip"
+                            style="--x0:68vw;--y0:18vh;--x1:18vw;--y1:26vh;--r0:-24deg;--r1:20deg;left:67%;top:14%"></span>
+                        <span class="drip"
+                            style="--x0:74vw;--y0:30vh;--x1:22vw;--y1:46vh;--r0:18deg;--r1:-22deg;left:74%;top:24%"></span>
+                        <span class="drip"
+                            style="--x0:70vw;--y0:50vh;--x1:16vw;--y1:56vh;--r0:-18deg;--r1:10deg;left:72%;top:42%"></span>
+                        <span class="seed"
+                            style="--x0:76vw;--y0:18vh;--x1:28vw;--y1:20vh;--r0:7deg;--r1:-7deg;left:81%;top:14%"></span>
+                        <span class="seed"
+                            style="--x0:78vw;--y0:44vh;--x1:30vw;--y1:52vh;--r0:-10deg;--r1:12deg;left:84%;top:36%"></span>
+                    </div>
+
+                    <div class="relative z-30 flex h-full items-center">
+                        <div class="w-[42%] px-4 md:px-8">
+                            <div class="smoked rounded-[1.2rem] p-5">
+                                <div class="copy text-[10px] uppercase tracking-[0.32em] text-white/58">
+                                    Hydro-suspension plating
+                                </div>
+                                <p class="mt-4 copy text-sm leading-7 text-white/80">
+                                    Sauce droplets and sesame seeds move behind the narrative like a live flame line,
+                                    bending the air around the typography.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="assembly" class="section">
+            <div class="shell ledger">
+                <div class="ledger-head assemble">
+                    <div>
+                        <div class="copy text-[10px] uppercase tracking-[0.34em] text-white/50">Assembly Ledger</div>
+                        <h2 class="display mt-5">
+                            Built like a production line, plated like a signature dish.
+                        </h2>
+                    </div>
+                    <p>
+                        Each stage follows the heat, not a grid. The sequence moves as a drip of sauce, with every layer
+                        assembled on scroll.
+                    </p>
+                </div>
+
+                <div class="space-y-5">
+                    <article class="strip assemble">
+                        <div>
+                            <div class="label">01 · Molecular assembly</div>
+                            <h3 class="display">Bun, patty, and lacquered edge.</h3>
+                            <p>
+                                A foundation of toasted brioche, precisely seared protein, and a thin glaze of glossy
+                                reduction.
+                            </p>
+                        </div>
+                        <div class="metric display">01</div>
+                        <div class="self-end text-right text-[10px] uppercase tracking-[0.28em] text-white/50">
+                            78g protein
+                        </div>
+                    </article>
+
+                    <article class="strip assemble">
+                        <div>
+                            <div class="label">02 · Maillard-reaction aesthetics</div>
+                            <h3 class="display">Surface tension, smoke, and caramelized depth.</h3>
+                            <p>
+                                The crust lands with engineered color, a deep amber edge that signals flavor before the
+                                first bite.
+                            </p>
+                        </div>
+                        <div class="metric display">02</div>
+                        <div class="self-end text-right text-[10px] uppercase tracking-[0.28em] text-white/50">
+                            14 min rest
+                        </div>
+                    </article>
+
+                    <article class="strip assemble">
+                        <div>
+                            <div class="label">03 · Textural layering</div>
+                            <h3 class="display">Crunch, melt, and contrast.</h3>
+                            <p>
+                                Pickle brightness, cheddar melt, onion bite, and sauce density are spaced like a
+                                perfectly tuned tasting curve.
+                            </p>
+                        </div>
+                        <div class="metric display">03</div>
+                        <div class="self-end text-right text-[10px] uppercase tracking-[0.28em] text-white/50">
+                            9 layers
+                        </div>
+                    </article>
+
+                    <article class="strip assemble">
+                        <div>
+                            <div class="label">04 · Grill rhythm</div>
+                            <h3 class="display">A slow-motion finish before service.</h3>
+                            <p>
+                                Final assembly is timed to the last ember, keeping the burger vivid, molten, and
+                                structurally elegant.
+                            </p>
+                        </div>
+                        <div class="metric display">04</div>
+                        <div class="self-end text-right text-[10px] uppercase tracking-[0.28em] text-white/50">
+                            Hot service
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="stack" class="text-stack">
+            <div class="text-stack-shell">
+                <div class="recipe-wall reveal">
+                    <div class="copy text-[10px] uppercase tracking-[0.34em] text-white/48">
+                        Flavor Stack
+                    </div>
+                    <h2 class="display mt-5">
+                        Ingredients suspended in a luxury of heat and texture.
+                    </h2>
+                    <p>
+                        The room opens into a rhythm of stacked materials: brioche warmth, charcoal edge, molten
+                        cheddar, and a clean jalapeño finish that keeps the palette alive.
+                    </p>
+                    <div class="counter">
+                        <span>Brioche</span>
+                        <span>Dry-aged</span>
+                        <span>Cheddar glaze</span>
+                        <span>Pickle brightness</span>
+                    </div>
+                </div>
+
+                <div class="layer-rail">
+                    <div class="layer reveal" style="--w:86%">
+                        <div class="top">
+                            <div>
+                                <div class="tag">Bread</div>
+                                <div class="name display">Toasted brioche base</div>
+                            </div>
+                            <div class="copy text-[10px] uppercase tracking-[0.28em] text-white/50">Warm</div>
+                        </div>
+                        <div class="bar"><span></span></div>
+                    </div>
+
+                    <div class="layer reveal" style="--w:74%">
+                        <div class="top">
+                            <div>
+                                <div class="tag">Protein</div>
+                                <div class="name display">Prime patty, seared hard</div>
+                            </div>
+                            <div class="copy text-[10px] uppercase tracking-[0.28em] text-white/50">Smoke</div>
+                        </div>
+                        <div class="bar"><span></span></div>
+                    </div>
+
+                    <div class="layer reveal" style="--w:66%">
+                        <div class="top">
+                            <div>
+                                <div class="tag">Melt</div>
+                                <div class="name display">Cheddar blanket</div>
+                            </div>
+                            <div class="copy text-[10px] uppercase tracking-[0.28em] text-white/50">Gloss</div>
+                        </div>
+                        <div class="bar"><span></span></div>
+                    </div>
+
+                    <div class="layer reveal" style="--w:58%">
+                        <div class="top">
+                            <div>
+                                <div class="tag">Finish</div>
+                                <div class="name display">Jalapeño spark</div>
+                            </div>
+                            <div class="copy text-[10px] uppercase tracking-[0.28em] text-white/50">Lift</div>
+                        </div>
+                        <div class="bar"><span></span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="finish" class="finish">
+            <div class="finish-shell">
+                <div class="menu-board reveal">
+                    <div class="copy text-[10px] uppercase tracking-[0.34em] text-white/48">
+                        Service Finish
+                    </div>
+                    <h2 class="display mt-5">
+                        A dining room tuned for texture, heat, and precision.
+                    </h2>
+                    <p>
+                        The final sequence settles into a warm, shadowed dining environment where each reservation feels
+                        like a backstage pass to the grill.
+                    </p>
+                    <div class="board-actions">
+                        <button class="sizzle h-[54px] px-5">Reserve a table</button>
+                        <button class="textured-touch h-[54px] px-5 text-white">Explore the atelier</button>
+                    </div>
+                </div>
+
+                <div class="info-stack">
+                    <div class="info reveal">
+                        <div class="label">Molten cheddar orange</div>
+                        <div class="value display">84°</div>
+                    </div>
+                    <div class="info reveal">
+                        <div class="label">Grill cadence</div>
+                        <div class="value display">Live</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="shell">
+                <div class="footer-line"></div>
+            </div>
+
+            <div class="foot">
+                <div class="foot-shell reveal">
+                    <div class="foot-grid">
+                        <div class="left">
+                            <h3 class="display">Prime Gravity finishes where the smoke clears.</h3>
+                            <p>
+                                A tactile, high-contrast burger atelier built around heat, structure, and a precise
+                                material language that feels plated rather than served.
+                            </p>
+                        </div>
+                        <div class="tags">
+                            <span>Maillard</span>
+                            <span>Assembly</span>
+                            <span>Hydro-suspension</span>
+                            <span>Textural layering</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const heroVideo = document.getElementById('heroVideo');
+        const supportsViewTransitions = typeof document.startViewTransition === 'function';
+        let ticking = false;
+
+        function updateHero() {
+            const max = window.innerHeight * 1.15;
+            const progress = Math.min(Math.max(window.scrollY / max, 0), 1);
+            const scale = 1.06 + progress * 0.18;
+            const translate = progress * 18;
+            if (heroVideo) {
+                heroVideo.style.transform = `scale(${scale}) translateY(${translate}px)`;
+            }
+        }
+
+        updateHero();
+
+        window.addEventListener('scroll', () => {
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                updateHero();
+                ticking = false;
+            });
+        }, { passive: true });
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                }
+            });
+        }, { threshold: 0.16 });
+
+        document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+        const assembleObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in');
+                }
+            });
+        }, { threshold: 0.14 });
+
+        document.querySelectorAll('.layer').forEach((el) => assembleObserver.observe(el));
+
+        document.querySelectorAll('a, button').forEach((el) => {
+            el.addEventListener('mouseenter', () => {
+                el.animate(
+                    [{ transform: 'translateY(0px)' }, { transform: 'translateY(-2px)' }],
+                    { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }
+                );
+            });
+
+            el.addEventListener('mouseleave', () => {
+                el.animate(
+                    [{ transform: 'translateY(-2px)' }, { transform: 'translateY(0px)' }],
+                    { duration: 220, easing: 'cubic-bezier(.16,1,.3,1)', fill: 'forwards' }
+                );
+            });
+        });
+
+        if (supportsViewTransitions) {
+            document.querySelectorAll('button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    document.startViewTransition(() => { });
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>

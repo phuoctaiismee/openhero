@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Obsidian Horizon | Stealth Living Systems</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Manrope:wght@200;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --basalt: oklch(12% 0.02 260);
+            --amber: oklch(65% 0.15 45);
+            --storm: oklch(25% 0.01 260);
+        }
+
+        body {
+            background-color: var(--basalt);
+            color: #fff;
+            margin: 0;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .tectonic-section {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            background: var(--basalt);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .blade-mask {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 25% 100%, 0 90%);
+        }
+
+        .sharp-card {
+            clip-path: polygon(0 0, 100% 5%, 95% 100%, 0% 95%);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(217, 119, 66, 0.2);
+        }
+
+        .hud-glass {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(25px) brightness(0.6);
+            border: 1px solid rgba(217, 119, 66, 0.3);
+        }
+
+        .font-syne {
+            font-family: 'Syncopate', sans-serif;
+        }
+
+        .text-edge {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+            color: transparent;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stealth-btn {
+            background: #000;
+            position: relative;
+            padding: 1.25rem 2.5rem;
+            clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(217, 119, 66, 0.5);
+            color: var(--amber);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+        }
+
+        .stealth-btn:hover {
+            background: var(--amber);
+            color: #000;
+            box-shadow: 0 0 30px rgba(217, 119, 66, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="fixed top-8 left-8 right-8 z-[100] flex justify-between items-center mix-blend-difference">
+        <div class="font-syne font-bold text-xs tracking-[0.5em] uppercase text-white">Obsidian / Horizon</div>
+        <div class="flex gap-12 font-syne text-[9px] tracking-widest uppercase z-20">
+            <a href="#villas" class="text-white hover:opacity-70 transition-all">Structures</a>
+            <a href="#tech" class="text-white hover:opacity-70 transition-all">Intelligence</a>
+            <a href="#contact" class="text-white hover:opacity-70 transition-all">Protocol</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="tectonic-section z-10">
+            <div class="absolute inset-0 blade-mask">
+                <video autoplay muted loop playsinline class="w-full h-full object-cover brightness-75">
+                    <source src="./video.mp4" type="video/mp4" />
+                </video>
+                <div class="absolute inset-0 bg-gradient-to-t from-basalt via-transparent to-transparent"></div>
+            </div>
+            <div class="relative z-20 px-12 md:px-24">
+                <h4 class="font-syne text-amber text-[10px] tracking-[0.6em] uppercase mb-6 reveal">Project: Silence /
+                    Location: Unknown</h4>
+                <h1 class="font-syne text-[12vw] font-bold leading-[0.8] uppercase tracking-tighter reveal delay-100">
+                    Stealth<br><span class="text-edge">Systems</span>
+                </h1>
+                <p class="max-w-md mt-10 text-gray-300 font-light leading-relaxed reveal delay-200">
+                    Arquitectura de baja observabilidad integrada en el permafrost volcánico. Residencias que no habitan
+                    el paisaje, sino que lo dominan desde la sombra.
+                </p>
+            </div>
+        </section>
+
+        <section id="villas" class="tectonic-section z-20 bg-storm">
+            <div class="grid grid-cols-1 md:grid-cols-12 w-full h-full">
+                <div class="hidden md:block col-span-5 h-full relative">
+                    <img src="https://plus.unsplash.com/premium_photo-1676657954811-9409c4830467?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        class="w-full h-full object-cover grayscale brightness-75">
+                    <div class="absolute inset-0 bg-amber/10 mix-blend-color"></div>
+                </div>
+                <div class="col-span-12 md:col-span-7 flex flex-col justify-center px-12 md:px-24 py-20">
+                    <span class="font-syne text-xs text-amber mb-4 tracking-widest uppercase">Structural Logic</span>
+                    <h2 class="font-syne text-6xl uppercase leading-none mb-10">Aerodynamic<br>Structuralism</h2>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+                        <div class="sharp-card p-8">
+                            <h3 class="font-syne text-sm mb-4 text-white">Monolithic Cantilevers</h3>
+                            <p class="text-xs text-gray-400 leading-loose">Nuestros voladizos de hasta 35 metros
+                                desafían la gravedad mediante núcleos de fibra de carbono y anclajes de roca viva.</p>
+                        </div>
+                        <div class="sharp-card p-8">
+                            <h3 class="font-syne text-sm mb-4 text-white">Zero-Glare Glazing</h3>
+                            <p class="text-xs text-gray-400 leading-loose">Cristal blindado con tratamiento fotocrómico
+                                de baja reflectancia. Invisible desde el radar y la visión humana.</p>
+                        </div>
+                        <div class="sharp-card p-8">
+                            <h3 class="font-syne text-sm mb-4 text-white">Thermal Obsidian</h3>
+                            <p class="text-xs text-gray-400 leading-loose">Fachadas de obsidiana sintética que absorben
+                                el calor residual para alimentar los sistemas de soporte vital off-grid.</p>
+                        </div>
+                        <div class="sharp-card p-8">
+                            <h3 class="font-syne text-sm mb-4 text-white">Seismic Anchors</h3>
+                            <p class="text-xs text-gray-400 leading-loose">Tecnología de amortiguación hidráulica
+                                integrada directamente en el basalto del acantilado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="tectonic-section z-30 bg-basalt">
+            <div class="absolute inset-0 opacity-10"
+                style="background-image: radial-gradient(circle at 2px 2px, var(--amber) 1px, transparent 0); background-size: 40px 40px;">
+            </div>
+
+            <div class="max-w-7xl mx-auto px-12 grid grid-cols-12 gap-8 items-center">
+                <div class="col-span-12 lg:col-span-5">
+                    <h2 class="font-syne text-5xl uppercase leading-none mb-8">Topographic<br>Integration</h2>
+                    <div class="space-y-6">
+                        <div
+                            class="hud-glass p-6 flex justify-between items-center group cursor-pointer hover:border-amber transition-all">
+                            <span class="font-syne text-xs">Acoustic Cloaking</span>
+                            <span class="text-amber text-xs">Active</span>
+                        </div>
+                        <div
+                            class="hud-glass p-6 flex justify-between items-center group cursor-pointer hover:border-amber transition-all">
+                            <span class="font-syne text-xs">Hydrological Recovery</span>
+                            <span class="text-amber text-xs">98% Efficient</span>
+                        </div>
+                        <div
+                            class="hud-glass p-6 flex justify-between items-center group cursor-pointer hover:border-amber transition-all">
+                            <span class="font-syne text-xs">Off-Grid Intelligence</span>
+                            <span class="text-amber text-xs">Quantum Link</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-12 lg:col-span-7 grid grid-cols-2 gap-4 h-[60vh]">
+                    <div class="bg-gray-900 sharp-card overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?q=80&w=710&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            class="w-full h-full object-cover grayscale hover:scale-110 transition-transform duration-700">
+                    </div>
+                    <div class="bg-gray-900 sharp-card overflow-hidden mt-12">
+                        <img src="https://images.unsplash.com/photo-1581250053637-02ad7eb70688?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                            class="w-full h-full object-cover grayscale hover:scale-110 transition-transform duration-700">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="contact" class="tectonic-section z-40 bg-black flex flex-col justify-end pb-20">
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-amber/5"></div>
+
+            <div class="w-full px-12 md:px-24 relative z-10">
+                <div class="flex flex-col md:flex-row justify-between items-end gap-20">
+                    <div class="max-w-2xl">
+                        <h2 class="font-syne text-[8vw] uppercase font-bold tracking-tighter leading-none mb-10">
+                            The<br>Abyss</h2>
+                        <p class="text-gray-400 font-syne text-[10px] tracking-widest uppercase mb-12">Coordinates:
+                            13.6394° S, 72.8814° W / 2026 Ready</p>
+                        <button class="stealth-btn">Initialize Acquisition</button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-20 text-right font-syne text-[10px] tracking-[0.3em] uppercase">
+                        <div class="space-y-6">
+                            <a href="#" class="block text-gray-400 hover:text-white">Dossier</a>
+                            <a href="#" class="block text-gray-400 hover:text-white">Philosophy</a>
+                            <a href="#" class="block text-gray-400 hover:text-white">Security</a>
+                        </div>
+                        <div class="space-y-6">
+                            <a href="#" class="block text-gray-400 hover:text-white">Encrypted Comms</a>
+                            <a href="#" class="block text-gray-400 hover:text-white">Satellite Uplink</a>
+                            <a href="#" class="block text-gray-400 hover:text-white">Terminal</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="mt-32 pt-8 border-t border-white/5 flex justify-between items-center opacity-50 text-[9px] uppercase tracking-widest">
+                    <span>Obsidian Horizon &copy; 2026</span>
+                    <span>Designed for Total Anonymity</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            document.querySelectorAll('.tectonic-section').forEach((section, index) => {
+                const speed = 0.05;
+                const yPos = -(scrolled * (index * speed));
+            });
+        });
+    </script>
+
+</body>
+
+</html>

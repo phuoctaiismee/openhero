@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vesta Atelier | The Art of Living</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style type="text/tailwindcss">
+        @theme {
+      --color-parchment: oklch(96% 0.02 80);
+      --color-boucle: oklch(93% 0.018 85);
+      --color-oak: oklch(72% 0.05 72);
+      --color-terracotta: oklch(58% 0.09 45);
+      --color-walnut: oklch(22% 0.02 48);
+      --color-smoke: oklch(40% 0.02 50);
+    }
+
+    @layer base {
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Inter Tight", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(194,153,104,.12), transparent 22%),
+          radial-gradient(circle at bottom right, rgba(150,110,84,.09), transparent 22%),
+          linear-gradient(180deg, oklch(96% 0.02 80), oklch(94% 0.018 80));
+        color: #221f1a;
+        overflow-x: hidden;
+      }
+
+      h1,h2,h3,h4 {
+        font-family: "Cormorant Garamond", serif;
+        letter-spacing: -.05em;
+      }
+    }
+
+    @layer utilities {
+
+      .atelier-window {
+        mask-image:
+          radial-gradient(circle at top center, black 42%, transparent 76%),
+          linear-gradient(black, black);
+        -webkit-mask-image:
+          radial-gradient(circle at top center, black 42%, transparent 76%),
+          linear-gradient(black, black);
+        mask-composite: intersect;
+        -webkit-mask-composite: source-in;
+        border-radius: 16rem 16rem 4rem 4rem;
+      }
+
+      .glass-smoke {
+        backdrop-filter: blur(15px) contrast(.95);
+        -webkit-backdrop-filter: blur(15px) contrast(.95);
+      }
+
+      .silk-touch {
+        position: relative;
+        overflow: hidden;
+        border-radius: 999px;
+        background:
+          linear-gradient(180deg,
+            rgba(255,255,255,.92),
+            rgba(241,233,219,.9));
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,.9),
+          0 18px 40px rgba(100,80,54,.08);
+        transition:
+          transform .4s cubic-bezier(.16,1,.3,1),
+          box-shadow .4s ease;
+      }
+
+      .silk-touch:hover {
+        transform: translateY(2px);
+        box-shadow:
+          inset 0 8px 20px rgba(109,84,54,.09),
+          inset 0 -1px 0 rgba(255,255,255,.8);
+      }
+
+      .grain-oak {
+        background-image:
+          linear-gradient(rgba(255,255,255,.02), rgba(255,255,255,.02)),
+          repeating-linear-gradient(
+            90deg,
+            rgba(102,75,48,.05) 0px,
+            rgba(102,75,48,.05) 1px,
+            transparent 1px,
+            transparent 7px
+          );
+      }
+
+      .woven-layer {
+        background-image:
+          linear-gradient(rgba(255,255,255,.06), rgba(255,255,255,.06)),
+          repeating-linear-gradient(
+            0deg,
+            rgba(113,88,58,.04) 0px,
+            rgba(113,88,58,.04) 1px,
+            transparent 1px,
+            transparent 5px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(113,88,58,.04) 0px,
+            rgba(113,88,58,.04) 1px,
+            transparent 1px,
+            transparent 5px
+          );
+      }
+
+      .arch-card {
+        border-radius: 10rem 10rem 2.5rem 2.5rem;
+      }
+
+      .kinetic-title span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(80px);
+        animation: reveal .8s cubic-bezier(.16,1,.3,1) forwards;
+      }
+
+      .kinetic-title span:nth-child(2) {
+        animation-delay: .08s;
+      }
+
+      .kinetic-title span:nth-child(3) {
+        animation-delay: .16s;
+      }
+
+      .kinetic-title span:nth-child(4) {
+        animation-delay: .24s;
+      }
+
+      .section-rise {
+        animation: rise linear both;
+        animation-timeline: view();
+        animation-range: entry 10% cover 40%;
+      }
+
+      .float-slow {
+        animation: floaty 8s ease-in-out infinite;
+      }
+
+      .float-slower {
+        animation: floaty 11s ease-in-out infinite;
+      }
+
+      .macro-track {
+        scrollbar-width: none;
+      }
+
+      .macro-track::-webkit-scrollbar {
+        display: none;
+      }
+
+      @keyframes reveal {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(60px) scale(.98);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes floaty {
+        0%,100% {
+          transform: translateY(0px);
+        }
+
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+
+      @keyframes zoomVideo {
+        from {
+          transform: scale(1.02);
+        }
+
+        to {
+          transform: scale(1.12);
+        }
+      }
+
+      .hero-video {
+        animation:
+          zoomVideo linear both;
+        animation-timeline: scroll(root);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div
+            class="absolute left-[5%] top-[10%] h-[32rem] w-[32rem] rounded-full bg-[radial-gradient(circle,rgba(201,161,113,.12),transparent_70%)] blur-3xl">
+        </div>
+        <div
+            class="absolute bottom-[0%] right-[8%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(150,103,78,.12),transparent_70%)] blur-3xl">
+        </div>
+    </div>
+
+    <header class="fixed top-0 inset-x-0 z-50 px-5 py-5">
+        <div class="mx-auto max-w-[1700px]">
+            <div
+                class="flex items-center justify-between rounded-[2.2rem] border border-white/40 bg-white/45 px-6 py-4 glass-smoke">
+
+                <div>
+                    <div class="text-[10px] uppercase tracking-[0.35em] text-[#6b6255]">
+                        Vesta Atelier
+                    </div>
+
+                    <div class="mt-1 text-sm text-[#413a31]">
+                        Curated Living Spaces
+                    </div>
+                </div>
+
+                <nav class="hidden xl:flex items-center gap-10 text-[11px] uppercase tracking-[0.25em] text-[#5b5247]">
+                    <a href="#collection" class="hover:opacity-60 transition">Collection</a>
+                    <a href="#materials" class="hover:opacity-60 transition">Materials</a>
+                    <a href="#residence" class="hover:opacity-60 transition">Residence</a>
+                </nav>
+
+                <button class="silk-touch px-7 py-3 text-[11px] uppercase tracking-[0.25em] text-[#43392d]">
+                    Book Private Visit
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-[110px]">
+
+        <section class="relative min-h-screen overflow-hidden">
+
+            <div class="mx-auto grid min-h-screen max-w-[1700px] grid-cols-1 xl:grid-cols-[.42fr_.58fr]">
+
+                <div class="relative z-20 flex items-center px-8 py-20 xl:px-20">
+
+                    <div class="max-w-2xl">
+                        <h1 class="kinetic-title text-[clamp(4rem,8vw,8rem)] leading-[0.88] text-[#231f19]">
+                            <span>The Art</span><br>
+                            <span>of</span><br>
+                            <span>Living</span>
+
+                        </h1>
+
+                        <p
+                            class="glass-smoke mt-10 max-w-xl rounded-[2.2rem] bg-white/35 p-7 text-lg leading-9 text-[#4a4339]">
+                            Sculptural furniture systems inspired by tactile materiality, mid-century restraint, and the
+                            silence of architectural space.
+                        </p>
+
+                        <div class="mt-10 flex flex-wrap gap-4">
+
+                            <button class="silk-touch px-8 py-5 text-[11px] uppercase tracking-[0.25em] text-[#43392d]">
+                                Explore Collection
+                            </button>
+
+                            <button
+                                class="rounded-full bg-[#d8c1a3]/50 px-8 py-5 text-[11px] uppercase tracking-[0.25em] text-[#43392d] glass-smoke">
+                                View Residences
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="relative flex items-center justify-center overflow-visible px-4 py-6 xl:px-10">
+                    <div class="flex w-full">
+                        <video autoplay muted loop playsinline
+                            class="hero-video absolute inset-0 h-full w-full object-cover ">
+                            <source src="./video.mp4" type="video/mp4">
+                        </video>
+
+                        <div
+                            class="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,.04),rgba(0,0,0,.18))]">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="collection" class="grain-oak relative overflow-hidden px-6 py-28">
+
+            <div class="mx-auto max-w-[1700px]">
+
+                <div class="section-rise mb-16 max-w-4xl">
+
+                    <div class="text-[10px] uppercase tracking-[0.35em] text-[#7a6b5c]">
+                        The Collection Arch
+                    </div>
+
+                    <h2 class="mt-5 text-[clamp(3rem,6vw,5.8rem)] leading-[0.9] text-[#241f19]">
+                        Sculptural forms curated like a private gallery.
+                    </h2>
+
+                </div>
+
+                <div class="columns-1 gap-8 md:columns-2 xl:columns-3">
+
+                    <article class="arch-card section-rise mb-8 overflow-hidden bg-white/50 p-5 backdrop-blur-2xl">
+
+                        <div class="h-[34rem] overflow-hidden rounded-[7rem]">
+
+                            <video autoplay muted loop playsinline class="h-full w-full object-cover">
+                                <source src="./video.mp4" type="video/mp4">
+                            </video>
+
+                        </div>
+
+                        <div class="px-4 py-6">
+
+                            <div class="text-[10px] uppercase tracking-[0.3em] text-[#7b6d5b]">
+                                Bouclé Composition
+                            </div>
+
+                            <h3 class="mt-4 text-4xl text-[#231f19]">
+                                Crescent Sofa
+                            </h3>
+
+                        </div>
+
+                    </article>
+
+                    <article class="arch-card section-rise float-slow mb-8 overflow-hidden bg-[#e4d4bf]/70 p-5">
+
+                        <div class="h-[22rem] overflow-hidden rounded-[6rem] bg-[#f4ede4] p-5">
+
+                            <div
+                                class="flex h-full items-end rounded-[5rem] bg-[linear-gradient(180deg,#e4d3bd,#cfb393)] p-7">
+
+                                <div>
+
+                                    <div class="text-[10px] uppercase tracking-[0.28em] text-[#5e4c39]">
+                                        Mid-century modernism
+                                    </div>
+
+                                    <div class="mt-4 text-5xl font-semibold text-[#2a241c]">
+                                        1972
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <article class="arch-card section-rise mb-8 overflow-hidden bg-white/40 p-5 backdrop-blur-2xl">
+
+                        <div class="h-[42rem] overflow-hidden rounded-[8rem]">
+
+                            <video autoplay muted loop playsinline class="h-full w-full object-cover">
+                                <source src="./video.mp4" type="video/mp4">
+                            </video>
+
+                        </div>
+
+                        <div class="px-4 py-6">
+
+                            <div class="text-[10px] uppercase tracking-[0.3em] text-[#7b6d5b]">
+                                Artisanal joinery
+                            </div>
+
+                            <h3 class="mt-4 text-4xl text-[#231f19]">
+                                Walnut Arc
+                            </h3>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="materials" class="woven-layer relative overflow-hidden py-28">
+
+            <div class="mx-auto max-w-[1700px]">
+
+                <div class="section-rise px-6">
+
+                    <div class="text-[10px] uppercase tracking-[0.35em] text-[#7a6b5c]">
+                        Tactile Storytelling
+                    </div>
+
+                    <h2 class="mt-5 max-w-5xl text-[clamp(3rem,6vw,6rem)] leading-[0.92] text-[#241f19]">
+                        Material transitions shaped through touch, grain, and shadow.
+                    </h2>
+
+                </div>
+
+                <div class="macro-track mt-20 flex gap-8 overflow-x-auto px-6 pb-6">
+
+                    <article class="section-rise min-w-[32rem] rounded-[4rem] bg-[#f4ece2]/70 p-6 backdrop-blur-2xl">
+
+                        <div class="overflow-hidden rounded-[3rem]">
+
+                            <video autoplay muted loop playsinline class="h-[30rem] w-full object-cover">
+                                <source src="./video.mp4" type="video/mp4">
+                            </video>
+
+                        </div>
+
+                        <div class="mt-6 flex items-end justify-between">
+
+                            <div>
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-[#776858]">
+                                    Wool composition
+                                </div>
+
+                                <div class="mt-3 text-4xl text-[#251f19]">
+                                    Bouclé Ivory
+                                </div>
+                            </div>
+
+                            <div class="text-sm text-[#5f564b]">
+                                Soft thermal layering
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <article class="section-rise min-w-[48rem] rounded-[4rem] bg-[#d7c0a3]/40 p-6">
+
+                        <div class="overflow-hidden rounded-[3rem]">
+
+                            <video autoplay muted loop playsinline class="h-[30rem] w-full object-cover">
+                                <source src="./video.mp4" type="video/mp4">
+                            </video>
+
+                        </div>
+
+                        <div class="mt-6 grid grid-cols-2 gap-6">
+
+                            <div>
+
+                                <div class="text-[10px] uppercase tracking-[0.3em] text-[#6d5c49]">
+                                    Oak detailing
+                                </div>
+
+                                <div class="mt-4 text-5xl text-[#231f19]">
+                                    Warm Grain
+                                </div>
+
+                            </div>
+
+                            <div class="text-base leading-8 text-[#4f473e]">
+                                Hand-finished wood textures engineered for architectural calm and tonal continuity.
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                    <article class="section-rise min-w-[28rem] rounded-[4rem] bg-[#efe6db]/80 p-6 backdrop-blur-2xl">
+
+                        <div class="overflow-hidden rounded-[3rem]">
+
+                            <video autoplay muted loop playsinline class="h-[30rem] w-full object-cover">
+                                <source src="./video.mp4" type="video/mp4">
+                            </video>
+
+                        </div>
+
+                        <div class="mt-6">
+
+                            <div class="text-[10px] uppercase tracking-[0.3em] text-[#7c6d5b]">
+                                Leather balance
+                            </div>
+
+                            <div class="mt-4 text-4xl text-[#241f19]">
+                                Smoked Camel
+                            </div>
+
+                        </div>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="residence" class="relative overflow-hidden bg-[#241c18] px-6 py-28 text-white">
+
+            <div class="absolute inset-0 opacity-[0.12]">
+
+                <div
+                    class="h-full w-full bg-[repeating-linear-gradient(90deg,rgba(255,255,255,.08)_0px,rgba(255,255,255,.08)_1px,transparent_1px,transparent_8px)]">
+                </div>
+
+            </div>
+
+            <div
+                class="absolute left-[8%] top-[20%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(201,161,113,.14),transparent_72%)] blur-3xl">
+            </div>
+
+            <div class="relative mx-auto max-w-[1700px]">
+
+                <div class="grid gap-16 xl:grid-cols-[1fr_.55fr]">
+
+                    <div class="section-rise">
+
+                        <div class="text-[10px] uppercase tracking-[0.35em] text-white/40">
+                            The Residence Footer
+                        </div>
+
+                        <h2 class="mt-6 max-w-4xl text-[clamp(3rem,6vw,6rem)] leading-[0.9] text-white">
+                            Designed to feel less like a website and more like a private residence.
+                        </h2>
+
+                    </div>
+
+                    <div class="section-rise flex flex-col justify-end">
+
+                        <div class="rounded-[3rem] bg-white/[0.04] p-8 backdrop-blur-2xl">
+
+                            <div class="space-y-5 text-sm uppercase tracking-[0.25em] text-white/55">
+
+                                <div class="flex items-center justify-between">
+                                    <span>Spatial Ergonomics</span>
+                                    <span>01</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <span>Tactile Materiality</span>
+                                    <span>02</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <span>Curvilinear Systems</span>
+                                    <span>03</span>
+                                </div>
+
+                                <div class="flex items-center justify-between">
+                                    <span>Artisanal Joinery</span>
+                                    <span>04</span>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-24 flex flex-wrap items-center justify-between gap-6 border-t border-white/10 pt-8">
+
+                    <div>
+
+                        <div class="text-[10px] uppercase tracking-[0.35em] text-white/40">
+                            Vesta Atelier
+                        </div>
+
+                        <div class="mt-2 text-white/70">
+                            Bespoke Living Spaces
+                        </div>
+
+                    </div>
+
+                    <button class="silk-touch px-8 py-5 text-[11px] uppercase tracking-[0.25em] text-[#2b241d]">
+                        Request Residence Catalog
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+
+        if (document.startViewTransition) {
+            document.querySelectorAll("button").forEach((button) => {
+                button.addEventListener("click", () => {
+                    document.startViewTransition(() => { });
+                });
+            });
+        }
+
+    </script>
+
+</body>
+
+</html>

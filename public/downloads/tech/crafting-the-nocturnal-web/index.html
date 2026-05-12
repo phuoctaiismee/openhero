@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aether House | Crafting the Nocturnal Web</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            color-scheme: dark;
+            --night: oklch(15% 0.04 220);
+            --tealwood: oklch(24% 0.05 220);
+            --sunset: oklch(64% 0.16 54);
+            --amber: oklch(76% 0.15 75);
+            --indigo: oklch(23% 0.08 275);
+            --ink: oklch(96% 0.01 220);
+            --muted: rgba(255, 255, 255, .68);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            font-family: "Inter Tight", sans-serif;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255, 154, 90, .26), transparent 24%),
+                radial-gradient(circle at 20% 14%, rgba(61, 145, 142, .16), transparent 20%),
+                linear-gradient(180deg, oklch(18% 0.05 28) 0%, oklch(15% 0.04 220) 42%, oklch(13% 0.04 240) 100%);
+            color: white;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .03) 1px, transparent 1px);
+            background-size: 104px 104px;
+            opacity: .18;
+            mask-image: radial-gradient(circle at center, black 35%, transparent 88%);
+            z-index: -2;
+        }
+
+        .display {
+            font-family: "Cormorant Garamond", serif;
+            letter-spacing: -.06em;
+        }
+
+        .mono {
+            font-family: "IBM Plex Mono", monospace;
+        }
+
+        .cozy-layer {
+            background:
+                linear-gradient(180deg, rgba(20, 36, 38, .88), rgba(12, 21, 24, .78)),
+                linear-gradient(135deg, rgba(255, 185, 102, .08), transparent 38%);
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 26px 80px rgba(0, 0, 0, .34);
+            backdrop-filter: blur(24px) saturate(1.08);
+            -webkit-backdrop-filter: blur(24px) saturate(1.08);
+        }
+
+        .lantern-core {
+            position: relative;
+            overflow: hidden;
+            border-radius: 999px;
+            background: linear-gradient(180deg, rgba(20, 22, 24, .94), rgba(11, 13, 16, .9));
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: white;
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), box-shadow .45s ease, border-color .35s ease;
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 18px 60px rgba(0, 0, 0, .28);
+        }
+
+        .lantern-core::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 50% 50%, rgba(255, 189, 98, .14), transparent 36%),
+                radial-gradient(circle at 50% 50%, rgba(255, 145, 62, .08), transparent 54%);
+            opacity: 0;
+            transition: .45s ease;
+            pointer-events: none;
+        }
+
+        .lantern-core::after {
+            content: "";
+            position: absolute;
+            inset: -120%;
+            background:
+                linear-gradient(120deg, transparent 44%, rgba(255, 193, 103, .52) 50%, transparent 56%);
+            transform: translateX(-140%) rotate(10deg);
+            animation: sheen 9s ease-in-out infinite;
+            pointer-events: none;
+            mix-blend-mode: screen;
+        }
+
+        .lantern-core:hover {
+            transform: translateY(-3px);
+            box-shadow:
+                inset 0 1px 0 rgba(255, 255, 255, .06),
+                0 0 0 1px rgba(255, 189, 98, .18),
+                0 22px 60px rgba(0, 0, 0, .34);
+        }
+
+        .lantern-core:hover::before {
+            opacity: 1;
+        }
+
+        .hero {
+            min-height: 100svh;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 153, 84, .3) 0%, rgba(18, 21, 28, .86) 52%, rgba(11, 14, 18, .95) 100%);
+        }
+
+        .hero-video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            will-change: transform;
+            mask-image: radial-gradient(circle at center, black 0 52%, rgba(0, 0, 0, .92) 64%, rgba(0, 0, 0, .62) 78%, transparent 94%);
+            -webkit-mask-image: radial-gradient(circle at center, black 0 52%, rgba(0, 0, 0, .92) 64%, rgba(0, 0, 0, .62) 78%, transparent 94%);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at center, rgba(255, 189, 98, .14), transparent 18%),
+                radial-gradient(circle at center, rgba(0, 0, 0, .15), rgba(0, 0, 0, .22) 55%, rgba(0, 0, 0, .38) 100%);
+            pointer-events: none;
+        }
+
+        .hero-center {
+            position: relative;
+            z-index: 5;
+            min-height: 100svh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 110px 24px 42px;
+        }
+
+        .hero-shell {
+            max-width: 980px;
+            padding: 28px 30px 30px;
+            border-radius: 2.2rem;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .08);
+            border: 1px solid rgba(255, 255, 255, .12);
+            color: rgba(255, 255, 255, .8);
+            text-transform: uppercase;
+            letter-spacing: .3em;
+            font-size: 10px;
+        }
+
+        .hero-kicker span {
+            width: 8px;
+            height: 8px;
+            background: var(--amber);
+            display: inline-block;
+            box-shadow: 0 0 18px rgba(255, 193, 103, .55);
+        }
+
+        .hero-title {
+            margin-top: 24px;
+            font-size: clamp(4.4rem, 10vw, 9.2rem);
+            line-height: .82;
+            letter-spacing: -.09em;
+            color: white;
+            text-shadow: 0 18px 38px rgba(0, 0, 0, .22);
+            animation: breath 7s ease-in-out infinite;
+        }
+
+        .hero-sub {
+            margin: 26px auto 0;
+            max-width: 760px;
+            font-size: 18px;
+            line-height: 1.95;
+            color: rgba(255, 255, 255, .84);
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-top: 34px;
+        }
+
+        .hero-actions button {
+            height: 56px;
+            padding: 0 22px;
+            border: none;
+            cursor: pointer;
+            font-size: 10px;
+            letter-spacing: .26em;
+            text-transform: uppercase;
+        }
+
+        .hero-chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 24px;
+        }
+
+        .hero-chips span {
+            padding: 10px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .09);
+            border: 1px solid rgba(255, 255, 255, .09);
+            color: rgba(255, 255, 255, .9);
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: 10px;
+        }
+
+        .section {
+            padding: 124px 0;
+        }
+
+        .wrap {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            gap: 22px;
+            align-items: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(3rem, 6vw, 6.2rem);
+            line-height: .9;
+            letter-spacing: -.07em;
+        }
+
+        .section-heading p {
+            max-width: 470px;
+            color: rgba(255, 255, 255, .7);
+            line-height: 1.9;
+        }
+
+        .code-window {
+            position: relative;
+            width: min(1080px, calc(100% - 32px));
+            margin: 0 auto;
+            border-radius: 2.6rem;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(22, 38, 40, .9), rgba(10, 16, 18, .92));
+            border: 1px solid rgba(255, 255, 255, .08);
+            box-shadow:
+                0 26px 80px rgba(0, 0, 0, .38);
+        }
+
+        .code-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, .08);
+            background: rgba(255, 255, 255, .03);
+        }
+
+        .dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .16);
+        }
+
+        .code-top .tag {
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .62);
+        }
+
+        .code-body {
+            padding: 34px 22px 28px;
+            display: grid;
+            grid-template-columns: 1fr .72fr;
+            gap: 28px;
+        }
+
+        .manifesto {
+            min-height: 320px;
+            padding: 24px;
+            border-radius: 2rem;
+            background: rgba(255, 255, 255, .04);
+            border: 1px solid rgba(255, 255, 255, .08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .manifesto::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .04), transparent 24%),
+                repeating-linear-gradient(180deg, rgba(255, 255, 255, .04) 0 1px, transparent 1px 28px);
+            opacity: .24;
+            pointer-events: none;
+        }
+
+        .manifesto .cursor {
+            display: inline-block;
+            width: 1px;
+            height: 1.2em;
+            background: rgba(255, 205, 127, .95);
+            margin-left: 2px;
+            animation: blink 1s steps(2, end) infinite;
+            vertical-align: -3px;
+        }
+
+        .manifesto pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: "IBM Plex Mono", monospace;
+            font-size: 12px;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, .8);
+        }
+
+        .manifesto .headline {
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            color: rgba(255, 255, 255, .58);
+            font-size: 10px;
+        }
+
+        .metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .metric {
+            padding: 20px;
+            border-radius: 1.8rem;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
+        .metric .label {
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .58);
+        }
+
+        .metric .value {
+            margin-top: 10px;
+            font-size: clamp(2rem, 4vw, 3.4rem);
+            line-height: 1;
+            letter-spacing: -.06em;
+            color: white;
+        }
+
+        .metric .sub {
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, .72);
+        }
+
+        .projects {
+            padding: 124px 0;
+            background:
+                radial-gradient(circle at 10% 0%, rgba(255, 179, 109, .12), transparent 16%),
+                linear-gradient(180deg, rgba(26, 35, 42, .92), rgba(11, 14, 18, 1));
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+
+        .project {
+            grid-column: span 4;
+            min-height: 240px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 2rem;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
+            opacity: 0;
+            transform: translateY(20px);
+            transition: transform .45s cubic-bezier(.16, 1, .3, 1), opacity .45s ease, box-shadow .45s ease, border-color .45s ease;
+            box-shadow: 0 18px 50px rgba(0, 0, 0, .24);
+        }
+
+        .project.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .05), transparent 32%),
+                radial-gradient(circle at 70% 28%, rgba(255, 197, 113, .12), transparent 18%);
+            pointer-events: none;
+        }
+
+        .project .inner {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            padding: 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .project .label {
+            text-transform: uppercase;
+            letter-spacing: .28em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .62);
+        }
+
+        .project h3 {
+            font-size: clamp(1.8rem, 3vw, 3rem);
+            line-height: .95;
+            letter-spacing: -.05em;
+            color: white;
+        }
+
+        .project p {
+            margin-top: 12px;
+            color: rgba(255, 255, 255, .72);
+            line-height: 1.9;
+            max-width: 36ch;
+        }
+
+        .project .on-hover {
+            opacity: 0;
+            transform: translateY(8px);
+            transition: .35s ease;
+            font-family: "IBM Plex Mono", monospace;
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: 10px;
+            color: rgba(255, 205, 127, .92);
+        }
+
+        .project:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 205, 127, .18);
+            box-shadow: 0 22px 56px rgba(0, 0, 0, .3);
+        }
+
+        .project:hover .on-hover {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project.wide {
+            grid-column: span 8;
+        }
+
+        .project.tall {
+            min-height: 320px;
+        }
+
+        .project .glow {
+            position: absolute;
+            inset: auto -20% -20% auto;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(255, 164, 72, .18), transparent 68%);
+            filter: blur(20px);
+            pointer-events: none;
+            opacity: .8;
+        }
+
+        .footer {
+            padding: 120px 0 94px;
+            background:
+                radial-gradient(circle at 20% 12%, rgba(255, 171, 89, .1), transparent 16%),
+                linear-gradient(180deg, rgba(7, 10, 14, 1), rgba(11, 13, 16, 1));
+        }
+
+        .footer-shell {
+            width: min(1600px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 36px;
+            border: 1px solid rgba(255, 255, 255, .08);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, .03), rgba(255, 255, 255, .015));
+            box-shadow: 0 24px 80px rgba(0, 0, 0, .34);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roofline {
+            position: absolute;
+            inset: auto 0 0 0;
+            height: 120px;
+            background:
+                linear-gradient(180deg, transparent 0%, rgba(255, 255, 255, .04) 100%),
+                linear-gradient(90deg, transparent 0 8%, rgba(255, 255, 255, .08) 8% 8.6%, transparent 8.6% 15%, rgba(255, 255, 255, .08) 15% 15.4%, transparent 15.4% 24%, rgba(255, 255, 255, .08) 24% 24.6%, transparent 24.6% 100%);
+            clip-path: polygon(0 100%, 6% 72%, 14% 80%, 20% 54%, 28% 70%, 35% 46%, 42% 58%, 50% 38%, 60% 64%, 70% 44%, 79% 62%, 88% 50%, 96% 70%, 100% 100%);
+            opacity: .52;
+            pointer-events: none;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            gap: 34px;
+            align-items: end;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer-grid h2 {
+            font-size: clamp(3rem, 6vw, 6.2rem);
+            line-height: .9;
+            letter-spacing: -.07em;
+            color: white;
+        }
+
+        .footer-grid p {
+            margin-top: 16px;
+            color: rgba(255, 255, 255, .68);
+            line-height: 1.95;
+            max-width: 760px;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: flex-end;
+        }
+
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .08);
+            text-transform: uppercase;
+            letter-spacing: .22em;
+            font-size: 10px;
+            color: rgba(255, 255, 255, .72);
+            text-decoration: none;
+            transition: .3s ease;
+        }
+
+        .links a:hover {
+            background: rgba(255, 255, 255, .09);
+            color: white;
+        }
+
+        .footer-bottom {
+            margin-top: 34px;
+            padding-top: 22px;
+            border-top: 1px solid rgba(255, 255, 255, .08);
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, .52);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .22em;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.16, 1, .3, 1);
+        }
+
+        .reveal.in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes sheen {
+            to {
+                transform: translateX(240%) rotate(10deg);
+            }
+        }
+
+        @keyframes breath {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.012);
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+            animation-duration: .75s;
+            animation-timing-function: cubic-bezier(.16, 1, .3, 1);
+        }
+
+        @media (max-width: 1180px) {
+
+            .section-heading,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .project,
+            .project.wide {
+                grid-column: span 6;
+            }
+
+            .code-body {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid p {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 760px) {
+
+            .wrap,
+            .footer-shell {
+                width: min(100% - 20px, 1600px);
+            }
+
+            .hero-shell {
+                padding: 18px 14px 20px;
+            }
+
+            .hero-title {
+                font-size: clamp(3.4rem, 14vw, 6.8rem);
+            }
+
+            .hero-sub {
+                font-size: 15px;
+            }
+
+            .section {
+                padding: 92px 0;
+            }
+
+            .projects {
+                padding: 92px 0;
+            }
+
+            .footer {
+                padding: 92px 0 72px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project,
+            .project.wide {
+                grid-column: span 1;
+            }
+
+            .footer-bottom {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fixed inset-0 pointer-events-none overflow-hidden">
+        <div
+            class="absolute left-[10%] top-[12%] h-[26rem] w-[26rem] rounded-full bg-[radial-gradient(circle,rgba(255,180,102,.18),transparent_70%)] blur-3xl">
+        </div>
+        <div
+            class="absolute right-[6%] bottom-[10%] h-[30rem] w-[30rem] rounded-full bg-[radial-gradient(circle,rgba(62,145,139,.12),transparent_70%)] blur-3xl">
+        </div>
+    </div>
+
+    <main>
+
+        <section class="hero">
+            <video id="heroVideo" autoplay muted loop playsinline class="hero-video">
+                <source src="./video.mp4" type="video/mp4">
+            </video>
+
+            <div class="hero-center">
+                <div class="hero-shell">
+                    <div class="hero-kicker reveal drop-shadow-[0_8px_8px_rgba(0,0,0,1)]">
+                        <span></span>
+                        Nocturnal code cycles · atmospheric deployment
+                    </div>
+
+                    <h1
+                        class="hero-title display reveal drop-shadow-[0_10px_20px_rgba(0,0,0,0.8)] drop-shadow-[0_8px_8px_rgba(0,0,0,1)]">
+                        Aether House
+                    </h1>
+
+                    <p class="hero-sub reveal drop-shadow-[0_8px_10px_rgba(0,0,0,1)] pb-60">
+                        Crafting the nocturnal web through artisanal digital architecture, low-latency tranquility, and
+                        twilight-logic engineering.
+                    </p>
+
+                    <div class="hero-actions reveal">
+                        <button class="lantern-core px-7 py-5 drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
+                            Open the Studio
+                        </button>
+                        <button
+                            class="rounded-full border border-white/10 bg-white/8 px-7 py-5 text-[11px] uppercase tracking-[0.26em] text-white/80 backdrop-blur-[20px] transition hover:bg-white/12 drop-shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+                            View Manifesto
+                        </button>
+                    </div>
+
+                    <div class="hero-chips reveal drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                        <span>Teal Wood</span>
+                        <span>Amber Glow</span>
+                        <span>Twilight Blue</span>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="wrap">
+                <div class="section-heading reveal">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.35em] text-white/50">
+                            The Code Window
+                        </div>
+                        <h2 class="display mt-5 text-white">
+                            A manifesto written in real time.
+                        </h2>
+                    </div>
+                    <p>
+                        The studio’s principles appear as a live terminal, floating inside a rounded liquid window with
+                        warm glass edges and lantern-like glow.
+                    </p>
+                </div>
+
+                <div class="code-window reveal">
+                    <div class="code-top">
+                        <div class="dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="tag">Nocturnal logic console</div>
+                        <div class="mono text-[10px] uppercase tracking-[0.28em] text-white/60">
+                            LIVE
+                        </div>
+                    </div>
+
+                    <div class="code-body">
+                        <div class="manifesto">
+                            <div class="headline">Manifesto</div>
+                            <pre id="manifestoText"></pre><span class="cursor"></span>
+                        </div>
+
+                        <div class="metrics">
+                            <div class="metric">
+                                <div class="label">Deployment rhythm</div>
+                                <div class="value display">24/7</div>
+                                <div class="sub">Atmospheric releases, quiet handoffs, and calm production cycles.</div>
+                            </div>
+
+                            <div class="metric">
+                                <div class="label">Latency posture</div>
+                                <div class="value display">Low</div>
+                                <div class="sub">Interfaces tuned for speed without abandoning warmth or editorial
+                                    focus.</div>
+                            </div>
+
+                            <div class="metric">
+                                <div class="label">Creative signal</div>
+                                <div class="value display">High</div>
+                                <div class="sub">A craft-first studio for creators, founders, and digital builders.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="projects">
+            <div class="wrap">
+                <div class="section-heading reveal">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.35em] text-white/50">
+                            City-Lights Grid
+                        </div>
+                        <h2 class="display mt-5 text-white">
+                            Projects that light up only when they are approached.
+                        </h2>
+                    </div>
+                    <p>
+                        Hover to reveal each project as a lit apartment window in the city below. Every tile carries a
+                        different atmosphere, tone, and craft note.
+                    </p>
+                </div>
+
+                <div class="projects-grid">
+                    <article class="project wide tall reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Digital Architecture</div>
+                                <h3 class="display mt-4">Midnight journal for a quiet luxury brand.</h3>
+                                <p>Typography-led landing pages that feel hand-assembled, with precise rhythm and
+                                    velvet-toned transitions.</p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Creator Studio</div>
+                                <h3 class="display mt-4">Editorial toolkits for founders.</h3>
+                                <p>Systems for storytelling, product launches, and ambient portfolio pages with
+                                    nocturnal restraint.</p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Luxury Commerce</div>
+                                <h3 class="display mt-4">High-trust boutique storefronts.</h3>
+                                <p>Warm, tactile shopping experiences that balance focus, softness, and conversion
+                                    clarity.</p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+
+                    <article class="project wide reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Atmospheric System</div>
+                                <h3 class="display mt-4">Dark-mode design infrastructure for modern teams.</h3>
+                                <p>Reusable motion, layout, and content primitives built to feel cohesive under
+                                    late-night creative pressure.</p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Motion Language</div>
+                                <h3 class="display mt-4">Soft flicker, branch sway, and lantern glow.</h3>
+                                <p>A motion layer that behaves like a city at dusk, not a dashboard at noon.</p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+
+                    <article class="project reveal">
+                        <div class="inner">
+                            <div>
+                                <div class="label">Product Strategy</div>
+                                <h3 class="display mt-4">Quiet systems for sharp operators.</h3>
+                                <p>Strategic landing experiences that turn complex services into warm, navigable spaces.
+                                </p>
+                            </div>
+                            <div class="on-hover">Open window</div>
+                        </div>
+                        <div class="glow"></div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="wrap">
+                <div class="section-heading reveal">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.35em] text-white/50">
+                            Sunset-to-Night Transition
+                        </div>
+                        <h2 class="display mt-5 text-white">
+                            A background that deepens as the page descends.
+                        </h2>
+                    </div>
+                    <p>
+                        Warm sunset notes drift into indigo as the page moves downward, keeping the interface human,
+                        soft, and focused.
+                    </p>
+                </div>
+
+                <div class="grid gap-8 xl:grid-cols-[1.1fr_.9fr]">
+                    <div class="cozy-layer rounded-[2.2rem] p-8 xl:p-10 reveal">
+                        <div class="mono text-[10px] uppercase tracking-[0.34em] text-white/50">
+                            Branch-level deployment
+                        </div>
+                        <h3 class="display mt-6 text-[clamp(2.4rem,5vw,4.8rem)] text-white">
+                            The studio’s operating rhythm is built for quiet focus.
+                        </h3>
+                        <p class="mt-6 max-w-2xl text-white/72 leading-8">
+                            Aether House combines nocturnal code cycles, slow atmospheric motion, and warm digital
+                            surfaces to create a premium environment for creators.
+                        </p>
+                    </div>
+
+                    <div class="cozy-layer rounded-[2.2rem] p-8 xl:p-10 reveal">
+                        <div class="mono text-[10px] uppercase tracking-[0.34em] text-white/50">
+                            Low-latency tranquility
+                        </div>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-center justify-between border-b border-white/8 pb-4">
+                                <span class="text-white/74">Strategy</span>
+                                <span class="mono text-[10px] uppercase tracking-[0.26em] text-white/55">Editorial
+                                    systems</span>
+                            </div>
+                            <div class="flex items-center justify-between border-b border-white/8 pb-4">
+                                <span class="text-white/74">Motion</span>
+                                <span class="mono text-[10px] uppercase tracking-[0.26em] text-white/55">120fps
+                                    feel</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-white/74">Tone</span>
+                                <span class="mono text-[10px] uppercase tracking-[0.26em] text-white/55">Warm,
+                                    nocturnal</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer-shell reveal">
+                <div class="roofline"></div>
+
+                <div class="relative z-10 footer-grid">
+                    <div>
+                        <div class="mono text-[10px] uppercase tracking-[0.35em] text-white/40">
+                            The Rooftop Footer
+                        </div>
+                        <h2 class="display mt-5">
+                            A panoramic city edge for star-mapped navigation.
+                        </h2>
+                        <p>
+                            The final view opens wide, like a rooftop above the city, with a minimalist list of links
+                            suspended under the night sky.
+                        </p>
+                    </div>
+
+                    <div class="links">
+                        <a href="#">Studio</a>
+                        <a href="#">Services</a>
+                        <a href="#">Projects</a>
+                        <a href="#">Contact</a>
+                    </div>
+                </div>
+
+                <div class="footer-bottom relative z-10">
+                    <div>Aether House</div>
+                    <div>Amber Gold · Teal Wood · Twilight Blue</div>
+                    <div>Crafting the nocturnal web</div>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+<script>
+    const manifesto = [
+        "Nocturnal code cycles are a craft, not a constraint.",
+        "Atmospheric deployment should feel like turning on a lantern in a quiet room.",
+        "Artisanal digital architecture rewards patience, material contrast, and sharp editorial focus.",
+        "Low-latency tranquility keeps interfaces calm even when systems move fast.",
+        "Twilight-logic engineering balances warmth, speed, and precision."
+    ];
+
+    const manifestoEl = document.getElementById("manifestoText");
+    const heroVideo = document.getElementById("heroVideo");
+    const supportsViewTransitions = typeof document.startViewTransition === "function";
+
+    let lineIndex = 0;
+    let charIndex = 0;
+    let completedText = ""; // Almacena las líneas ya escritas
+
+    function typeManifesto() {
+        if (!manifestoEl || lineIndex >= manifesto.length) return;
+
+        const currentLine = manifesto[lineIndex];
+        // Construimos el bloque de texto actual sin duplicar caracteres previos
+        const currentLineProgress = currentLine.slice(0, charIndex + 1);
+        const separator = (lineIndex > 0 && charIndex === 0) ? "\n\n" : (lineIndex > 0 ? "\n\n" : "");
+        
+        manifestoEl.textContent = completedText + (lineIndex > 0 ? "\n\n" : "") + currentLineProgress;
+
+        charIndex++;
+
+        if (charIndex < currentLine.length) {
+            setTimeout(typeManifesto, 25); // Velocidad de escritura
+        } else {
+            // Guardamos la línea completa para la siguiente iteración
+            completedText += (lineIndex > 0 ? "\n\n" : "") + currentLine;
+            lineIndex++;
+            charIndex = 0;
+            setTimeout(typeManifesto, 800); // Pausa dramática entre párrafos
+        }
+    }
+
+    // Iniciar el efecto de escritura
+    typeManifesto();
+
+    // Optimización de Scroll con requestAnimationFrame
+    let ticking = false;
+    function updateHero() {
+        const progress = Math.min(window.scrollY / (window.innerHeight * 1.15), 1);
+        const scale = 1.07 + progress * 0.1;
+        const translate = progress * 14;
+
+        if (heroVideo) {
+            heroVideo.style.transform = `scale(${scale}) translateY(${translate}px)`;
+        }
+    }
+
+    window.addEventListener("scroll", () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                updateHero();
+                ticking = false;
+            });
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // Inicializar posición del Hero al cargar
+    updateHero();
+
+    // Observador para revelar elementos con la clase .reveal
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("in");
+                // Una vez revelado, dejamos de observar para ahorrar recursos
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.16 });
+
+    document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+    // Micro-interacciones profesionales en botones y links
+    document.querySelectorAll("button, a").forEach((el) => {
+        el.addEventListener("mouseenter", () => {
+            el.animate(
+                [{ transform: "translateY(0px)" }, { transform: "translateY(-3px)" }],
+                { duration: 400, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" }
+            );
+        });
+
+        el.addEventListener("mouseleave", () => {
+            el.animate(
+                [{ transform: "translateY(-3px)" }, { transform: "translateY(0px)" }],
+                { duration: 400, easing: "cubic-bezier(.16,1,.3,1)", fill: "forwards" }
+            );
+        });
+    });
+
+    // Soporte para View Transitions de navegación fluida
+    if (supportsViewTransitions) {
+        document.querySelectorAll("button").forEach((button) => {
+            button.addEventListener("click", () => {
+                document.startViewTransition(() => {
+                    // Aquí iría la lógica de cambio de vista si la hubiera
+                });
+            });
+        });
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autumn Flow | Regenerative Landscapes</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      color-scheme: light;
+      --cream:#f8f1e6;
+      --paper:#f2eadf;
+      --ink:#26211c;
+      --muted:white;
+      --gold:#d7aa61;
+      --amber:#bc8750;
+      --blue:#5678a8;
+      --blue-deep:#2f466b;
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      overflow-x:hidden;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(235, 196, 126, .18), transparent 18%),
+        radial-gradient(circle at 82% 14%, rgba(96, 132, 184, .14), transparent 16%),
+        radial-gradient(circle at 50% 100%, rgba(187, 135, 80, .12), transparent 24%),
+        linear-gradient(180deg, var(--cream) 0%, var(--paper) 52%, #efe7da 100%);
+      color:var(--ink);
+      font-family:'Inter Tight',sans-serif;
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:'';
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.08;
+      mix-blend-mode:multiply;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280' viewBox='0 0 280 280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='280' height='280' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+      z-index:-1;
+    }
+
+    .serif{
+      font-family:'Cormorant Garamond',serif;
+      letter-spacing:-0.055em;
+    }
+
+    .copy{
+      font-family:'Inter Tight',sans-serif;
+    }
+
+    .ink-line{
+      background:linear-gradient(90deg, transparent, rgba(66,54,44,.22), transparent);
+      height:1px;
+    }
+
+    .paper-panel{
+      background:linear-gradient(180deg, rgba(255,255,255,.62), rgba(255,255,255,.28));
+      border:1px solid rgba(129,108,74,.08);
+      backdrop-filter:blur(26px) saturate(1.1);
+      -webkit-backdrop-filter:blur(26px) saturate(1.1);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.65),
+        0 20px 50px rgba(98,78,45,.08);
+    }
+
+    .silk{
+      position:relative;
+      overflow:hidden;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.54));
+      border:1px solid rgba(255,255,255,.6);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.8),
+        inset 0 -12px 20px rgba(215,170,97,.15),
+        0 16px 40px rgba(95,73,42,.08);
+      transition:transform .5s cubic-bezier(.16,1,.3,1), box-shadow .5s ease;
+    }
+
+    .silk::after{
+      content:'';
+      position:absolute;
+      inset:-120%;
+      background:linear-gradient(120deg, transparent 44%, rgba(255,255,255,.78) 50%, transparent 56%);
+      transform:translateX(-140%) rotate(12deg);
+      animation:sheen 8s ease-in-out infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+
+    .silk:hover{
+      transform:translateY(-4px) scale(1.01);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.84),
+        inset 0 -12px 20px rgba(215,170,97,.18),
+        0 22px 55px rgba(95,73,42,.12);
+    }
+
+    .header-shell{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      z-index:70;
+      backdrop-filter:blur(20px) saturate(1.08);
+      -webkit-backdrop-filter:blur(20px) saturate(1.08);
+      border-bottom:1px solid rgba(95,73,42,.08);
+    }
+
+    .header-top{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:20px;
+      align-items:center;
+      padding:18px 28px 14px;
+    }
+
+    .header-brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .brand-mark{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.52);
+      border:1px solid rgba(95,73,42,.1);
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.6);
+    }
+
+    .season-chip{
+      justify-self:center;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.2);
+      border:1px solid rgba(95,73,42,.08);
+      color: white;
+      text-transform:uppercase;
+      letter-spacing:.24em;
+      font-size:10px;
+      white-space:nowrap;
+    }
+
+    .season-chip span{
+      width:7px;
+      height:7px;
+      border-radius:999px;
+      background:var(--gold);
+      box-shadow:0 0 18px rgba(215,170,97,.55);
+    }
+
+    .header-cta{
+      justify-self:end;
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .header-cta button{
+      height:44px;
+      padding:0 18px;
+      border-radius:999px;
+      border:1px solid rgba(95,73,42,.08);
+      background:rgba(255,255,255,.2);
+      color: white;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:10px;
+      transition:.35s ease;
+    }
+
+    .header-cta button:hover{
+      background:rgba(255,255,255,.66);
+      transform:translateY(-2px);
+    }
+
+    .header-bottom{
+      border-top:1px solid rgba(95,73,42,.08);
+      padding:10px 28px 12px;
+      display:flex;
+      gap:28px;
+      align-items:center;
+      justify-content:center;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:10px;
+      color:white;
+      overflow-x:auto;
+      scrollbar-width:none;
+    }
+
+    .header-bottom::-webkit-scrollbar{
+      display:none;
+    }
+
+    .header-bottom a{
+      text-decoration:none;
+      color:inherit;
+      white-space:nowrap;
+      transition:.25s ease;
+    }
+
+    .header-bottom a:hover{
+      color:#ac7b3f;
+    }
+
+    .hero{
+      position:relative;
+      min-height:100svh;
+      overflow:hidden;
+    }
+
+    .hero video{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform:scale(1.08);
+      filter:saturate(1.05) contrast(1.04) brightness(.9);
+      will-change:transform;
+    }
+
+    .hero::after{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at center, transparent 12%, rgba(0,0,0,.18) 72%, rgba(0,0,0,.3) 100%),
+        linear-gradient(180deg, rgba(0,0,0,.12), rgba(0,0,0,.28));
+    }
+
+    .hero-center{
+      position:relative;
+      z-index:3;
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:100px 24px 40px;
+    }
+
+    .hero-inner{
+      max-width:1060px;
+      padding:0 20px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 22px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(24px) saturate(1.2);
+      color:white;
+      text-transform:uppercase;
+      letter-spacing:.28em;
+      font-size:11px;
+    }
+
+    .eyebrow span{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:#f2c171;
+      box-shadow:0 0 20px rgba(242,193,113,.8);
+    }
+
+    .hero-title{
+      margin-top:26px;
+      font-size:clamp(4.5rem,13vw,11rem);
+      line-height:.82;
+      letter-spacing:-.075em;
+      color:white;
+      text-shadow:0 18px 36px rgba(0,0,0,.24);
+    }
+
+    .ripple{
+      display:inline-block;
+      animation:ripple 8s ease-in-out infinite;
+      transform-origin:center bottom;
+    }
+
+    .hero-copy{
+      margin:28px auto 0;
+      max-width:760px;
+      font-size:18px;
+      line-height:1.95;
+      color:rgba(255,255,255,.88);
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(30px) saturate(1.2);
+      -webkit-backdrop-filter:blur(30px) saturate(1.2);
+      border-radius:2rem;
+      padding:22px 26px;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:34px;
+    }
+
+    .btn-primary{
+      height:58px;
+      padding-inline:32px;
+      border:none;
+      border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.94), rgba(255,255,255,.58));
+      color:#33291b;
+      text-transform:uppercase;
+      letter-spacing:.25em;
+      font-size:10px;
+      cursor:pointer;
+      transition:.45s cubic-bezier(.16,1,.3,1);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.76),
+        0 16px 42px rgba(0,0,0,.15);
+    }
+
+    .btn-primary:hover{
+      transform:translateY(-4px);
+    }
+
+    .btn-secondary{
+      height:58px;
+      padding-inline:32px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.08);
+      color:white;
+      text-transform:uppercase;
+      letter-spacing:.25em;
+      font-size:10px;
+      cursor:pointer;
+      transition:.35s ease;
+    }
+
+    .btn-secondary:hover{
+      background:rgba(255,255,255,.14);
+    }
+
+    .floating-note{
+      position:absolute;
+      padding:11px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.18);
+      color:white;
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter:blur(24px) saturate(1.2);
+      -webkit-backdrop-filter:blur(24px) saturate(1.2);
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:10px;
+      white-space:nowrap;
+      box-shadow:0 14px 32px rgba(0,0,0,.12);
+    }
+
+    .section{
+      padding:120px 0;
+    }
+
+    .section-shell{
+      width:min(1440px, calc(100% - 48px));
+      margin:0 auto;
+    }
+
+    .split-grid{
+      display:grid;
+      grid-template-columns:1.08fr .92fr;
+      gap:28px;
+      align-items:stretch;
+    }
+
+    .split-left{
+      padding:70px;
+      min-height:640px;
+      border-radius:42px;
+      background:linear-gradient(180deg, rgba(255,255,255,.72), rgba(255,255,255,.28));
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.65),
+        0 22px 60px rgba(98,78,45,.08);
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .split-left::before{
+      content:'';
+      position:absolute;
+      inset:-20% auto auto -8%;
+      width:42%;
+      height:42%;
+      background:radial-gradient(circle, rgba(215,170,97,.14), transparent 70%);
+      filter:blur(30px);
+      pointer-events:none;
+    }
+
+    .split-right{
+      min-height:640px;
+      border-radius:42px;
+      overflow:hidden;
+      position:relative;
+      background:linear-gradient(180deg, rgba(255,255,255,.24), rgba(255,255,255,.14));
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.25),
+        0 22px 60px rgba(98,78,45,.08);
+    }
+
+    .split-right img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .section-label{
+      text-transform:uppercase;
+      letter-spacing:.3em;
+      font-size:10px;
+      color:#8a7c69;
+    }
+
+    .section-title{
+      margin-top:16px;
+      font-size:clamp(2.9rem,5.6vw,6rem);
+      line-height:.9;
+      letter-spacing:-.06em;
+      color:#2a241c;
+    }
+
+    .section-copy{
+      margin-top:22px;
+      max-width:680px;
+      line-height:2;
+      font-size:16px;
+      color:#62584d;
+    }
+
+    .inline-metrics{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      margin-top:28px;
+    }
+
+    .metric{
+      border-radius:999px;
+      padding:12px 16px;
+      background:rgba(255,255,255,.5);
+      border:1px solid rgba(131,108,74,.08);
+      color:#564b3d;
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:10px;
+    }
+
+    .feature-band{
+      margin-top:120px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:22px;
+    }
+
+    .band{
+      border-radius:38px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.64), rgba(255,255,255,.24));
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:0 18px 50px rgba(98,78,45,.08);
+      display:grid;
+      grid-template-columns:.8fr 1.2fr;
+      min-height:300px;
+    }
+
+    .band .visual{
+      background:
+        radial-gradient(circle at 25% 30%, rgba(215,170,97,.26), transparent 20%),
+        radial-gradient(circle at 70% 35%, rgba(86,120,168,.18), transparent 18%),
+        linear-gradient(180deg, rgba(255,255,255,.18), rgba(0,0,0,.06));
+      min-height:300px;
+    }
+
+    .band .copyzone{
+      padding:36px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .band h3{
+      font-size:42px;
+      line-height:.95;
+      letter-spacing:-.05em;
+      color:#2a241c;
+    }
+
+    .band p{
+      line-height:1.9;
+      color:#64584b;
+      max-width:640px;
+      margin-top:16px;
+    }
+
+    .terrain-core{
+      padding:120px 0;
+    }
+
+    .core-shell{
+      width:min(1440px, calc(100% - 48px));
+      margin:0 auto;
+      display:grid;
+      grid-template-columns:1fr;
+      justify-items:center;
+      gap:34px;
+    }
+
+    .core-ring{
+      width:min(78vw, 42rem);
+      aspect-ratio:1;
+      border-radius:999px;
+      position:relative;
+      background:
+        radial-gradient(circle at center, rgba(255,255,255,.72), rgba(255,255,255,.22) 56%, rgba(255,255,255,.06) 74%, transparent 76%);
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:
+        0 0 120px rgba(86,120,168,.08),
+        inset 0 0 70px rgba(255,255,255,.12);
+      display:grid;
+      place-items:center;
+    }
+
+    .core-ring::before{
+      content:'';
+      position:absolute;
+      inset:14%;
+      border-radius:999px;
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:inset 0 0 40px rgba(215,170,97,.06);
+    }
+
+    .core-ring::after{
+      content:'';
+      position:absolute;
+      inset:28%;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at center, rgba(215,170,97,.18), transparent 58%),
+        radial-gradient(circle at 40% 30%, rgba(86,120,168,.14), transparent 26%);
+      filter:blur(10px);
+    }
+
+    .core-copy{
+      position:relative;
+      z-index:2;
+      text-align:center;
+      width:min(78vw, 620px);
+      padding:26px 28px;
+      border-radius:2rem;
+      background:rgba(255,255,255,.28);
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:0 18px 40px rgba(98,78,45,.08);
+    }
+
+    .core-copy h2{
+      font-size:clamp(2.6rem,5vw,5.4rem);
+      line-height:.92;
+      letter-spacing:-.06em;
+      color:#2a241c;
+    }
+
+    .core-copy p{
+      margin-top:18px;
+      line-height:2;
+      color:#62584d;
+    }
+
+    .core-tags{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:12px;
+      margin-top:24px;
+    }
+
+    .core-tags span{
+      border-radius:999px;
+      padding:12px 16px;
+      background:rgba(255,255,255,.56);
+      border:1px solid rgba(131,108,74,.08);
+      color:#5e5245;
+      text-transform:uppercase;
+      letter-spacing:.2em;
+      font-size:10px;
+    }
+
+    .slider-section{
+      padding:120px 0;
+    }
+
+    .slider-shell{
+      width:min(1440px, calc(100% - 48px));
+      margin:0 auto;
+    }
+
+    .slider-head{
+      display:flex;
+      justify-content:space-between;
+      gap:22px;
+      align-items:flex-end;
+      margin-bottom:28px;
+    }
+
+    .slider-head h2{
+      font-size:clamp(2.7rem,5vw,5.4rem);
+      line-height:.92;
+      letter-spacing:-.06em;
+      color:#2a241c;
+    }
+
+    .slider-head p{
+      max-width:400px;
+      line-height:1.9;
+      color:#62584d;
+    }
+
+    .strip{
+      display:grid;
+      grid-auto-flow:column;
+      grid-auto-columns:minmax(78%, 980px);
+      gap:18px;
+      overflow-x:auto;
+      scroll-snap-type:x mandatory;
+      padding-bottom:12px;
+      scrollbar-width:none;
+    }
+
+    .strip::-webkit-scrollbar{
+      display:none;
+    }
+
+    .strip-card{
+      scroll-snap-align:start;
+      min-height:360px;
+      border-radius:38px;
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.66), rgba(255,255,255,.26));
+      border:1px solid rgba(131,108,74,.08);
+      box-shadow:0 18px 50px rgba(98,78,45,.08);
+      display:grid;
+      grid-template-columns:.95fr 1.05fr;
+    }
+
+    .strip-card .image{
+      background:
+        radial-gradient(circle at 30% 25%, rgba(215,170,97,.28), transparent 18%),
+        radial-gradient(circle at 70% 35%, rgba(86,120,168,.18), transparent 20%),
+        linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.06));
+      min-height:360px;
+    }
+
+    .strip-card .content{
+      padding:34px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .strip-card h3{
+      font-size:44px;
+      line-height:.95;
+      letter-spacing:-.05em;
+      color:#2a241c;
+    }
+
+    .strip-card p{
+      margin-top:16px;
+      max-width:620px;
+      line-height:1.9;
+      color:#64584b;
+    }
+
+    .footer-water{
+      padding:0 0 96px;
+    }
+
+    .footer-shell{
+      width:min(1440px, calc(100% - 48px));
+      margin:0 auto;
+      border-radius:48px;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 18% 18%, rgba(255,197,114,.14), transparent 20%),
+        linear-gradient(180deg, #3f587e 0%, #293754 100%);
+      color:white;
+      box-shadow:0 22px 60px rgba(20,24,34,.18);
+    }
+
+    .footer-inner{
+      padding:82px 84px 42px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:56px;
+      align-items:end;
+    }
+
+    .footer-title{
+      font-size:clamp(3rem,5vw,5.2rem);
+      line-height:.9;
+      letter-spacing:-.06em;
+    }
+
+    .footer-copy{
+      margin-top:18px;
+      max-width:720px;
+      color:rgba(255,255,255,.76);
+      line-height:2;
+      font-size:16px;
+    }
+
+    .footer-stats{
+      display:grid;
+      gap:16px;
+    }
+
+    .footer-card{
+      padding:26px 28px;
+      border-radius:28px;
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter:blur(18px);
+    }
+
+    .footer-card .value{
+      margin-top:10px;
+      font-size:42px;
+      line-height:1;
+    }
+
+    .footer-bottom{
+      margin-top:64px;
+      padding-top:26px;
+      border-top:1px solid rgba(255,255,255,.12);
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      flex-wrap:wrap;
+      color:rgba(255,255,255,.68);
+      font-size:14px;
+    }
+
+    .footer-bottom .tags{
+      display:flex;
+      gap:18px;
+      text-transform:uppercase;
+      letter-spacing:.24em;
+      font-size:10px;
+    }
+
+    .bloom{
+      opacity:0;
+      transform:translateY(26px) scale(.98);
+      animation:bloom .9s cubic-bezier(.16,1,.3,1) forwards;
+      animation-timeline:view();
+      animation-range:entry 12% cover 32%;
+    }
+
+    @keyframes bloom{
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+    @keyframes ripple{
+      0%,100%{
+        transform:translateY(0) rotate(-.5deg);
+      }
+      50%{
+        transform:translateY(-5px) rotate(.5deg);
+      }
+    }
+
+    @keyframes sheen{
+      to{
+        transform:translateX(240%) rotate(12deg);
+      }
+    }
+
+    @keyframes heroScale{
+      from{
+        transform:scale(1.02);
+      }
+      to{
+        transform:scale(1.12);
+      }
+    }
+
+    .hero-scale{
+      animation:heroScale linear both;
+      animation-timeline:scroll(root);
+      transform-origin:center center;
+    }
+
+    ::view-transition-old(root), ::view-transition-new(root){
+      animation-duration:.7s;
+      animation-timing-function:cubic-bezier(.16,1,.3,1);
+    }
+
+    @media (max-width: 1100px){
+      .header-top{
+        grid-template-columns:1fr auto;
+      }
+
+      .season-chip{
+        display:none;
+      }
+
+      .split-grid,
+      .band,
+      .strip-card,
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .split-left,
+      .split-right,
+      .strip-card .image,
+      .band .visual{
+        min-height:380px;
+      }
+
+      .footer-inner{
+        padding:48px 28px 34px;
+      }
+    }
+
+    @media (max-width: 768px){
+      .header-top{
+        padding:14px 16px 10px;
+      }
+
+      .header-bottom{
+        justify-content:flex-start;
+        padding:10px 16px 12px;
+      }
+
+      .hero-center{
+        padding-top:128px;
+      }
+
+      .hero-copy{
+        font-size:15px;
+        padding:18px 18px;
+      }
+
+      .section-shell,
+      .slider-shell{
+        width:min(100% - 32px, 1440px);
+      }
+
+      .split-left,
+      .split-right{
+        padding:28px;
+        min-height:auto;
+      }
+
+      .footer-shell{
+        width:min(100% - 32px, 1440px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fixed inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute -top-24 left-[6%] h-[24rem] w-[24rem] rounded-full bg-[radial-gradient(circle,rgba(215,170,97,.14),transparent_72%)] blur-3xl"></div>
+    <div class="absolute bottom-[-10rem] right-[12%] h-[28rem] w-[28rem] rounded-full bg-[radial-gradient(circle,rgba(86,120,168,.12),transparent_72%)] blur-3xl"></div>
+  </div>
+
+  <header class="header-shell">
+    <div class="header-top">
+      <div class="header-brand">
+        <div class="brand-mark">
+          <iconify-icon icon="ph:waves-bold" class="text-2xl text-[#9b7a3d]"></iconify-icon>
+        </div>
+
+        <div class="leading-tight min-w-0">
+          <div class="copy text-[11px] uppercase tracking-[0.34em] text-white/90">Autumn Flow</div>
+          <div class="copy text-sm text-white/80">Regenerative Landscapes</div>
+        </div>
+      </div>
+
+      <div class="season-chip">
+        <span></span>
+        Seasonal equilibrium · Cyclical irrigation
+      </div>
+
+      <div class="header-cta">
+        <button>Harvest Map</button>
+        <button>Visit Estate</button>
+      </div>
+    </div>
+
+    <div class="header-bottom">
+      <a href="#story">Philosophy</a>
+      <a href="#fields">Cultivation</a>
+      <a href="#core">Golden Core</a>
+      <a href="#water">Still Water</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <video id="heroVideo" autoplay muted loop playsinline>
+        <source src="./video.mp4" type="video/mp4" />
+      </video>
+
+      <div class="hero-center">
+        <div class="hero-inner">
+          <h1 class="hero-title serif">
+            <span class="ripple block">Autumn</span>
+            <span class="ripple block">Flow</span>
+          </h1>
+
+          <p class="hero-copy bloom">
+            A regenerative landscape for sustainable estates, shaped by paper-light silence, terraced fields, and the slow pulse of water crossing the valley.
+          </p>
+
+          <div class="hero-actions bloom">
+            <button class="btn-primary">Explore the Flow</button>
+            <button class="btn-secondary">Seasonal Overview</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="floating-note left-[8%] top-[18%]">Golden fields · Harvest 12</div>
+      <div class="floating-note bottom-[18%] left-[12%]">Riparian restoration active</div>
+      <div class="floating-note right-[8%] top-[26%]">Irrigation pulse · 87%</div>
+    </section>
+
+    <section id="story" class="section">
+      <div class="section-shell">
+        <div class="split-grid bloom">
+          <div class="split-left">
+            <div class="section-label">Floating Mountain Split</div>
+            <h2 class="section-title serif">Designed to breathe with the river.</h2>
+            <p class="section-copy">
+              The landscape follows the natural movement of the valley, layering soft mountain silhouettes, transparent field notes, and seasonal systems into a calm editorial flow.
+            </p>
+
+            <div class="inline-metrics">
+              <div class="metric">Seasonal equilibrium</div>
+              <div class="metric">Water rhythm</div>
+              <div class="metric">Zen-organic harmonics</div>
+            </div>
+          </div>
+
+          <div class="split-right">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1800&auto=format&fit=crop" alt="Landscape">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fields" class="section pt-0">
+      <div class="section-shell">
+        <div class="max-w-4xl bloom">
+          <div class="section-label">Rice Field Grid</div>
+          <h2 class="section-title serif">Staggered layers like terraced fields.</h2>
+        </div>
+
+        <div class="feature-band">
+          <article class="band bloom">
+            <div class="visual"></div>
+            <div class="copyzone">
+              <div>
+                <div class="section-label">Golden-ratio cultivation</div>
+                <h3 class="serif">Organic planting geometry</h3>
+                <p>
+                  Crop spacing and field sequencing tuned for airflow, irrigation balance, and a balanced visual cadence across the estate.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="band bloom">
+            <div class="visual" style="background:
+              radial-gradient(circle at 30% 25%, rgba(215,170,97,.22), transparent 18%),
+              radial-gradient(circle at 70% 35%, rgba(86,120,168,.18), transparent 18%),
+              linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.03));"></div>
+            <div class="copyzone">
+              <div>
+                <div class="section-label">Zen-organic harmonics</div>
+                <h3 class="serif">Rhythms of water and silence</h3>
+                <p>
+                  Wind, moisture, and reflection systems create a calm sensory cadence throughout the agricultural landscape.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="band bloom">
+            <div class="visual" style="background:
+              radial-gradient(circle at 28% 28%, rgba(86,120,168,.18), transparent 18%),
+              radial-gradient(circle at 70% 30%, rgba(215,170,97,.28), transparent 20%),
+              linear-gradient(180deg, rgba(255,255,255,.1), rgba(0,0,0,.05));"></div>
+            <div class="copyzone">
+              <div>
+                <div class="section-label">Riparian restoration</div>
+                <h3 class="serif">River-edge recovery</h3>
+                <p>
+                  Native vegetation and softer runoff pathways stabilize the terrain while improving biodiversity and water retention.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="core" class="terrain-core">
+      <div class="core-shell bloom">
+        <div class="core-ring">
+          <div class="core-copy">
+            <div class="section-label">Golden Core</div>
+            <h2 class="serif">A quiet center for the entire landscape.</h2>
+            <p>
+              Cyclical irrigation, light harvest, and soil balance converge here as a single living system rather than a set of isolated assets.
+            </p>
+            <div class="core-tags">
+              <span>Soil vitality 84%</span>
+              <span>Water reserve 92%</span>
+              <span>Harvest pulse stable</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slider-section">
+      <div class="slider-shell">
+        <div class="slider-head bloom">
+          <div>
+            <div class="section-label">Still Water Slider</div>
+            <h2 class="serif">Horizontal mission states across the valley.</h2>
+          </div>
+          <p>
+            Each strip captures a different seasonal condition: irrigation, restoration, and reflective calm.
+          </p>
+        </div>
+
+        <div class="strip bloom">
+          <article class="strip-card">
+            <div class="content">
+              <div>
+                <div class="section-label">Irrigation pulse</div>
+                <h3 class="serif">Water arriving with precision.</h3>
+                <p>
+                  The system regulates flow across terraces so each layer receives just enough hydration to remain in balance.
+                </p>
+              </div>
+              <div class="copy text-[11px] uppercase tracking-[0.24em] text-white/90">Pulse 07 · AM</div>
+            </div>
+            <div class="image"></div>
+          </article>
+
+          <article class="strip-card">
+            <div class="content">
+              <div>
+                <div class="section-label">Terrace memory</div>
+                <h3 class="serif">The fields hold their own geometry.</h3>
+                <p>
+                  Elevated contours preserve both the visible rhythm of the land and the invisible logic of runoff control.
+                </p>
+              </div>
+              <div class="copy text-[11px] uppercase tracking-[0.24em] text-white/90">Contour 12 · PM</div>
+            </div>
+            <div class="image" style="background:
+              radial-gradient(circle at 30% 25%, rgba(255,206,120,.26), transparent 18%),
+              radial-gradient(circle at 70% 38%, rgba(86,120,168,.22), transparent 18%),
+              linear-gradient(180deg, rgba(255,255,255,.12), rgba(0,0,0,.04));"></div>
+          </article>
+
+          <article class="strip-card">
+            <div class="content">
+              <div>
+                <div class="section-label">Seasonal reflection</div>
+                <h3 class="serif">Where the river slows into silence.</h3>
+                <p>
+                  The final layer dissolves into water and sky, leaving the estate in a calm blue afterglow.
+                </p>
+              </div>
+              <div class="copy text-[11px] uppercase tracking-[0.24em] text-white/90">Reflection · Dusk</div>
+            </div>
+            <div class="image" style="background:
+              radial-gradient(circle at 24% 30%, rgba(86,120,168,.24), transparent 18%),
+              radial-gradient(circle at 72% 40%, rgba(215,170,97,.18), transparent 18%),
+              linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.06));"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="water" class="footer-water">
+      <div class="footer-shell">
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <div>
+              <div class="section-label text-white/60">Still Water</div>
+              <h2 class="footer-title serif">Where the river ends, the system quiets.</h2>
+              <p class="footer-copy">
+                The final zone settles into a deep blue reflection, holding the entire landscape in a soft, suspended calm.
+              </p>
+            </div>
+
+            <div class="footer-stats">
+              <div class="footer-card">
+                <div class="section-label text-white/60">Water reserve</div>
+                <div class="value serif">84%</div>
+              </div>
+              <div class="footer-card">
+                <div class="section-label text-white/60">Soil vitality</div>
+                <div class="value serif">High</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-bottom">
+            <div>Autumn Flow · Regenerative Landscapes</div>
+            <div class="tags">
+              <span>Harvest</span>
+              <span>Water</span>
+              <span>Equilibrium</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section pt-0">
+      <div class="section-shell">
+        <div class="paper-panel rounded-[44px] p-6 md:p-8">
+          <div class="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
+            <div>
+              <div class="section-label">Contact</div>
+              <h2 class="section-title serif">Plan a seasonal visit.</h2>
+              <p class="section-copy">
+                Private walks, regenerative estate design, and irrigation planning for sustainable landscapes.
+              </p>
+            </div>
+
+            <div class="space-y-3">
+              <div class="paper-panel rounded-[999px] flex items-center gap-3 px-4 py-3">
+                <iconify-icon icon="ph:envelope-simple" class="text-[#84725d]"></iconify-icon>
+                <input type="email" placeholder="Email address" class="min-w-0 flex-1 bg-transparent outline-none copy text-[#2d261f] placeholder:text-[#7f7366]">
+              </div>
+              <button id="ctaButton" class="silk w-full rounded-[999px] px-5 py-4 text-sm text-[#2f261a]">
+                Request a walkthrough
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const heroVideo = document.getElementById('heroVideo');
+    const ctaButton = document.getElementById('ctaButton');
+    const supportsViewTransitions = typeof document.startViewTransition === 'function';
+    let raf = 0;
+
+    const updateHero = () => {
+      const max = window.innerHeight * 1.15;
+      const progress = Math.min(Math.max(window.scrollY / max, 0), 1);
+      const scale = 1.08 + progress * 0.15;
+      const translateY = progress * 14;
+      if (heroVideo) {
+        heroVideo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+      }
+    };
+
+    updateHero();
+
+    window.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        updateHero();
+        raf = 0;
+      });
+    }, { passive: true });
+
+    window.addEventListener('resize', updateHero);
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.bloom').forEach((el) => observer.observe(el));
+
+    document.querySelectorAll('a, button').forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        el.animate([
+          { transform: 'translateY(0px)' },
+          { transform: 'translateY(-2px)' }
+        ], {
+          duration: 220,
+          easing: 'cubic-bezier(.16,1,.3,1)',
+          fill: 'forwards'
+        });
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.animate([
+          { transform: 'translateY(-2px)' },
+          { transform: 'translateY(0px)' }
+        ], {
+          duration: 220,
+          easing: 'cubic-bezier(.16,1,.3,1)',
+          fill: 'forwards'
+        });
+      });
+    });
+
+    if (supportsViewTransitions) {
+      ctaButton.addEventListener('click', () => {
+        document.startViewTransition(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

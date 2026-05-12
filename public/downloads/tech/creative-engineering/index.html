@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Haven | Creative Engineering & Soulful Dev</title>
+    <script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&family=JetBrains+Mono:wght@400&family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        haven: 'oklch(20% 0.08 280)',
+                        void: 'oklch(10% 0.05 280)',
+                        lantern: 'oklch(75% 0.15 50)',
+                        moss: 'oklch(45% 0.1 150)',
+                    },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    animation: {
+                        'float-slow': 'float 8s ease-in-out infinite',
+                        'float-mid': 'float 6s ease-in-out infinite',
+                        'shimmer': 'shimmer 4s linear infinite',
+                        'pulse-soft': 'pulse-soft 4s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-25px)' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% center' },
+                            '100%': { backgroundPosition: '200% center' },
+                        },
+                        'pulse-soft': {
+                            '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
+                            '50%': { opacity: '0.7', transform: 'scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: oklch(20% 0.08 280); overflow-x: hidden; }
+        
+        .noise {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            pointer-events: none;
+            opacity: 0.03;
+            background: url('https://grainy-gradients.vercel.app/noise.svg');
+        }
+
+        .hero-mask {
+            mask-image: radial-gradient(circle, black 40%, transparent 75%);
+            -webkit-mask-image: radial-gradient(circle, black 40%, transparent 75%);
+        }
+
+        .lantern-glow {
+            background: rgba(255, 170, 80, 0.05);
+            backdrop-filter: blur(12px) saturate(1.5);
+            border: 1px solid rgba(255, 170, 80, 0.2);
+            box-shadow: 0 0 30px rgba(255, 170, 80, 0.05), inset 0 0 10px rgba(255, 170, 80, 0.05);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .lantern-glow:hover {
+            background: rgba(255, 170, 80, 0.15);
+            box-shadow: 0 0 50px rgba(255, 170, 80, 0.3);
+            border-color: rgba(255, 170, 80, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .shimmer-text {
+            background: linear-gradient(90deg, #fff 0%, #ffaa50 50%, #fff 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .workbench-ui {
+            background: rgba(15, 15, 30, 0.3);
+            backdrop-filter: blur(50px) saturate(1.8);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 40px 100px -20px rgba(0,0,0,0.5);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.5s ease;
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 170, 80, 0.3);
+        }
+
+        .ascending-bg {
+            view-timeline-name: --section-scroll;
+            animation: bg-shift linear both;
+            animation-timeline: --section-scroll;
+        }
+
+        @keyframes bg-shift {
+            0% { background: oklch(20% 0.08 280); }
+            100% { background: oklch(5% 0.02 280); }
+        }
+
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="text-white font-sans antialiased">
+    <div class="noise"></div>
+
+    <header class="fixed top-0 left-0 w-full z-[100] p-10 flex justify-between items-center mix-blend-difference">
+        <div class="flex items-center gap-4">
+            <div class="w-2 h-2 rounded-full bg-lantern animate-pulse"></div>
+            <div class="text-xl font-medium tracking-tighter">HAVEN <span class="opacity-40 font-light">CORE</span></div>
+        </div>
+        <nav class="flex gap-12 text-[10px] tracking-[0.4em] uppercase font-bold opacity-60 hover:opacity-100 transition-opacity">
+            <a href="#workbench" class="hover:text-lantern">The Forge</a>
+            <a href="#islands" class="hover:text-lantern">Archipelago</a>
+            <a href="#manifesto" class="hover:text-lantern">Manifesto</a>
+            <a href="#stargazer" class="hover:text-lantern">Signal</a>
+        </nav>
+    </header>
+
+    <main class="ascending-bg">
+        <section class="relative h-screen w-screen overflow-hidden flex items-center justify-center">
+            <div class="absolute inset-0 z-0">
+                <video autoplay muted loop playsinline class="w-full h-full object-contain hero-mask">
+                    <source src="./video.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="relative z-10 text-center px-6">
+                <span class="text-[10px] uppercase tracking-[0.8em] text-lantern/60 block mb-8 animate-pulse">Establishing Connection</span>
+                <h1 class="shimmer-text animate-shimmer text-6xl md:text-[9rem] font-bold tracking-tighter leading-none mb-8">
+                    Soulful<br>Systems.
+                </h1>
+                <div class="max-w-xl mx-auto backdrop-blur-sm p-8 rounded-3xl border border-white/10">
+                    <p class="text-lg font-light text-white leading-relaxed mb-10 italic font-serif">
+                        "Engineering is the poetry of logic."
+                    </p>
+                    <button class="lantern-glow px-12 py-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.4em] text-white bg-black/30 border border-white/10 hover:bg-lantern hover:border-lantern transition-all">
+                        Initiate Workspace
+                    </button>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+                <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+                <span class="text-[10px] uppercase tracking-[0.3em] text-white">Scroll to Descend</span>
+            </div>
+        </section>
+
+        <section id="workbench" class="relative py-60 px-6 md:px-24 flex flex-col items-center min-h-screen">
+            <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <div class="relative z-10">
+                    <h2 class="text-5xl font-bold tracking-tighter mb-8 leading-tight">The Digital<br><span class="text-lantern italic font-serif font-light">Craftsman’s</span> Forge</h2>
+                    <p class="text-white/40 text-lg leading-relaxed mb-12 max-w-md">
+                        Every module is a floating island of logic. We prioritize the human rhythm over machine efficiency, creating tools that breathe with you.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex gap-6 items-center group cursor-help">
+                            <div class="w-12 h-12 rounded-2xl glass-card flex items-center justify-center group-hover:text-lantern transition-colors">01</div>
+                            <div class="h-px flex-1 bg-white/10 group-hover:bg-lantern/30 transition-all"></div>
+                            <span class="text-[10px] uppercase tracking-[0.2em] opacity-40">Latency Optimization</span>
+                        </div>
+                        <div class="flex gap-6 items-center group cursor-help">
+                            <div class="w-12 h-12 rounded-2xl glass-card flex items-center justify-center group-hover:text-moss transition-colors">02</div>
+                            <div class="h-px flex-1 bg-white/10 group-hover:bg-moss/30 transition-all"></div>
+                            <span class="text-[10px] uppercase tracking-[0.2em] opacity-40">Reactive Life-cycles</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="workbench-ui rounded-[40px] p-1 group animate-float-slow">
+                    <div class="bg-black/60 p-6 flex justify-between items-center border-b border-white/10 rounded-t-[39px]">
+                        <div class="flex gap-2">
+                            <div class="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                        </div>
+                        <span class="text-[9px] uppercase tracking-widest text-white/20">core_engine.tsx</span>
+                    </div>
+                    <div class="p-10 font-mono text-sm leading-relaxed">
+                        <code class="block text-white/40"><span class="text-lantern italic">import</span> { Soul } <span class="text-lantern italic">from</span> <span class="text-moss">"@haven/core"</span>;</code>
+                        <code class="block mt-4"><span class="text-lantern">const</span> <span class="text-white">Dream</span> = (<span class="text-white">intent</span>: <span class="text-moss">CreativeIntent</span>) => {</code>
+                        <code class="block text-white/60">&nbsp;&nbsp;<span class="text-lantern">return</span> intent.map(synapse => ({</code>
+                        <code class="block">&nbsp;&nbsp;&nbsp;&nbsp;...synapse,</code>
+                        <code class="block text-white/60">&nbsp;&nbsp;&nbsp;&nbsp;state: <span class="text-moss">'floating'</span>,</code>
+                        <code class="block text-white/60">&nbsp;&nbsp;&nbsp;&nbsp;latency: <span class="text-lantern">null</span></code>
+                        <code class="block text-white/60">&nbsp;&nbsp;}));</code>
+                        <code class="block text-white/60">};</code>
+                        <div class="mt-8 pt-8 border-t border-white/5 flex gap-4">
+                            <div class="px-4 py-2 bg-moss/20 text-moss text-[10px] rounded-lg border border-moss/20">Active Session</div>
+                            <div class="px-4 py-2 bg-white/5 text-white/30 text-[10px] rounded-lg">v2.4.0-cloud</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="islands" class="py-60 px-6 relative">
+            <div class="text-center mb-32">
+                <h2 class="text-[10vw] font-bold tracking-[ -0.05em] leading-none opacity-5 select-none absolute left-0 right-0 top-40">ARCHIPELAGO</h2>
+                <span class="text-[10px] uppercase tracking-[0.5em] text-lantern mb-6 block">Explore the Cloud Islands</span>
+                <h3 class="text-4xl md:text-6xl font-bold tracking-tighter">Personal Nodes of Innovation</h3>
+            </div>
+
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="parallax-island group glass-card p-12 rounded-[50px] relative overflow-hidden" style="--delay: 0s">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-lantern/20 blur-[80px] group-hover:bg-lantern/40 transition-all"></div>
+                    <div class="text-[10px] font-mono mb-8 text-lantern">NODE_01</div>
+                    <h4 class="text-2xl font-bold mb-6 tracking-tight">Reactive Architecture</h4>
+                    <p class="text-white/40 leading-loose text-sm mb-10">We don't just build UIs; we build ecosystems that respond to the emotional state of the user. Zero latency, pure empathy.</p>
+                    <div class="flex gap-2">
+                        <div class="w-8 h-[1px] bg-white/20"></div>
+                        <div class="w-2 h-[1px] bg-lantern"></div>
+                    </div>
+                </div>
+
+                <div class="parallax-island group glass-card p-12 rounded-[50px] relative overflow-hidden mt-12" style="--delay: 1.5s">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-moss/20 blur-[80px] group-hover:bg-moss/40 transition-all"></div>
+                    <div class="text-[10px] font-mono mb-8 text-moss">NODE_02</div>
+                    <h4 class="text-2xl font-bold mb-6 tracking-tight">Fluid Motion APIs</h4>
+                    <p class="text-white/40 leading-loose text-sm mb-10">Movement is life. Our bionic motion engine mimics natural biological sways, ensuring the digital feels organic and alive.</p>
+                    <div class="flex gap-2">
+                        <div class="w-8 h-[1px] bg-white/20"></div>
+                        <div class="w-2 h-[1px] bg-moss"></div>
+                    </div>
+                </div>
+
+                <div class="parallax-island group glass-card p-12 rounded-[50px] relative overflow-hidden" style="--delay: 0.8s">
+                    <div class="absolute -top-20 -right-20 w-40 h-40 bg-white/10 blur-[80px] group-hover:bg-white/20 transition-all"></div>
+                    <div class="text-[10px] font-mono mb-8 opacity-40">NODE_03</div>
+                    <h4 class="text-2xl font-bold mb-6 tracking-tight">Semantic Clarity</h4>
+                    <p class="text-white/40 leading-loose text-sm mb-10">Code should be readable like a late-night novel. We focus on clean, self-documenting structures that tell a story.</p>
+                    <div class="flex gap-2">
+                        <div class="w-8 h-[1px] bg-white/20"></div>
+                        <div class="w-2 h-[1px] bg-white/40"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="manifesto" class="py-60 relative overflow-hidden">
+            <div class="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(255,170,80,0.05)_0%,_transparent_70%)]"></div>
+            <div class="max-w-4xl mx-auto px-6 relative z-10 text-center">
+                <h2 class="text-6xl md:text-8xl font-serif italic font-light tracking-tighter mb-16 leading-tight">
+                    Software is the <span class="text-lantern">mirror</span> of the developer's soul.
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12 pt-20 border-t border-white/5">
+                    <div>
+                        <div class="text-4xl font-bold mb-2">12ms</div>
+                        <div class="text-[10px] uppercase tracking-widest opacity-40">Avg Latency</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">∞</div>
+                        <div class="text-[10px] uppercase tracking-widest opacity-40">Creativity</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">43k</div>
+                        <div class="text-[10px] uppercase tracking-widest opacity-40">Lines of Love</div>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold mb-2">0.1</div>
+                        <div class="text-[10px] uppercase tracking-widest opacity-40">Energy Bias</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer id="stargazer" class="bg-black pt-60 pb-20 px-10 relative overflow-hidden">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[200vw] h-[100vh] border border-white/5 rounded-[100%] opacity-20 -translate-y-1/2"></div>
+            
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-32 items-end relative z-10">
+                <div class="space-y-12">
+                    <div class="w-16 h-16 glass-card rounded-full flex items-center justify-center animate-pulse-soft">
+                        <div class="w-2 h-2 bg-lantern rounded-full"></div>
+                    </div>
+                    <h2 class="text-5xl font-bold tracking-tighter">Ready to float?</h2>
+                    <p class="text-white/30 max-w-sm text-lg italic">The archipelago is always expanding. Send a signal and join the haven.</p>
+                    <div class="flex gap-4">
+                        <input type="text" placeholder="your@email.com" class="bg-white/5 border border-white/10 px-6 py-4 rounded-xl text-sm w-full max-w-xs focus:outline-none focus:border-lantern/50 transition-all">
+                        <button class="bg-lantern text-haven px-8 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest">Connect</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-20 text-right">
+                    <div class="space-y-4">
+                        <div class="text-[10px] uppercase tracking-[0.3em] text-lantern mb-8">Navigation</div>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">Archive</a>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">Telemetry</a>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">Open Source</a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="text-[10px] uppercase tracking-[0.3em] text-lantern mb-8">Social Signal</div>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">GitHub</a>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">LinkedIn</a>
+                        <a href="#" class="block text-sm opacity-40 hover:opacity-100 transition-all">Bluesky</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-40 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+                <p class="text-[10px] uppercase tracking-[0.5em] text-white/20">© 2026 Code Haven / Soulful Engineering</p>
+                <div class="flex items-center gap-2">
+                    <div class="w-1 h-1 rounded-full bg-green-500 animate-pulse"></div>
+                    <span class="text-[9px] uppercase tracking-widest text-white/30">System Operational: Clouds Clear</span>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        document.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const islands = document.querySelectorAll('.parallax-island');
+            islands.forEach((island, i) => {
+                const speed = 0.05 + (i * 0.02);
+                island.style.transform = `translateY(${scrolled * speed * -1}px)`;
+            });
+
+            const scrollProgress = (scrolled / (document.documentElement.scrollHeight - window.innerHeight));
+            document.body.style.setProperty('--scroll', scrollProgress);
+        });
+    </script>
+</body>
+</html>
