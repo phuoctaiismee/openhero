@@ -12,7 +12,7 @@ export default function Page() {
         ".subsurface-glow"
       ) as HTMLElement | null;
 
-      if (!glow) return;
+  const handlers = new Map<HTMLElement, (e: MouseEvent) => void>();
 
       const move = (e: globalThis.MouseEvent) => {
         const rect = card.getBoundingClientRect();
@@ -20,16 +20,19 @@ export default function Page() {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        glow.style.left = `${x}px`;
-        glow.style.top = `${y}px`;
-      };
-
-      card.addEventListener("mousemove", move);
+    const move = (e: MouseEvent) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      glow.style.left = `${x}px`;
+      glow.style.top = `${y}px`;
+    };
 
       cleanups.push(() => {
         card.removeEventListener("mousemove", move);
       });
     });
+  }, observerOptions);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,8 +50,10 @@ export default function Page() {
       }
     );
 
-    document.querySelectorAll(".bloom-reveal").forEach((el) => {
-      observer.observe(el);
+  return () => {
+    cards.forEach((card) => {
+      const move = handlers.get(card);
+      if (move) card.removeEventListener("mousemove", move);
     });
 
     return () => {
