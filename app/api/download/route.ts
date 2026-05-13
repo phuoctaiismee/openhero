@@ -26,16 +26,13 @@ export async function GET(request: NextRequest) {
   const name = slugToName(slug);
   const { filename, staticFile } = FORMAT_CONFIG[format];
 
-  // 1. Buscar archivos estáticos (código + video) en downloads/
   const downloadsDir = path.join(process.cwd(), "public", "downloads", category, slug);
   const staticFilePath = path.join(downloadsDir, staticFile);
   const downloadVideoPath = path.join(downloadsDir, "video.mp4");
   
-  // 2. Fallback: video de preview en videos/
   const previewVideoPath = path.join(process.cwd(), "public", "videos", category, `${slug}.mp4`);
   const videoSrc = fs.existsSync(previewVideoPath) ? `/videos/${category}/${slug}.mp4` : "";
 
-  // 3. Leer código (estático o generado)
   let code: string;
   if (fs.existsSync(staticFilePath)) {
     code = fs.readFileSync(staticFilePath, "utf-8");
@@ -46,12 +43,10 @@ export async function GET(request: NextRequest) {
          : getNextjsCode(opts);
   }
 
-  // 4. Crear ZIP
   const zip = new JSZip();
   const folder = zip.folder(`${slug}-${format}`) as JSZip;
   folder.file(filename, code);
 
-  // 5. Incluir video (primero buscar en downloads/, luego en videos/)
   const videoToInclude = fs.existsSync(downloadVideoPath) ? downloadVideoPath : 
                          fs.existsSync(previewVideoPath) ? previewVideoPath : null;
 

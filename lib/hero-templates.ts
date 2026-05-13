@@ -75,7 +75,6 @@ export default function HeroPage() {
             <source src={VIDEO_SRC} type="video/mp4" />
           </video>
 
-          {/* Accent colour overlay */}
           <div
             className="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
             style={{ background: "linear-gradient(130deg, transparent 40%, #319197 100%)" }}
@@ -83,7 +82,6 @@ export default function HeroPage() {
 
           <Navbar />
 
-          {/* Hero content */}
           <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-8 p-6 md:p-12 lg:flex-row lg:items-end lg:justify-between">
 
             <div className="fade-up delay-1 max-w-3xl">
@@ -192,7 +190,6 @@ export default function Hero() {
             borderRadius: "2rem", overflow: "hidden",
           }}
         >
-          {/* Background video */}
           <video
             ref={videoRef}
             loop muted playsInline
@@ -205,7 +202,6 @@ export default function Hero() {
             <source src={VIDEO_SRC} type="video/mp4" />
           </video>
 
-          {/* Accent overlay */}
           <div
             style={{
               position: "absolute", inset: 0, pointerEvents: "none",
@@ -216,7 +212,6 @@ export default function Hero() {
 
           <Navbar />
 
-          {/* Content */}
           <div
             style={{
               position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 20,
@@ -273,7 +268,6 @@ export function getHtmlCode({ name, slug, category }: TemplateOptions): string {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hero — ${name}</title>
 
-  <!-- Tailwind CSS via CDN — no build step required -->
   <script src="https://cdn.tailwindcss.com"><\/script>
 
   <style>
@@ -289,15 +283,9 @@ export function getHtmlCode({ name, slug, category }: TemplateOptions): string {
 </head>
 <body>
 
-  <!--
-    Video: place ${slug}.mp4 at /videos/${category}/${slug}.mp4
-    or update the <source src="..."> below.
-  -->
-
   <div class="flex h-screen items-center justify-center overflow-hidden bg-black p-2 md:p-4">
     <div class="relative h-full w-full overflow-hidden rounded-[2rem]">
 
-      <!-- Background video -->
       <video autoplay loop muted playsinline
         style="mask-image: linear-gradient(to bottom, white 55%, transparent 100%);"
         class="absolute inset-0 h-full w-full object-cover object-bottom pointer-events-none">
@@ -305,12 +293,10 @@ export function getHtmlCode({ name, slug, category }: TemplateOptions): string {
         Your browser does not support HTML5 video.
       </video>
 
-      <!-- Accent colour overlay -->
       <div class="absolute inset-0 pointer-events-none opacity-20 mix-blend-screen"
         style="background: linear-gradient(130deg, transparent 40%, #319197 100%);">
       </div>
 
-      <!-- Navbar -->
       <nav class="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-6 py-6 md:px-12">
         <a href="/" class="text-xl font-bold tracking-tighter text-white no-underline">MyApp</a>
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-white/70">
@@ -324,7 +310,6 @@ export function getHtmlCode({ name, slug, category }: TemplateOptions): string {
         </a>
       </nav>
 
-      <!-- Hero content -->
       <div class="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-8 p-6 md:p-12 lg:flex-row lg:items-end lg:justify-between">
 
         <div class="fade-up delay-1 max-w-3xl">

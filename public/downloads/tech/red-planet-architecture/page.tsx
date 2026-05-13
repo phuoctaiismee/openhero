@@ -22,12 +22,10 @@ export default function Page() {
     const video = heroVideoRef.current;
     if (!video) return;
 
-    // Sincronización manual para evitar conflictos con CSS experimental
     const updateHero = () => {
       const max = window.innerHeight * 1.2;
       const progress = Math.min(Math.max(window.scrollY / max, 0), 1);
       
-      // Mantenemos tus valores de escala originales
       const scale = 1.08 + progress * 0.16;
       const translateY = progress * 16;
       
@@ -108,7 +106,6 @@ export default function Page() {
       </header>
 
       <main className="relative pt-[94px]">
-        {/* HERO SECTION */}
         <section className="relative min-h-[100svh] overflow-hidden">
           <div className="absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_35%,rgba(255,255,255,.02),rgba(0,0,0,.12)_44%,rgba(0,0,0,.38)_100%)]" />
           <div className="hero-shell absolute inset-0 z-0">
@@ -155,7 +152,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* SIDE-SCRUB SECTION */}
         <section className="ridges relative px-6 py-24 md:px-10">
           <div className="mx-auto grid max-w-[1700px] gap-10 lg:grid-cols-[.88fr_1.12fr] lg:items-start">
             <div className="bloom sticky top-28 self-start">
@@ -207,7 +203,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* CORE-FOCUS SECTION */}
         <section className="ridges relative px-6 py-24 md:px-10">
           <div className="mx-auto max-w-[1700px]">
             <div className="bloom mx-auto flex max-w-4xl flex-col items-center text-center">
@@ -239,7 +234,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* TELEMETRIC-SLIDER SECTION */}
         <section className="ridges relative px-6 py-24 md:px-10">
           <div className="mx-auto max-w-[1700px]">
             <div className="bloom flex items-end justify-between gap-6">
@@ -277,12 +271,10 @@ export default function Page() {
                   </div>
                 </div>
               </article>
-              {/* Añade aquí los otros strip-cards si los necesitas, los mantengo simplificados para el bloque */}
             </div>
           </div>
         </section>
 
-        {/* MISSION STATEMENT FOOTER */}
         <section className="px-6 py-24 md:px-10">
           <div className="mx-auto max-w-[1700px] rounded-[3rem] border border-white/10 bg-white/[0.03] p-8 backdrop-blur-[30px]">
             <div className="grid gap-10 lg:grid-cols-[1fr_auto_1fr] lg:items-center">

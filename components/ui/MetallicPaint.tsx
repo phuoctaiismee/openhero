@@ -219,7 +219,7 @@ function processImage(img: HTMLImageElement | ImageData): ImageData {
         const a = data[idx + 3]; 
         
         alphaValues[i] = a / 255; 
-        shapeMask[i] = a > 10 ? 1 : 0; // Umbral muy bajo para el cálculo de profundidad
+        shapeMask[i] = a > 10 ? 1 : 0;
     } 
 
     for (let y = 0; y < height; y++) { 
@@ -259,7 +259,7 @@ function processImage(img: HTMLImageElement | ImageData): ImageData {
         const depth = u[i] / maxVal; 
         const gray = Math.round(255 * (1 - depth * depth)); 
         outData.data[px] = outData.data[px + 1] = outData.data[px + 2] = gray; 
-        outData.data[px + 3] = Math.round(alphaValues[i] * 255); // Conserva el alpha original
+        outData.data[px + 3] = Math.round(alphaValues[i] * 255);
     } 
     return outData; 
 } 

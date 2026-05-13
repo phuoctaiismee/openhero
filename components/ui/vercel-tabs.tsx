@@ -97,7 +97,6 @@ export function VercelTabs({ tabs, defaultTab, className, contentClassName }: Ve
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
           >
-            {/* APLICAMOS FLEX PARA ALINEAR EL ICONO Y EL TEXTO */}
             <span className="flex items-center gap-1.5 whitespace-nowrap font-medium text-sm leading-5">
               {tab.icon && <Icon icon={tab.icon} width="14" />}
               {tab.label}

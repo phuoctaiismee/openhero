@@ -91,7 +91,6 @@ export default function AssetsGallery({ assets }: AssetsGalleryProps) {
     setPage(1);
   }
 
-  // Infinite Scroll logic
   useEffect(() => {
     const sentinel = sentinelRef.current;
     if (!sentinel || !hasMore) return;
@@ -128,13 +127,11 @@ export default function AssetsGallery({ assets }: AssetsGalleryProps) {
       <style dangerouslySetInnerHTML={{ __html: `
         .bento-mosaic-grid {
           display: grid;
-          gap: 12px; /* Gaps pequeños para un estilo minimalista */
-          /* Móvil: 2 columnas, altura pequeña */
+          gap: 12px;
           grid-template-columns: repeat(2, 1fr);
           grid-auto-rows: 140px; 
         }
 
-        /* Variación para móvil para que no sea tan aburrido */
         @media (max-width: 639px) {
           .bento-mosaic-grid > div:nth-child(5n + 1) {
             grid-column: span 2;
@@ -142,14 +139,12 @@ export default function AssetsGallery({ assets }: AssetsGalleryProps) {
           }
         }
 
-        /* Desktop: Basado exactamente en tus anchos (25%, 30%, 15%, 25%) */
         @media (min-width: 640px) {
           .bento-mosaic-grid {
             grid-template-columns: 25fr 30fr 15fr 25fr;
-            grid-auto-rows: 180px; /* Altura minimalista, ajusta según prefieras */
+            grid-auto-rows: 180px;
             gap: 16px;
           }
-          /* El patrón se repite cada 6 elementos, logrando el loop infinito */
           .bento-mosaic-grid > div:nth-child(6n + 2) {
             grid-column: 2 / 3;
             grid-row: span 2;

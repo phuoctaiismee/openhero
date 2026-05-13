@@ -127,11 +127,6 @@
         ::-webkit-scrollbar-track { background: var(--obsidian); }
         ::-webkit-scrollbar-thumb { background: var(--light-thread); border-radius: 10px; }
 
-        /* =========================================
-           NUEVOS ESTILOS Y HACKS CSS AÑADIDOS 
-           ========================================= */
-
-        /* Hack 1: Marcos HUD con pseudo-elementos animados */
         .hud-frame { position: relative; border: 1px solid transparent; }
         .hud-frame::before, .hud-frame::after {
             content: ''; position: absolute; width: 15px; height: 15px;
@@ -144,16 +139,13 @@
         .hud-frame:hover::before, .hud-frame:hover::after { width: 35px; height: 35px; opacity: 1; }
         .hud-frame:hover { border-color: rgba(255,255,255,0.02); background: rgba(255,255,255,0.01); }
 
-        /* Hack 2: Clip paths para cortes biselados en los bordes */
         .clip-edge { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%); }
         .clip-edge-reverse { clip-path: polygon(20px 0, 100% 0, 100% 100%, 0 100%, 0 20px); }
 
-        /* Hack 3: Animación de Marquesina Infinita usando CSS puro sin JS */
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         .animate-marquee { animation: marquee 30s linear infinite; width: max-content; }
         .animate-marquee:hover { animation-play-state: paused; }
 
-        /* Hack 4: Grilla con patrón CSS puro */
         .css-grid-bg {
             background-size: 30px 30px;
             background-image: 

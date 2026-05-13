@@ -209,20 +209,17 @@
 
         .hero {
             position: relative;
-            /* Necesario para contener el video absoluto */
             min-height: 100svh;
             display: grid;
             grid-template-columns: 1fr;
             background: var(--white);
             padding-top: 64px;
             overflow: hidden;
-            /* Evita que el video se desborde */
         }
 
         .hero-grid {
             position: relative;
             z-index: 10;
-            /* Asegura que el contenido quede por encima del video */
             width: min(1600px, calc(100% - 28px));
             margin: 0 auto;
             min-height: calc(100svh - 64px);
@@ -238,14 +235,12 @@
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            /* Cambiamos el fondo a transparente para que el video luzca detrás del texto */
             background: transparent;
             border-right: none;
         }
 
         .hero-side {
             position: relative;
-            /* Quitamos el gradiente sólido para que el video pase libremente */
             background: transparent;
             overflow: visible;
             min-height: calc(100svh - 64px);
@@ -254,11 +249,8 @@
         .video-shell {
             position: absolute;
             inset: 0;
-            /* Hace que ocupe el 100% del hero */
             z-index: 1;
-            /* Lo manda al fondo, detrás de hero-grid */
             overflow: hidden;
-            /* Máscara que es transparente a la izquierda y sólida a la derecha */
             -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 55%, black 100%);
             mask-image: linear-gradient(to right, transparent 0%, transparent 20%, black 55%, black 100%);
             filter: saturate(1.06) contrast(1.04) brightness(.96);

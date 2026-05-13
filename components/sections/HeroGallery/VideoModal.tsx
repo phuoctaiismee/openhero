@@ -298,7 +298,6 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
               ))}
             </div>
 
-            {/* Action buttons */}
             <div className="mt-4 flex flex-wrap gap-2">
               <a
                 href={`/downloads/${video.category}/${video.slug}/video.mp4`}
@@ -331,7 +330,6 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
                 <FrameworkDropdown active={mobileTab} onChange={setMobileTab} />
               </div>
               <div className="relative h-48 min-h-0 flex-1 overflow-auto custom-scroll rounded-lg border border-white/5 lg:h-auto">
-                {/* Sticky action buttons for mobile */}
                 <div className="absolute top-2 right-2 z-10 flex items-center gap-1.5 sticky">
                   <button
                     onClick={async () => {

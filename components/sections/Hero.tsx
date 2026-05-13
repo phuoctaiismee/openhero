@@ -37,7 +37,7 @@ export default function Hero() {
                             <MetallicPaint
                                 text="Sections."
                                 fontWeight="900"
-                                fontSize={dynamicFontSize} // <--- Valor dinámico
+                                fontSize={dynamicFontSize}
                                 tintColor="#ffffff"
                                 speed={0.2}
                                 darkColor="#ffffff"

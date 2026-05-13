@@ -1067,7 +1067,6 @@
         if (!manifestoEl || lineIndex >= manifesto.length) return;
 
         const currentLine = manifesto[lineIndex];
-        // Construimos el bloque de texto actual sin duplicar caracteres previos
         const currentLineProgress = currentLine.slice(0, charIndex + 1);
         const separator = (lineIndex > 0 && charIndex === 0) ? "\n\n" : (lineIndex > 0 ? "\n\n" : "");
         
@@ -1078,7 +1077,6 @@
         if (charIndex < currentLine.length) {
             setTimeout(typeManifesto, 25); // Velocidad de escritura
         } else {
-            // Guardamos la línea completa para la siguiente iteración
             completedText += (lineIndex > 0 ? "\n\n" : "") + currentLine;
             lineIndex++;
             charIndex = 0;
@@ -1086,10 +1084,8 @@
         }
     }
 
-    // Iniciar el efecto de escritura
     typeManifesto();
 
-    // Optimización de Scroll con requestAnimationFrame
     let ticking = false;
     function updateHero() {
         const progress = Math.min(window.scrollY / (window.innerHeight * 1.15), 1);
@@ -1111,15 +1107,12 @@
         }
     }, { passive: true });
 
-    // Inicializar posición del Hero al cargar
     updateHero();
 
-    // Observador para revelar elementos con la clase .reveal
     const revealObserver = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 entry.target.classList.add("in");
-                // Una vez revelado, dejamos de observar para ahorrar recursos
                 revealObserver.unobserve(entry.target);
             }
         });
@@ -1127,7 +1120,6 @@
 
     document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
 
-    // Micro-interacciones profesionales en botones y links
     document.querySelectorAll("button, a").forEach((el) => {
         el.addEventListener("mouseenter", () => {
             el.animate(
@@ -1144,12 +1136,10 @@
         });
     });
 
-    // Soporte para View Transitions de navegación fluida
     if (supportsViewTransitions) {
         document.querySelectorAll("button").forEach((button) => {
             button.addEventListener("click", () => {
                 document.startViewTransition(() => {
-                    // Aquí iría la lógica de cambio de vista si la hubiera
                 });
             });
         });

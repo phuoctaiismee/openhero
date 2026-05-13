@@ -93,12 +93,9 @@ export function SubmitModal({ onClose }: Props) {
             className="fixed inset-0 z-200 flex items-center justify-center px-4"
             onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}
         >
-            {/* Backdrop */}
             <div className="absolute inset-0 bg-black/80 backdrop-blur-md" />
 
-            {/* Panel */}
             <div className="relative z-10 w-full max-w-md rounded-2xl border border-white/10 bg-[#0a0a0a] p-7 shadow-2xl">
-                {/* Header */}
                 <div className="mb-6 flex items-start justify-between">
                     <div>
                         <h2 className="text-lg font-semibold tracking-tight text-white">
