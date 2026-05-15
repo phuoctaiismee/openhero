@@ -69,7 +69,7 @@ export default function Header() {
                     />
 
                     <div className="absolute bottom-0 left-0 right-0 z-10 p-6">
-                      <p className="text-xs text-white font-semibold">Explora los Assets</p>
+                      <p className="text-xs text-white font-semibold">Explore Assets</p>
                     </div>
                   </div>
                 </div>
