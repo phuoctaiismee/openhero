@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTER // Micro-Workspace Protocol</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyber: {
+                            bg: '#080b0e',
+                            surface: '#11161b',
+                            card: '#161d24',
+                            border: '#222c37',
+                            accent: '#38bdf8',
+                            glow: '#00f0ff',
+                            amber: '#f59e0b',
+                            lamp: '#ffb03a'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #080b0e;
+            color: #e2e8f0;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .terminal-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(34, 44, 55, 0.15) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(34, 44, 55, 0.15) 1px, transparent 1px);
+        }
+
+        .ambient-lamp {
+            background: radial-gradient(circle at 50% 50%, rgba(255, 176, 58, 0.08) 0%, rgba(56, 189, 248, 0.02) 45%, transparent 70%);
+        }
+
+        .keycap-glow {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.15), inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        .keycap-glow:hover {
+            box-shadow: 0 0 45px rgba(255, 176, 58, 0.25), inset 0 0 20px rgba(255, 176, 58, 0.1);
+        }
+
+        .code-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .code-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .cursor-blink::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #38bdf8 }
+        }
+
+        .isometric-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .isometric-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(255, 176, 58, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-cyber-amber selection:text-cyber-bg">
+
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div class="absolute inset-0 terminal-grid"></div>
+        <div class="absolute top-[20%] left-[10%] w-[50vw] h-[50vw] ambient-lamp rounded-full blur-3xl"></div>
+        <div class="absolute bottom-[10%] right-[-5%] w-[40vw] h-[40vw] bg-cyber-accent/5 rounded-full blur-[120px]"></div>
+    </div>
+
+    <nav id="top-nav" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 h-20 flex items-center border-b border-transparent">
+        <div class="w-full max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="font-mono text-base font-bold tracking-wider flex items-center gap-3 text-white">
+                <span class="flex h-2 w-2 relative">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyber-glow opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-cyber-glow"></span>
+                </span>
+                CORE // ENTER
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 font-mono text-xs uppercase tracking-widest text-slate-400">
+                <a href="#architecture" class="hover:text-cyber-glow transition-colors">Architecture</a>
+                <a href="#console" class="hover:text-cyber-glow transition-colors">Console</a>
+                <a href="#modules" class="hover:text-cyber-glow transition-colors">Modules</a>
+                <a href="#hardware" class="hover:text-cyber-glow transition-colors">Hardware</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <span class="font-mono text-[10px] bg-cyber-surface border border-cyber-border px-3 py-1 text-cyber-amber hidden sm:inline-block">
+                    LNKS // SECURE
+                </span>
+                <button class="font-mono text-xs border border-cyber-accent/30 px-5 py-2.5 bg-cyber-surface hover:border-cyber-glow hover:text-white transition-all">
+                    Compile Space
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div class="absolute inset-0 z-0">
+            <video id="hero-bg-video" autoplay loop muted playsinline class="w-full h-full object-cover opacity-40 mix-blend-screen">
+                <source src="./video.mp4" type="video/mp4">
+            </video>
+            <div class="absolute inset-0 bg-gradient-to-t from-cyber-bg via-cyber-bg/5 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-center py-12">
+            <div class="lg:col-span-7 space-y-8 text-left">
+                <div class="inline-flex items-center gap-3 border border-cyber-border bg-cyber-surface/80 px-4 py-1.5 rounded-none">
+                    <iconify-icon icon="radial-blur" class="text-cyber-amber animate-spin"></iconify-icon>
+                    <span class="font-mono text-xs uppercase tracking-widest text-slate-300">Enclosed Development Sandbox</span>
+                </div>
+
+                <h1 class="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                    Build Deep Inside <br>
+                    <span class="font-mono text-transparent bg-clip-text bg-gradient-to-r from-cyber-accent via-cyber-lamp to-cyber-amber">The Micro Matrix.</span>
+                </h1>
+
+                <p class="max-w-xl text-slate-400 text-base sm:text-lg font-light leading-relaxed">
+                    Step inside isolated execution chambers built beneath hardware arrays. Where minimalist ambient desk lamps meet infinite arrays of raw compiling intelligence.
+                </p>
+
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    <a href="#console" class="px-8 py-4 bg-cyber-accent text-cyber-bg font-mono text-xs uppercase tracking-widest font-bold hover:bg-cyber-glow transition-all text-center keycap-glow">
+                        Initialize Terminal
+                    </a>
+                    <a href="#architecture" class="px-8 py-4 border border-cyber-border bg-cyber-surface/40 font-mono text-xs uppercase tracking-widest font-light text-slate-300 hover:border-slate-400 transition-all text-center">
+                        Review Blueprints
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="relative z-10">
+
+        <section id="architecture" class="py-32 max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-5 space-y-6 code-reveal">
+                    <span class="font-mono text-xs text-cyber-amber uppercase tracking-widest block">ENVIRONMENT SPECIFICATION</span>
+                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-white">The Enclave Architecture</h2>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        By structuralizing developer terminals inside high-clearance physical key capsules, operations are permanently shielded from macro system wide failures. Isolation breeds focus, and micro spaces maximize compilation efficiency.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 pt-4">
+                        <div class="border-l-2 border-cyber-accent pl-4">
+                            <div class="font-mono text-xl font-bold text-white">99.98%</div>
+                            <div class="text-xs text-slate-500 tracking-wider uppercase">Focus Retention</div>
+                        </div>
+                        <div class="border-l-2 border-cyber-lamp pl-4">
+                            <div class="font-mono text-xl font-bold text-white">&lt; 1.2ms</div>
+                            <div class="text-xs text-slate-500 tracking-wider uppercase">Latency Buffer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 grid sm:grid-cols-2 gap-6">
+                    <div class="isometric-card border border-cyber-border bg-cyber-card p-8 space-y-4">
+                        <iconify-icon icon="ph:terminal-window-light" class="text-3xl text-cyber-accent"></iconify-icon>
+                        <h3 class="text-xl font-semibold text-white">Localized Shell</h3>
+                        <p class="text-sm text-slate-400 font-light leading-relaxed">
+                            Run completely segmented file structures unaffected by the greater operating ecosystem overhead.
+                        </p>
+                    </div>
+
+                    <div class="isometric-card border border-cyber-border bg-cyber-card p-8 space-y-4">
+                        <iconify-icon icon="ph:lightbulb-filament-light" class="text-3xl text-cyber-lamp"></iconify-icon>
+                        <h3 class="text-xl font-semibold text-white">Warm Illumination</h3>
+                        <p class="text-sm text-slate-400 font-light leading-relaxed">
+                            Calibrated 2700K ambient desk emitters built overhead to maintain focus loops through deep night operations.
+                        </p>
+                    </div>
+
+                    <div class="isometric-card border border-cyber-border bg-cyber-card p-8 space-y-4">
+                        <iconify-icon icon="ph:layout-light" class="text-3xl text-slate-400"></iconify-icon>
+                        <h3 class="text-xl font-semibold text-white">Matrix Key Binding</h3>
+                        <p class="text-sm text-slate-400 font-light leading-relaxed">
+                            Direct physical mappings linking switches with multi-tier conditional programming macros instantly.
+                        </p>
+                    </div>
+
+                    <div class="isometric-card border border-cyber-border bg-cyber-card p-8 space-y-4">
+                        <iconify-icon icon="ph:shield-warning-light" class="text-3xl text-cyber-glow"></iconify-icon>
+                        <h3 class="text-xl font-semibold text-white">Physical Sandbox</h3>
+                        <p class="text-sm text-slate-400 font-light leading-relaxed">
+                            Hardware isolated walls stopping malicious executions from breaking out into external grid channels.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="console" class="py-32 bg-cyber-surface/50 border-y border-cyber-border">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="max-w-2xl mx-auto text-center mb-16 code-reveal">
+                    <span class="font-mono text-xs text-cyber-accent uppercase tracking-widest block mb-3">COMMAND OVERRIDE</span>
+                    <h2 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">Interactive Sandbox Matrix</h2>
+                </div>
+
+                <div class="w-full max-w-4xl mx-auto border border-cyber-border bg-cyber-bg shadow-2xl overflow-hidden">
+                    <div class="bg-cyber-surface px-4 py-3 border-b border-cyber-border flex items-center justify-between select-none">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500/40"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/40"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-500/40"></span>
+                            <span class="font-mono text-xs text-slate-500 ml-2">enclave_kernel_v4.sh</span>
+                        </div>
+                        <span class="font-mono text-[10px] text-slate-600">TTY // 1</span>
+                    </div>
+                    
+                    <div class="p-6 font-mono text-xs sm:text-sm space-y-4 min-h-[320px] bg-gradient-to-b from-cyber-bg to-cyber-surface/20">
+                        <div class="flex items-start gap-2">
+                            <span class="text-cyber-accent">guest@nexus:~$</span>
+                            <span class="text-slate-300">init --container=enter_keycap</span>
+                        </div>
+                        <div class="text-slate-500 space-y-1">
+                            <div>[ OK ] Mounting miniature physical storage matrix...</div>
+                            <div>[ OK ] Aligning overhead incandescent ambient illumination arrays...</div>
+                            <div>[ OK ] Calibrating 16x16 macro switch layout profiles...</div>
+                        </div>
+                        <div class="flex items-start gap-2">
+                            <span class="text-cyber-accent">guest@nexus:~$</span>
+                            <span class="text-slate-300">cat core_philosophy.txt</span>
+                        </div>
+                        <div class="text-cyber-amber leading-relaxed bg-cyber-card/50 p-4 border border-cyber-border/60">
+                            "Great applications are not born on expansive arrays, but written inside localized pockets of absolute clarity. Own your inputs. Perfect your keycaps."
+                        </div>
+                        <div class="flex items-center gap-2 pt-2">
+                            <span class="text-cyber-accent">guest@nexus:~$</span>
+                            <span class="text-white cursor-blink" id="terminal-input-mock"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modules" class="py-32 max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6 code-reveal">
+                <div>
+                    <span class="font-mono text-xs text-cyber-lamp uppercase tracking-widest block mb-3">WORKSPACE CONTROLS</span>
+                    <h2 class="text-4xl font-bold tracking-tight text-white">Configured Nodes</h2>
+                </div>
+                <p class="text-slate-400 max-w-xs font-light text-sm">
+                    Toggle through custom execution parameters engineered specifically for enclosed workspace developers.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="border border-cyber-border bg-cyber-card p-8 flex flex-col justify-between h-80 group hover:border-cyber-accent/40 transition-colors">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 bg-cyber-accent/10 border border-cyber-accent/20 flex items-center justify-center text-cyber-accent text-xl">
+                                <iconify-icon icon="ph:cube-light"></iconify-icon>
+                            </div>
+                            <span class="font-mono text-xs text-slate-600">01 / NODE</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyber-accent transition-colors">Encapsulation</h3>
+                        <p class="text-slate-400 text-sm font-light leading-relaxed">
+                            Complete separation of system parameters ensures clean testing environment variables every runtime cycle.
+                        </p>
+                    </div>
+                    <div class="font-mono text-[11px] text-slate-500 uppercase tracking-widest">Status: Active Isolation</div>
+                </div>
+
+                <div class="border border-cyber-border bg-cyber-card p-8 flex flex-col justify-between h-80 group hover:border-cyber-lamp/40 transition-colors">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 bg-cyber-lamp/10 border border-cyber-lamp/20 flex items-center justify-center text-cyber-lamp text-xl">
+                                <iconify-icon icon="ph:sliders-horizontal-light"></iconify-icon>
+                            </div>
+                            <span class="font-mono text-xs text-slate-600">02 / NODE</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyber-lamp transition-colors">Lux Modulator</h3>
+                        <p class="text-slate-400 text-sm font-light leading-relaxed">
+                            Control localized photon emission. Transition from sharp morning compilation modes to deep amber environments.
+                        </p>
+                    </div>
+                    <div class="font-mono text-[11px] text-slate-500 uppercase tracking-widest">Status: 2700K Calibrated</div>
+                </div>
+
+                <div class="border border-cyber-border bg-cyber-card p-8 flex flex-col justify-between h-80 group hover:border-cyber-glow/40 transition-colors">
+                    <div>
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="w-12 h-12 bg-cyber-glow/10 border border-cyber-glow/20 flex items-center justify-center text-cyber-glow text-xl">
+                                <iconify-icon icon="ph:command-light"></iconify-icon>
+                            </div>
+                            <span class="font-mono text-xs text-slate-600">03 / NODE</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyber-glow transition-colors">Macro Overlays</h3>
+                        <p class="text-slate-400 text-sm font-light leading-relaxed">
+                            Bind comprehensive software stack configurations to physical key presses directly beneath your workspace platform.
+                        </p>
+                    </div>
+                    <div class="font-mono text-[11px] text-slate-500 uppercase tracking-widest">Status: Bound via Layer 2</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="hardware" class="py-32 bg-cyber-card/30 border-t border-cyber-border">
+            <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-center">
+                <div class="lg:col-span-6 relative order-2 lg:order-1">
+                    <div class="absolute inset-0 bg-cyber-accent/5 blur-[100px] rounded-full pointer-events-none"></div>
+                    <div class="border border-cyber-border p-8 bg-cyber-bg relative z-10 font-mono text-xs space-y-4">
+                        <div class="flex justify-between border-b border-cyber-border/40 pb-3 text-slate-500">
+                            <span>COMPONENT MATRIX</span><span>SPECIFICATION ALPHA</span>
+                        </div>
+                        <div class="flex justify-between border-b border-cyber-border/40 pb-2">
+                            <span class="text-slate-400">Key Profile</span><span class="text-white">OEM / High-Transparency Profile</span>
+                        </div>
+                        <div class="flex justify-between border-b border-cyber-border/40 pb-2">
+                            <span class="text-slate-400">Housing Type</span><span class="text-white">Thick Polycarbonate Poly</span>
+                        </div>
+                        <div class="flex justify-between border-b border-cyber-border/40 pb-2">
+                            <span class="text-slate-400">Internal Desk Matrix</span><span class="text-white">Solid Walnut Facing Veneer</span>
+                        </div>
+                        <div class="flex justify-between pb-1">
+                            <span class="text-slate-400">LED Array Configuration</span><span class="text-cyber-amber">SMD Neon Filament Simulation</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 space-y-6 order-1 lg:order-2 code-reveal">
+                    <span class="font-mono text-xs text-cyber-accent uppercase tracking-widest block">TACTILE INTERFACE</span>
+                    <h2 class="text-4xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+                        Premium enclosures built for sovereign operators.
+                    </h2>
+                    <p class="text-slate-400 font-light leading-relaxed">
+                        Every enclosure features glass-clear polycarbonate resins that perfectly diffuse deep internal board glows. Own a fully sealed universe tailored exclusively to your execution syntax.
+                    </p>
+                    <div class="pt-2">
+                        <button class="px-8 py-4 bg-white text-cyber-bg font-mono text-xs uppercase tracking-widest font-bold hover:bg-cyber-amber transition-colors">
+                            Secure Build Slots
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 max-w-4xl mx-auto text-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-cyber-lamp/5 blur-3xl pointer-events-none rounded-full"></div>
+            <div class="relative z-10 space-y-8 code-reveal">
+                <iconify-icon icon="ph:fingerprint-light" class="text-4xl text-cyber-accent animate-pulse"></iconify-icon>
+                <h2 class="text-3xl sm:text-5xl font-bold tracking-tight text-white">Subscribe to Core Logs</h2>
+                <p class="text-slate-400 text-sm sm:text-base font-light max-w-xl mx-auto leading-relaxed">
+                    Get telemetry updates regarding micro environment frameworks, firmware releases, and clear enclosure material drops.
+                </p>
+                <div class="max-w-md mx-auto flex flex-col sm:flex-row items-center gap-4">
+                    <input type="email" placeholder="operator@domain.com" class="w-full bg-cyber-card border border-cyber-border px-5 py-4 font-mono text-xs text-white placeholder:text-slate-600 focus:outline-none focus:border-cyber-accent transition-colors">
+                    <button class="w-full sm:w-auto px-8 py-4 bg-cyber-accent text-cyber-bg font-mono text-xs uppercase tracking-widest font-bold whitespace-nowrap hover:bg-cyber-glow transition-colors">
+                        Connect Node
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-cyber-surface border-t border-cyber-border pt-20 pb-12 px-6 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-16 items-start relative z-10 mb-16">
+                <div class="lg:col-span-5 space-y-6">
+                    <a href="#" class="font-mono text-lg font-bold tracking-wider text-white">
+                        CORE // ENTER
+                    </a>
+                    <p class="text-slate-500 text-sm font-light leading-relaxed max-w-sm">
+                        Architecting localized, isolated desktop compilation enclaves inspired by mechanics, micro illumination, and pure logical code bases.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12 w-full">
+                    <div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest font-bold text-cyber-amber mb-6">Framework</h4>
+                        <ul class="space-y-4 font-mono text-xs text-slate-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Sandbox OS</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Kernel Modules</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Micro Lighting</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Macro Overlays</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-mono text-xs uppercase tracking-widest font-bold text-cyber-amber mb-6">Enclosure</h4>
+                        <ul class="space-y-4 font-mono text-xs text-slate-400">
+                            <li><a href="#" class="hover:text-white transition-colors">Polycarbonate</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Walnut Inserts</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Custom Tooling</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Build Gallery</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <h4 class="font-mono text-xs uppercase tracking-widest font-bold text-cyber-amber mb-6">Telemetry</h4>
+                        <div class="flex gap-4 text-xl text-slate-500">
+                            <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="ph:github-logo-light"></iconify-icon></a>
+                            <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="ph:terminal-light"></iconify-icon></a>
+                            <a href="#" class="hover:text-white transition-colors"><iconify-icon icon="ph:cpu-light"></iconify-icon></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto border-t border-cyber-border/40 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 relative z-10 font-mono text-[10px] uppercase tracking-widest text-slate-600">
+                <p>© 2026 CORE // ENTER. Sandbox Verified.</p>
+                <div class="flex gap-8">
+                    <a href="#" class="hover:text-white transition-colors">Isolation Statutes</a>
+                    <a href="#" class="hover:text-white transition-colors">Firmware Protocols</a>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        const video = document.getElementById('hero-bg-video');
+        const nav = document.getElementById('top-nav');
+        let scrollActive = false;
+
+        const runScrollLogic = () => {
+            const currentY = window.scrollY;
+            
+            if (video) {
+                video.style.transform = `translateY(${currentY * 0.3}px)`;
+            }
+
+            if (currentY > 60) {
+                nav.classList.remove('h-20', 'border-transparent');
+                nav.classList.add('h-16', 'bg-cyber-bg/90', 'backdrop-blur-md', 'border-cyber-border');
+            } else {
+                nav.classList.remove('h-16', 'bg-cyber-bg/90', 'backdrop-blur-md', 'border-cyber-border');
+                nav.classList.add('h-20', 'border-transparent');
+            }
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!scrollActive) {
+                window.requestAnimationFrame(() => {
+                    runScrollLogic();
+                    scrollActive = false;
+                });
+                scrollActive = true;
+            }
+        }, { passive: true });
+
+        const observerParams = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -40px 0px"
+        };
+
+        const revealCallback = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    revealCallback.unobserve(entry.target);
+                }
+            });
+        }, observerParams);
+
+        document.querySelectorAll('.code-reveal').forEach(node => revealCallback.observe(node));
+
+        const mockInput = document.getElementById('terminal-input-mock');
+        const sequences = ["compile_all --speed=max", "run mock_compiler.exe", "status --all --verbose"];
+        let sequenceIndex = 0;
+        let characterIndex = 0;
+        let deletionActive = false;
+
+        const processTypewriter = () => {
+            const currentString = sequences[sequenceIndex];
+            
+            if (!deletionActive) {
+                mockInput.textContent = currentString.substring(0, characterIndex + 1);
+                characterIndex++;
+                
+                if (characterIndex === currentString.length) {
+                    deletionActive = true;
+                    setTimeout(processTypewriter, 2000);
+                    return;
+                }
+            } else {
+                mockInput.textContent = currentString.substring(0, characterIndex - 1);
+                characterIndex--;
+                
+                if (characterIndex === 0) {
+                    deletionActive = false;
+                    sequenceIndex = (sequenceIndex + 1) % sequences.length;
+                }
+            }
+            
+            setTimeout(processTypewriter, deletionActive ? 40 : 100);
+        };
+
+        if (mockInput) {
+            setTimeout(processTypewriter, 1000);
+        }
+    </script>
+</body>
+</html>

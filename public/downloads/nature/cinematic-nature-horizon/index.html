@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aetheris | Cinematic Nature & Horizons</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        skyline: '#0c141f',
+                        azure: {
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                        },
+                        emerald: {
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                        },
+                        solis: '#f59e0b'
+                    },
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    animation: {
+                        'leaf-fall-slow': 'leafFall 12s linear infinite',
+                        'leaf-fall-fast': 'leafFall 7s linear infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float-slow': 'floatY 6s ease-in-out infinite'
+                    },
+                    keyframes: {
+                        leafFall: {
+                            '0%': { transform: 'translateY(-10vh) translateX(-5vw) rotate(0deg) scale(0.5)', opacity: '0' },
+                            '10%': { opacity: '0.8' },
+                            '90%': { opacity: '0.8' },
+                            '100%': { transform: 'translateY(110vh) translateX(25vw) rotate(720deg) scale(1)', opacity: '0' }
+                        },
+                        floatY: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-12px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #05090e;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05090e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #334155;
+        }
+        .cinematic-vignette {
+            background: radial-gradient(circle at 50% 50%, transparent 10%, rgba(5, 9, 14, 0.3) 50%, #05090e 95%);
+        }
+        .glass-card {
+            background: rgba(12, 20, 31, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-card:hover {
+            border-color: rgba(56, 189, 248, 0.2);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .text-gradient-sun {
+            background: linear-gradient(135deg, #fff 30%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .leaf-particle {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-azure-500 selection:text-white">
+
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <video autoplay loop muted playsinline class="w-full h-full object-cover opacity-60">
+            <source src="./video.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 cinematic-vignette"></div>
+        
+        <div class="leaf-particle animate-leaf-fall-slow top-0 left-[10%] text-emerald-400 opacity-40">
+            <iconify-icon icon="ph:leaf-fill" class="text-3xl rotate-45"></iconify-icon>
+        </div>
+        <div class="leaf-particle animate-leaf-fall-fast top-0 left-[40%] text-emerald-500 opacity-30" style="animation-delay: 2s;">
+            <iconify-icon icon="ph:leaf-fill" class="text-2xl -rotate-12"></iconify-icon>
+        </div>
+        <div class="leaf-particle animate-leaf-fall-slow top-0 left-[70%] text-solis opacity-20" style="animation-delay: 4s;">
+            <iconify-icon icon="ph:leaf-fill" class="text-4xl rotate-90"></iconify-icon>
+        </div>
+        <div class="leaf-particle animate-leaf-fall-fast top-0 left-[85%] text-emerald-300 opacity-40" style="animation-delay: 1s;">
+            <iconify-icon icon="ph:leaf-fill" class="text-xl rotate-180"></iconify-icon>
+        </div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-white/5 bg-skyline/20 backdrop-blur-md" id="main-nav">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2.5 group">
+                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-azure-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-azure-500/20">
+                    <iconify-icon icon="roentgen:wind-turbine" class="text-xl text-skyline"></iconify-icon>
+                </div>
+                <span class="font-display text-xl tracking-wider uppercase font-extrabold bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Aetheris</span>
+            </a>
+            
+            <div class="hidden md:flex items-center gap-8 font-sans text-xs uppercase tracking-[0.2em] font-semibold text-slate-300">
+                <a href="#horizons" class="hover:text-azure-400 transition-colors">Horizons</a>
+                <a href="#ecosystem" class="hover:text-azure-400 transition-colors">Ecosystem</a>
+                <a href="#vantage" class="hover:text-azure-400 transition-colors">Vantage Points</a>
+                <a href="#expeditions" class="hover:text-azure-400 transition-colors">Expeditions</a>
+            </div>
+
+            <div>
+                <button class="bg-white/10 hover:bg-white text-white hover:text-skyline border border-white/10 rounded-full px-6 py-2.5 font-sans text-xs uppercase tracking-wider font-bold transition-all duration-300">
+                    Launch Odyssey
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="relative z-10">
+        
+        <section class="min-h-screen flex items-center justify-start px-6 max-w-7xl mx-auto pt-20">
+            <div class="max-w-3xl space-y-8">
+                <h1 class="font-display text-5xl sm:text-7xl font-black uppercase tracking-tight leading-[0.9] text-gradient-sun">
+                    Where the winds <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-azure-400 to-emerald-400">meet tranquility.</span>
+                </h1>
+
+                <p class="font-sans text-base sm:text-lg text-slate-300/80 max-w-xl font-light leading-relaxed">
+                    Immerse yourself in wide open spaces framed by rolling ridges, high mountain passes, and sweeping emerald lakes. Watch the world unfold as elements drift naturally across the sky.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <a href="#horizons" class="bg-gradient-to-r from-azure-500 to-emerald-500 hover:from-azure-600 hover:to-emerald-600 text-white font-bold font-sans text-xs uppercase tracking-widest px-8 py-4 rounded-full shadow-xl shadow-azure-500/10 transition-all duration-300 text-center">
+                        Explore Frontiers
+                    </a>
+                    <button class="flex items-center justify-center gap-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full px-8 py-4 font-sans text-xs uppercase tracking-widest font-bold transition-all">
+                        <iconify-icon icon="ph:play-fill" class="text-base text-emerald-400"></iconify-icon>
+                        Watch Stream
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="horizons" class="py-32 px-6 max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-12 gap-12 items-end mb-20">
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="font-sans text-xs uppercase tracking-[0.4em] text-azure-400 font-bold block">Vast Dimensions</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-white">The Anatomy of Scale</h2>
+                </div>
+                <div class="lg:col-span-5">
+                    <p class="font-sans text-sm text-slate-400 leading-relaxed font-light">
+                        Every valley is constructed around dynamic fluid grids. Terrains respond directly to atmospheric criteria, balancing pristine mountain topology with dense, whispering tree lines.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-3xl transition-all duration-500 group">
+                    <div class="w-12 h-12 rounded-2xl bg-azure-500/10 border border-azure-500/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <iconify-icon icon="ph:mountains-fill" class="text-2xl text-azure-400"></iconify-icon>
+                    </div>
+                    <h3 class="font-display text-xl font-bold uppercase mb-3 text-white">Ridge Formations</h3>
+                    <p class="font-sans text-sm text-slate-400 font-light leading-relaxed">
+                        High-altitude peaks generated using noise metrics that replicate tectonic pressures, creating sheer drop-offs and jagged, striking profiles.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl transition-all duration-500 group">
+                    <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <iconify-icon icon="ph:waves-fill" class="text-2xl text-emerald-400"></iconify-icon>
+                    </div>
+                    <h3 class="font-display text-xl font-bold uppercase mb-3 text-white">Resin Lakes</h3>
+                    <p class="font-sans text-sm text-slate-400 font-light leading-relaxed">
+                        Expansive internal reservoirs utilizing screen-space reflections to mirror clouds, sweeping slopes, and shifting environmental illumination.
+                    </p>
+                </div>
+
+                <div class="glass-card p-8 rounded-3xl transition-all duration-500 group">
+                    <div class="w-12 h-12 rounded-2xl bg-solis/10 border border-solis/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+                        <iconify-icon icon="ph:wind-fill" class="text-2xl text-solis"></iconify-icon>
+                    </div>
+                    <h3 class="font-display text-xl font-bold uppercase mb-3 text-white">Aether Currents</h3>
+                    <p class="font-sans text-sm text-slate-400 font-light leading-relaxed">
+                        Real-time vector forces tracking leaf-drift and moisture dispersion, ensuring that every natural entity reacts predictably to background wind speed.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ecosystem" class="py-20 bg-skyline/30 border-y border-white/5 relative overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-azure-600/5 to-emerald-500/5 pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-6">
+                    <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                        <iconify-icon icon="ph:tree-evergreen-fill" class="text-lg text-emerald-400"></iconify-icon>
+                    </div>
+                    <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-white leading-tight">
+                        Environmental <br>Cohesion Layer
+                    </h2>
+                    <p class="font-sans text-slate-300 font-light leading-relaxed">
+                        The interface behaves like terrain: ridges overlap, valleys frame focus, and every element is integrated directly into the greater ecosystem. Content scales with wide landscapes, anchoring components gracefully against cinematic backdrops.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 pt-4">
+                        <div class="border-l-2 border-emerald-500 pl-4">
+                            <div class="font-display text-2xl font-bold text-white">94.2%</div>
+                            <div class="font-sans text-xs text-slate-400 uppercase tracking-wider mt-1">Biotope Density</div>
+                        </div>
+                        <div class="border-l-2 border-azure-400 pl-4">
+                            <div class="font-display text-2xl font-bold text-white">0.03ms</div>
+                            <div class="font-sans text-xs text-slate-400 uppercase tracking-wider mt-1">Wind Vector Latency</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="relative flex justify-center">
+                    <div class="w-full max-w-md h-80 rounded-3xl bg-gradient-to-tr from-azure-600/20 to-emerald-500/20 border border-white/10 p-6 backdrop-blur-xl relative group overflow-hidden shadow-2xl">
+                        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-skyline pointer-events-none z-10"></div>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full bg-azure-400 animate-ping"></span>
+                                <span class="font-mono text-xs text-azure-300">Live Horizon Feed</span>
+                            </div>
+                            <iconify-icon icon="ph:activity-fill" class="text-slate-400 animate-pulse"></iconify-icon>
+                        </div>
+                        <div class="space-y-4 font-mono text-xs text-slate-400 relative z-20">
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/5">
+                                <span class="text-emerald-400">root@aetheris:~$</span> wind-vector --analyze
+                                <p class="text-slate-500 mt-1">Velocity matches standard alpine draft (14kn)</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/5">
+                                <span class="text-emerald-400">root@aetheris:~$</span> terrain-render --status
+                                <p class="text-azure-400 mt-1">Lake reflection cache optimized (1080p stream)</p>
+                            </div>
+                            <div class="p-3 rounded-xl bg-black/40 border border-white/5 text-center text-solis animate-pulse font-sans font-bold text-[10px] tracking-widest uppercase">
+                                Horizon Matrix Steady
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="vantage" class="py-32 px-6 max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-20 space-y-4">
+                <span class="font-sans text-xs uppercase tracking-[0.4em] text-emerald-400 font-bold block">Curated Viewports</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-extrabold uppercase text-white">Vantage Points</h2>
+                <p class="font-sans text-sm text-slate-400 font-light">
+                    Select a geographical node to recalibrate the atmospheric overlay. Each sector presents distinct cloud configurations and unique lighting parameters.
+                </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="glass-card rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between h-96 p-6">
+                    <div>
+                        <div class="font-sans text-[10px] font-bold tracking-widest text-azure-400 uppercase mb-1">Sector 01</div>
+                        <h3 class="font-display text-xl font-bold uppercase text-white mb-2">Emerald Basin</h3>
+                        <p class="font-sans text-xs text-slate-400 font-light leading-relaxed">
+                            Deep shoreline focus flanked by ancient copper forests under high-contrast skies.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <span class="font-mono text-xs text-slate-500">42° N, 19° E</span>
+                        <button class="w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-skyline flex items-center justify-center transition-all">
+                            <iconify-icon icon="ph:arrow-up-right-bold" class="text-sm"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between h-96 p-6">
+                    <div>
+                        <div class="font-sans text-[10px] font-bold tracking-widest text-emerald-400 uppercase mb-1">Sector 02</div>
+                        <h3 class="font-display text-xl font-bold uppercase text-white mb-2">Solis Ridge</h3>
+                        <p class="font-sans text-xs text-slate-400 font-light leading-relaxed">
+                            Peak configuration optimized for golden hour saturation and intense lens bloom.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <span class="font-mono text-xs text-slate-500">35° N, 112° W</span>
+                        <button class="w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-skyline flex items-center justify-center transition-all">
+                            <iconify-icon icon="ph:arrow-up-right-bold" class="text-sm"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between h-96 p-6">
+                    <div>
+                        <div class="font-sans text-[10px] font-bold tracking-widest text-solis uppercase mb-1">Sector 03</div>
+                        <h3 class="font-display text-xl font-bold uppercase text-white mb-2">Aether Pass</h3>
+                        <p class="font-sans text-xs text-slate-400 font-light leading-relaxed">
+                            High-velocity wind lane featuring constant particle density and active leaf-drift vectors.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <span class="font-mono text-xs text-slate-500">12° S, 74° W</span>
+                        <button class="w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-skyline flex items-center justify-center transition-all">
+                            <iconify-icon icon="ph:arrow-up-right-bold" class="text-sm"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden group transition-all duration-300 flex flex-col justify-between h-96 p-6">
+                    <div>
+                        <div class="font-sans text-[10px] font-bold tracking-widest text-white/40 uppercase mb-1">Sector 04</div>
+                        <h3 class="font-display text-xl font-bold uppercase text-white mb-2">Basalt Terraces</h3>
+                        <p class="font-sans text-xs text-slate-400 font-light leading-relaxed">
+                            Dark layered volcanic rock shelves meeting misty lowlands with minimal color grading.
+                        </p>
+                    </div>
+                    <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+                        <span class="font-mono text-xs text-slate-500">64° N, 21° W</span>
+                        <button class="w-8 h-8 rounded-full bg-white/5 hover:bg-white text-white hover:text-skyline flex items-center justify-center transition-all">
+                            <iconify-icon icon="ph:arrow-up-right-bold" class="text-sm"></iconify-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expeditions" class="py-20 relative overflow-hidden bg-skyline/20">
+            <div class="max-w-5xl mx-auto px-6 text-center space-y-8 relative z-10">
+                <div class="w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mx-auto animate-bounce">
+                    <iconify-icon icon="ph:sketch-logo-fill" class="text-xl text-azure-400"></iconify-icon>
+                </div>
+                <h2 class="font-display text-4xl sm:text-6xl font-black uppercase text-white max-w-3xl mx-auto leading-tight">
+                    Synchronize with <br>the mountain core.
+                </h2>
+                <p class="font-sans text-slate-400 text-base max-w-xl mx-auto font-light leading-relaxed">
+                    Subscribe to receive vector adjustments, geographical telemetry updates, and exclusive entry credentials to high-altitude sandbox enclaves.
+                </p>
+                
+                <div class="max-w-md mx-auto pt-4">
+                    <form onsubmit="event.preventDefault();" class="flex flex-col sm:flex-row gap-3">
+                        <input type="email" placeholder="Enter proxy destination email..." class="w-full bg-skyline/60 border border-white/10 rounded-full px-6 py-4 font-sans text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-azure-400 focus:ring-1 focus:ring-azure-400 transition-all backdrop-blur-md">
+                        <button type="submit" class="bg-white hover:bg-azure-400 text-skyline hover:text-white font-bold font-sans text-xs uppercase tracking-wider px-8 py-4 rounded-full transition-all duration-300 shadow-lg">
+                            Secure Entry
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-40 bg-gradient-to-t from-azure-500/10 to-transparent blur-3xl pointer-events-none"></div>
+        </section>
+
+        <footer class="border-t border-white/5 bg-[#03060a] pt-24 pb-12 px-6">
+            <div class="max-w-7xl mx-auto grid md:grid-cols-[1.5fr_2fr] gap-16 mb-16">
+                <div class="space-y-6">
+                    <a href="#" class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-azure-500 to-emerald-400 flex items-center justify-center">
+                            <iconify-icon icon="ph:compass-safari-fill" class="text-base text-skyline"></iconify-icon>
+                        </div>
+                        <span class="font-display text-lg tracking-wider uppercase font-extrabold text-white">Aetheris</span>
+                    </a>
+                    <p class="font-sans text-slate-400 text-xs font-light leading-relaxed max-w-sm">
+                        Building responsive, highly-immersive macro environments. Formed along the ridge lines where wind current vector logic models meet absolute clarity.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:text-azure-400 transition-colors text-slate-400">
+                            <iconify-icon icon="ph:instagram-logo-light" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:text-azure-400 transition-colors text-slate-400">
+                            <iconify-icon icon="ph:discord-logo-light" class="text-lg"></iconify-icon>
+                        </a>
+                        <a href="#" class="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:text-azure-400 transition-colors text-slate-400">
+                            <iconify-icon icon="ph:github-logo-light" class="text-lg"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
+                    <div class="space-y-4">
+                        <h4 class="font-display text-xs uppercase tracking-wider text-white font-bold">Topography</h4>
+                        <ul class="space-y-2.5 font-sans text-xs text-slate-400 font-light">
+                            <li><a href="#" class="hover:text-white transition-colors">Ridge Builder</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Resin Vectors</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Noise Generation</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Elevation API</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4">
+                        <h4 class="font-display text-xs uppercase tracking-wider text-white font-bold">Atmosphere</h4>
+                        <ul class="space-y-2.5 font-sans text-xs text-slate-400 font-light">
+                            <li><a href="#" class="hover:text-white transition-colors">Leaf Physics</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Cloud Coverage</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Solis Shaders</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Vector Maps</a></li>
+                        </ul>
+                    </div>
+                    <div class="space-y-4 col-span-2 sm:col-span-1">
+                        <h4 class="font-display text-xs uppercase tracking-wider text-white font-bold">Odyssey</h4>
+                        <ul class="space-y-2.5 font-sans text-xs text-slate-400 font-light">
+                            <li><a href="#" class="hover:text-white transition-colors">Alpine Nodes</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Basalt Basins</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Grid Protocols</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 font-sans text-[10px] uppercase tracking-widest text-slate-500">
+                <p>&copy; 2026 Aetheris Dynamics. All horizons preserved.</p>
+                <div class="flex gap-6">
+                    <a href="#" class="hover:text-slate-300 transition-colors">Telemetry Node</a>
+                    <a href="#" class="hover:text-slate-300 transition-colors">Atmospheric Law</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const nav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 40) {
+                nav.classList.add('bg-skyline/80', 'shadow-xl');
+            } else {
+                nav.classList.remove('bg-skyline/80', 'shadow-xl');
+            }
+        }, { passive: true });
+    </script>
+</body>
+</html>
