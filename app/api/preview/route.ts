@@ -27,14 +27,14 @@ export async function GET(request: NextRequest) {
     return new NextResponse("Not found", { status: 404 });
   }
 
-  const githubVideoUrl = `${GITHUB_RAW}/public/videos/${category}/${slug}.mp4`;
+  const githubVideoUrl = `${GITHUB_RAW}/public/downloads/${category}/${slug}/video.mp4`;
 
   let html = fs.readFileSync(htmlPath, "utf-8");
 
   html = html
     .replace(/src=["']\.\/video\.mp4["']/gi, `src="${githubVideoUrl}"`)
     .replace(/src=["']\/video\.mp4["']/gi, `src="${githubVideoUrl}"`)
-    .replace(/src=["']\/videos\/[^"']+["']/gi, `src="${githubVideoUrl}"`);
+    .replace(/src=["']\/downloads\/[^"']+["']/gi, `src="${githubVideoUrl}"`);
 
   return new NextResponse(html, {
     headers: {
