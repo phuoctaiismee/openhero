@@ -2,7 +2,9 @@ name: Sync videos to Cloudflare R2
 
 on:
   push:
-    branches: [main, dev]
+    branches:
+      - main
+      - dev
     paths:
       - "public/videos/**"
       - "public/downloads/**/*.mp4"
