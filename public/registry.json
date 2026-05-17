@@ -31,6 +31,7 @@
     { "slug": "the-art-of-the-burger",                       "category": "enterprice", "dependencies": ["@iconify/react"] },
     { "slug": "the-global-destination-for-modern-luxury",   "category": "enterprice", "dependencies": [] },
     { "slug": "urban-visionary-aesthetics",                  "category": "enterprice", "dependencies": [] },
+    { "slug": "tale-of-the-gale",                            "category": "enterprice", "dependencies": ["@iconify/react"] },
     { "slug": "cloud-forest-sanctuaries",                    "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "dark-forest-misty-morning",                   "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "living-architecture",                         "category": "nature", "dependencies": ["@iconify/react"] },
@@ -55,11 +56,16 @@
     { "slug": "swiss-luxury-watches-and-chronographs",       "category": "tech", "dependencies": ["@iconify/react"] },
     { "slug": "anime-environment-engine",                     "category": "tech", "dependencies": ["@iconify/react"] },
     { "slug": "lumina-ai",                                    "category": "tech", "dependencies": ["@iconify/react"] },
+    { "slug": "micro-workspace-protocol",                     "category": "tech", "dependencies": ["@iconify/react"] },
     { "slug": "cosmic-nomadic-journeys", "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "homexis-platform",        "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "perspective-shift",       "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "planetary-horizons",      "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "solitary-elevation-project", "category": "nature", "dependencies": ["@iconify/react"] },
+    { "slug": "cinematic-horizons",         "category": "nature", "dependencies": ["@iconify/react"] },
+    { "slug": "cinematic-nature-horizon", "category": "nature", "dependencies": ["@iconify/react"] },
+    { "slug": "contemplative-realms",     "category": "nature", "dependencies": ["@iconify/react"] },
+    { "slug": "crystal-universe",         "category": "nature", "dependencies": ["@iconify/react"] },
     { "slug": "speculative-architecture-studio", "category": "nature", "dependencies": ["@iconify/react"] }
   ]
 }

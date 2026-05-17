@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethelgard | Crystal Universes</title>
+    <script src="https://cdn.tailwindcss.com?plugins=container-queries"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#070a08',
+                        moss: {
+                            900: '#1a2615',
+                            800: '#2d3e23'
+                        },
+                        amber: {
+                            glow: '#ff9d00',
+                            dim: '#b46b00',
+                            dark: '#5c3500'
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'firefly': 'firefly 4s ease-in-out infinite alternate',
+                        'glass-shine': 'sheen 8s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-15px)' },
+                        },
+                        firefly: {
+                            '0%': { opacity: 0.2, transform: 'scale(0.8)' },
+                            '100%': { opacity: 1, transform: 'scale(1.2)' },
+                        },
+                        sheen: {
+                            '0%': { transform: 'translateX(-150%) rotate(25deg)' },
+                            '20%, 100%': { transform: 'translateX(150%) rotate(25deg)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070a08;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #070a08;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #5c3500;
+            border-radius: 10px;
+        }
+
+        .bottle-mask {
+            mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+            -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(24px) saturate(1.2);
+            -webkit-backdrop-filter: blur(24px) saturate(1.2);
+            border: 1px solid rgba(255, 157, 0, 0.15);
+            box-shadow: inset 0 0 30px rgba(255, 157, 0, 0.02), 0 20px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 40%, rgba(255, 157, 0, 0.05) 100%);
+            pointer-events: none;
+        }
+
+        .amber-text-glow {
+            text-shadow: 0 0 30px rgba(255, 157, 0, 0.6), 0 0 10px rgba(255, 157, 0, 0.4);
+        }
+
+        .btn-amber {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255, 157, 0, 0.15), rgba(255, 157, 0, 0.05));
+            border: 1px solid rgba(255, 157, 0, 0.4);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-amber:hover {
+            background: rgba(255, 157, 0, 0.25);
+            box-shadow: 0 0 30px rgba(255, 157, 0, 0.3), inset 0 0 15px rgba(255, 157, 0, 0.2);
+            transform: translateY(-2px);
+            border-color: rgba(255, 157, 0, 0.8);
+        }
+
+        .btn-amber::after {
+            content: '';
+            position: absolute;
+            inset: -120%;
+            background: linear-gradient(120deg, transparent 40%, rgba(255, 255, 255, 0.4) 50%, transparent 60%);
+            transform: translateX(-140%) rotate(25deg);
+            animation: sheen 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .reveal-node {
+            opacity: 0;
+            transform: translateY(40px) scale(0.95);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal-node.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: #ff9d00;
+            box-shadow: 0 0 10px #ff9d00, 0 0 20px #ff9d00;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="antialiased selection:bg-amber-dim selection:text-white">
+
+    <div class="fixed inset-0 pointer-events-none z-[-1]">
+        <div class="absolute top-[-20%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-moss-900/40 blur-[120px]"></div>
+        <div class="absolute bottom-[-10%] right-[-5%] w-[40vw] h-[40vw] rounded-full bg-amber-dark/20 blur-[150px]">
+        </div>
+        <div id="particles-container" class="absolute inset-0"></div>
+    </div>
+
+    <nav class="fixed top-0 w-full z-50 transition-all duration-500" id="navbar">
+        <div class="max-w-[1800px] mx-auto px-6 lg:px-12 h-24 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <iconify-icon icon="ph:flask-bold"
+                    class="text-3xl text-amber-glow group-hover:rotate-12 transition-transform duration-500"></iconify-icon>
+                <span class="font-serif text-2xl font-bold tracking-widest uppercase">Aethelgard</span>
+            </a>
+
+            <div
+                class="hidden lg:flex items-center gap-10 font-sans text-xs uppercase tracking-[0.3em] font-medium text-white/60">
+                <a href="#ecosystems" class="hover:text-amber-glow transition-colors">Ecosystems</a>
+                <a href="#craft" class="hover:text-amber-glow transition-colors">Craftsmanship</a>
+                <a href="#gallery" class="hover:text-amber-glow transition-colors">Collection</a>
+                <a href="#origin" class="hover:text-amber-glow transition-colors">Origin</a>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <button
+                    class="btn-amber px-8 py-3 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-amber-100">
+                    Acquire World
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="relative min-h-[100svh] flex flex-col items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 z-0 bg-obsidian">
+                <video id="heroVideo" autoplay loop muted playsinline class="w-full h-full object-cover "
+                    style="will-change: transform;">
+                    <source src="./video.mp4" type="video/mp4">
+                </video>
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(7,10,8,0.3)_65%,#070a08_100%)]">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-obsidian"></div>
+            </div>
+
+            <div class="relative z-10 max-w-5xl mx-auto px-6 text-center mt-20">
+                <h1 class="font-serif text-[clamp(4rem,12vw,10rem)] leading-[0.85] font-bold italic text-white mb-8 reveal-node drop-shadow-[0_0_15px_rgba(0,0,0,0.9)] drop-shadow-[0_0_5px_rgba(0,0,0,0.9)]"
+                    style="transition-delay: 0.2s;">
+                    Universes in <br>
+                    <span
+                        class="amber-text-glow text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-amber-glow to-amber-600 not-italic">Glass.</span>
+                </h1>
+
+                <p class="font-sans text-lg md:text-xl text-white max-w-2xl mx-auto font-light leading-relaxed mb-12 reveal-node drop-shadow-[0_0_8px_rgba(0,0,0,0.9)]"
+                    style="transition-delay: 0.3s;">
+                    Miniature ecosystems forged with time, moss, and light. A fragment of autumn magic preserved
+                    eternally in your space.
+                </p>
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-6 reveal-node"
+                    style="transition-delay: 0.4s;">
+                    <button
+                        class="btn-amber px-10 py-5 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-white w-full sm:w-auto">
+                        Explore Gallery
+                    </button>
+                    <button
+                        class="px-10 py-5 rounded-full font-sans text-xs uppercase tracking-[0.2em] font-bold text-white/60 hover:text-white transition-colors flex items-center justify-center gap-3 w-full sm:w-auto">
+                        <iconify-icon icon="ph:play-circle-light" class="text-xl"></iconify-icon>
+                        The Process
+                    </button>
+                </div>
+            </div>
+
+            <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40 reveal-node"
+                style="transition-delay: 0.6s;">
+                <div class="w-px h-16 bg-gradient-to-b from-amber-glow to-transparent"></div>
+                <span class="font-sans text-[9px] uppercase tracking-[0.4em] text-amber-glow">Dive In</span>
+            </div>
+        </section>
+
+        <section id="ecosystems" class="relative py-32 px-6 lg:px-12 bg-obsidian">
+            <div class="max-w-[1700px] mx-auto">
+                <div class="grid lg:grid-cols-[1fr_1.5fr] gap-16 lg:gap-24 items-center">
+                    <div class="reveal-node">
+                        <span
+                            class="font-sans text-[11px] uppercase tracking-[0.4em] text-amber-glow/60 mb-6 block">Anatomy
+                            of a World</span>
+                        <h2 class="font-serif text-5xl md:text-7xl leading-tight font-bold mb-8">
+                            Life breathing <br>in the <i class="text-amber-glow">void</i>.
+                        </h2>
+                        <p class="font-sans text-white/50 text-lg leading-relaxed mb-10 font-light">
+                            Each terrarium is a self-sustaining biome. Tiny cabins house warm light diodes that mimic
+                            the glow of a hearth, while living moss purifies its own atmosphere through hand-blown
+                            glass.
+                        </p>
+                        <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10">
+                            <div>
+                                <div class="text-4xl font-serif text-amber-glow mb-2">100%</div>
+                                <div class="font-sans text-[10px] uppercase tracking-widest text-white/40">Natural Moss
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-4xl font-serif text-amber-glow mb-2">∞</div>
+                                <div class="font-sans text-[10px] uppercase tracking-widest text-white/40">Water Cycle
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6 relative">
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-amber-glow/10 blur-[100px] rounded-full pointer-events-none">
+                        </div>
+
+                        <div
+                            class="glass-panel rounded-3xl p-8 transform translate-y-0 sm:translate-y-12 reveal-node group">
+                            <iconify-icon icon="ph:tree-evergreen-light"
+                                class="text-4xl text-amber-glow mb-6 group-hover:scale-110 transition-transform"></iconify-icon>
+                            <h3 class="font-serif text-2xl font-bold mb-4">Perpetual Flora</h3>
+                            <p class="font-sans text-sm text-white/50 leading-relaxed font-light">
+                                Meticulous selection of flora that thrives in closed environments, creating
+                                micro-forests that require zero maintenance.
+                            </p>
+                        </div>
+
+                        <div class="glass-panel rounded-3xl p-8 reveal-node group" style="transition-delay: 0.2s;">
+                            <iconify-icon icon="ph:house-line-light"
+                                class="text-4xl text-amber-glow mb-6 group-hover:scale-110 transition-transform"></iconify-icon>
+                            <h3 class="font-serif text-2xl font-bold mb-4">Scaled Architecture</h3>
+                            <p class="font-sans text-sm text-white/50 leading-relaxed font-light">
+                                Hand-carved structures in noble woods, treated to resist moisture and maintain their
+                                millimeter precision.
+                            </p>
+                        </div>
+
+                        <div class="glass-panel rounded-3xl p-8 transform translate-y-0 sm:translate-y-12 reveal-node group"
+                            style="transition-delay: 0.1s;">
+                            <iconify-icon icon="ph:drop-light"
+                                class="text-4xl text-amber-glow mb-6 group-hover:scale-110 transition-transform"></iconify-icon>
+                            <h3 class="font-serif text-2xl font-bold mb-4">Micro-Rivers</h3>
+                            <p class="font-sans text-sm text-white/50 leading-relaxed font-light">
+                                Epoxy resin cast with natural pigments that simulate water currents, reflecting the
+                                internal light of the ecosystem.
+                            </p>
+                        </div>
+
+                        <div class="glass-panel rounded-3xl p-8 reveal-node group" style="transition-delay: 0.3s;">
+                            <iconify-icon icon="ph:sparkle-light"
+                                class="text-4xl text-amber-glow mb-6 group-hover:scale-110 transition-transform"></iconify-icon>
+                            <h3 class="font-serif text-2xl font-bold mb-4">Twilight Glow</h3>
+                            <p class="font-sans text-sm text-white/50 leading-relaxed font-light">
+                                Integrated lighting with amber temperature (2200K) LED filaments, powered by invisible
+                                inductive charging bases.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-6 lg:px-12 relative overflow-hidden bg-obsidian">
+            <div class="max-w-[1700px] mx-auto text-center reveal-node">
+                <iconify-icon icon="ph:star-four-fill"
+                    class="text-amber-glow text-xl mb-6 animate-pulse"></iconify-icon>
+                <h2 class="font-serif text-5xl md:text-7xl font-bold italic mb-6">The Autumn Haven</h2>
+                <p class="font-sans text-white/50 text-lg max-w-2xl mx-auto font-light mb-20">
+                    Discover the flagship collection. Each piece is unique, numbered, and contains an unrepeatable
+                    landscape.
+                </p>
+            </div>
+
+            <div class="max-w-[1700px] mx-auto grid md:grid-cols-3 gap-8">
+                <div class="glass-panel rounded-[2rem] aspect-[3/4] relative group overflow-hidden reveal-node">
+                    <div
+                        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542314831-c6a4d14eff50?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/50 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8">
+                        <div class="font-sans text-[10px] uppercase tracking-widest text-amber-glow mb-2">Edition 01
+                        </div>
+                        <h3 class="font-serif text-3xl font-bold text-white mb-2">The Valley Mill</h3>
+                        <p class="font-sans text-xs text-white/50 mb-6 line-clamp-2">A mill suspended over a resin
+                            river, surrounded by copper foliage.</p>
+                        <button
+                            class="border border-white/20 hover:border-amber-glow hover:bg-amber-glow/10 text-white px-6 py-2 rounded-full font-sans text-[10px] uppercase tracking-[0.2em] transition-colors backdrop-blur-md">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2rem] aspect-[3/4] relative group overflow-hidden reveal-node"
+                    style="transition-delay: 0.2s;">
+                    <div
+                        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1505832018823-50331d70d237?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/50 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8">
+                        <div class="font-sans text-[10px] uppercase tracking-widest text-amber-glow mb-2">Edition 02
+                        </div>
+                        <h3 class="font-serif text-3xl font-bold text-white mb-2">The Alchemist's Cabin</h3>
+                        <p class="font-sans text-xs text-white/50 mb-6 line-clamp-2">A steep tower embedded in basalt
+                            rock with climbing moss.</p>
+                        <button
+                            class="border border-white/20 hover:border-amber-glow hover:bg-amber-glow/10 text-white px-6 py-2 rounded-full font-sans text-[10px] uppercase tracking-[0.2em] transition-colors backdrop-blur-md">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel rounded-[2rem] aspect-[3/4] relative group overflow-hidden reveal-node"
+                    style="transition-delay: 0.4s;">
+                    <div
+                        class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-all duration-700 mix-blend-luminosity">
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/50 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-8">
+                        <div class="font-sans text-[10px] uppercase tracking-widest text-amber-glow mb-2">Edition 03
+                        </div>
+                        <h3 class="font-serif text-3xl font-bold text-white mb-2">Bridge of Souls</h3>
+                        <p class="font-sans text-xs text-white/50 mb-6 line-clamp-2">A stone arch over dark waters,
+                            flanked by golden trees.</p>
+                        <button
+                            class="border border-white/20 hover:border-amber-glow hover:bg-amber-glow/10 text-white px-6 py-2 rounded-full font-sans text-[10px] uppercase tracking-[0.2em] transition-colors backdrop-blur-md">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="relative border-t border-white/5 bg-[#040605] pt-32 pb-12 px-6 lg:px-12 overflow-hidden">
+            <div
+                class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-[1000px] h-[1px] bg-gradient-to-r from-transparent via-amber-glow/50 to-transparent">
+            </div>
+            <div class="absolute bottom-0 left-0 w-full h-[50vh] bg-moss-900/20 blur-[150px] pointer-events-none"></div>
+
+            <div class="max-w-[1700px] mx-auto grid lg:grid-cols-[1fr_2fr] gap-16 relative z-10 mb-24">
+                <div>
+                    <a href="#" class="flex items-center gap-3 mb-6">
+                        <iconify-icon icon="ph:flask-bold" class="text-4xl text-amber-glow"></iconify-icon>
+                        <span
+                            class="font-serif text-3xl font-bold tracking-widest uppercase text-white">Aethelgard</span>
+                    </a>
+                    <p class="font-sans text-white/40 text-sm font-light leading-relaxed max-w-sm mb-10">
+                        Preserving the magic of the minuscule. Workshops deep in the Black Forest, forging eternal
+                        ecosystems.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-amber-glow/20 hover:border-amber-glow hover:text-amber-400 transition-all text-white/60">
+                            <iconify-icon icon="ph:instagram-logo-light" class="text-xl"></iconify-icon>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-amber-glow/20 hover:border-amber-glow hover:text-amber-400 transition-all text-white/60">
+                            <iconify-icon icon="ph:pinterest-logo-light" class="text-xl"></iconify-icon>
+                        </a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-amber-glow/20 hover:border-amber-glow hover:text-amber-400 transition-all text-white/60">
+                            <iconify-icon icon="ph:twitter-logo-light" class="text-xl"></iconify-icon>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-10 lg:pl-20">
+                    <div>
+                        <h4 class="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-amber-glow mb-6">
+                            Navigation</h4>
+                        <ul class="space-y-4 font-sans text-sm font-light text-white/50">
+                            <li><a href="#" class="hover:text-white transition-colors">The Collection</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Artisanal Process</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Terrarium Care</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Testimonials</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-amber-glow mb-6">
+                            Support</h4>
+                        <ul class="space-y-4 font-sans text-sm font-light text-white/50">
+                            <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Secure Shipping</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Glass Warranty</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">FAQ</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-span-2 md:col-span-1">
+                        <h4 class="font-sans text-[10px] uppercase tracking-[0.3em] font-bold text-amber-glow mb-6">The
+                            Guild</h4>
+                        <p class="font-sans text-sm text-white/50 font-light mb-4">
+                            Join the inner circle for exclusive releases and limited editions.
+                        </p>
+                        <div class="relative">
+                            <input type="email" placeholder="Your digital essence..."
+                                class="w-full bg-white/5 border border-white/10 rounded-full px-5 py-3 font-sans text-xs text-white focus:outline-none focus:border-amber-glow/50 transition-colors placeholder:text-white/20">
+                            <button
+                                class="absolute right-1 top-1 bottom-1 w-10 bg-amber-glow/20 text-amber-400 rounded-full flex items-center justify-center hover:bg-amber-glow hover:text-white transition-colors">
+                                <iconify-icon icon="ph:arrow-right-light"></iconify-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="max-w-[1700px] mx-auto border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 relative z-10">
+                <p class="font-sans text-[10px] uppercase tracking-widest text-white/30">
+                    © 2026 Aethelgard. Contained worlds.
+                </p>
+                <div class="flex gap-6 font-sans text-[10px] uppercase tracking-widest text-white/30">
+                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <script>
+        const heroVideo = document.getElementById('heroVideo');
+        const navbar = document.getElementById('navbar');
+        let raf = 0;
+
+        const updateHero = () => {
+            const scrollY = window.scrollY;
+            const max = window.innerHeight;
+            const progress = Math.min(Math.max(scrollY / max, 0), 1);
+
+            if (heroVideo) {
+                const scale = 1 + progress * 0.1;
+                const translateY = progress * 20;
+                heroVideo.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+            }
+
+            if (scrollY > 50) {
+                navbar.classList.add('bg-obsidian/80', 'backdrop-blur-lg', 'border-b', 'border-white/5', 'shadow-2xl');
+            } else {
+                navbar.classList.remove('bg-obsidian/80', 'backdrop-blur-lg', 'border-b', 'border-white/5', 'shadow-2xl');
+            }
+        };
+
+        const onScroll = () => {
+            if (raf) return;
+            raf = window.requestAnimationFrame(() => {
+                updateHero();
+                raf = 0;
+            });
+        };
+
+        updateHero();
+        window.addEventListener('scroll', onScroll, { passive: true });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-node').forEach(el => observer.observe(el));
+
+        const container = document.getElementById('particles-container');
+        const particleCount = 25;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle', 'animate-firefly');
+
+            const size = Math.random() * 3 + 1;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `${Math.random() * 100}vh`;
+
+            particle.style.animationDelay = `${Math.random() * 4}s`;
+            particle.style.animationDuration = `${Math.random() * 3 + 3}s`;
+
+            const speedX = (Math.random() - 0.5) * 1;
+            const speedY = (Math.random() - 0.5) * 1;
+
+            container.appendChild(particle);
+        }
+    </script>
+</body>
+
+</html>
