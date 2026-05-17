@@ -87,7 +87,6 @@ function DownloadZipButton({ video, format }: { video: HeroVideo; format: string
   );
 }
 
-
 function FrameworkDropdown({ active, onChange }: { active: Framework; onChange: (fw: Framework) => void }) {
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -332,7 +331,7 @@ export function VideoModal({ video, onClose }: VideoModalProps) {
 
             <div className="mt-4 flex flex-wrap gap-2">
               <a
-                href={`https://videos.openhero.art/videos/${video.category}/${video.slug}.mp4`}
+                href={`https://videos.openhero.art/downloads/${video.category}/${video.slug}/video.mp4`}
                 download="video.mp4"
                 className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-white transition-colors hover:bg-white/10"
               >

@@ -42,7 +42,7 @@ export async function GET(request: NextRequest) {
   const folder = zip.folder(`${slug}-${format}`) as JSZip;
   folder.file(filename, code);
 
-  const r2VideoUrl = `${R2_BASE}/videos/${category}/${slug}.mp4`;
+  const r2VideoUrl = `${R2_BASE}/downloads/${category}/${slug}/video.mp4`;
   let videoArrayBuffer: ArrayBuffer | null = null;
   try {
     const videoRes = await fetch(r2VideoUrl);
